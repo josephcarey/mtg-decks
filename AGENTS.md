@@ -12,6 +12,7 @@
 - Environment quirk: python3 urllib has SSL cert failures here — use `curl` for Scryfall. The /cards/collection endpoint accepts max 75 identifiers per POST.
 - For every deck, compute and report: color pip ratio vs. mana sources, mana curve (avg MV + count of 5+ MV), land count sanity, and a fetch-vs-basics audit (fetch effects must not outstrip basics of the right type).
 - Singleton + exactly 100 cards. Verify count with: grep -vE '^//|^$' <file> | awk '{s+=$1} END{print s}'
+- Card discovery: use Scryfall's Tagger tags for function-based scouting. `otag:<slug>` (alias `function:`) matches what a card does; `arttag:<slug>` (alias `art:`) matches art. Tagger is the source of these function tags — the full slug catalog is in `reference/oracle-tags.txt` (regenerate with `scripts/tagger_catalog.py`). Always keep `-is:gamechanger` in discovery queries to auto-exclude the banned Game Changers list. Run discovery with `scripts/scryfall.py --discover <slug> [--id <colors>] [--set <code>] [--max-price <usd>] [--limit N] [--deck <list.txt>]`, and find valid slugs offline with `scripts/scryfall.py --list-tags <substr>`.
 
 ## Repo conventions
 - One folder per deck under decks/<deck-slug>/ containing: list.txt (the decklist) and notes.md (a decision log / 'why' history).
