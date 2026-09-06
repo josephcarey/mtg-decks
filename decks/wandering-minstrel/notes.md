@@ -26,7 +26,7 @@ finisher**.
   reliably power them (the WUBRG pump is a late-game luxury, not an every-turn line).
 - **Curve smoothing.** Arboreal Grazer and Growth Spiral get an untapped land onto the
   battlefield early, accelerating the landfall engine without clogging the top of the curve.
-- **Manabase built for basic-fetching.** 38 lands including **19 basics**. Green land-fetch
+- **Manabase built for basic-fetching.** 39 lands including **20 basics**. Green land-fetch
   (Nature's Lore, Three Visits, Skyshroud Claim, Farseek-for-duals, etc.) can typically only
   grab **Forests**, so the basic split is Forest-heavy (**11 Forests**) to keep those fetches
   live deep into the game.
@@ -70,8 +70,8 @@ From recent-set research — verify exact names/text on Scryfall before adding, 
 
 - Tireless Provisioner, Lotus Cobra, Evolution Sage, Ancient Greenwarden (evaluate vs. budget/theme).
 
-### Protection gap fillers (deck's one measurable gap)
+### Protection gap fillers (optional — deprioritized since Minstrel is cheap/recastable)
 
-- Lightning Greaves, Snakeskin Veil, Veil of Summer, Inspiring Call, Whispersilk Cloak, Tyvar's Stand — note: protection is deprioritized here since Minstrel is cheap/recastable (per PRIORITIES.md), so this is optional.
+- Lightning Greaves, Snakeskin Veil, Veil of Summer, Inspiring Call, Whispersilk Cloak, Tyvar's Stand.
 
 Reminder: Minstrel color identity is WUBRG via the {3}{W}{U}{B}{R}{G} ability, so off-color cards above are legal.
