@@ -1,7 +1,7 @@
 // Commander: The Wandering Minstrel
 // Simic-centered 5c Landfall + Go-Wide (Towns finisher + light Waterbend)
 // Budget-tuned + rebuilt manabase for heavy basic-fetching
-// 100 cards (1 commander + 61 nonland + 38 lands)
+// 100 cards (1 commander + 61 nonland + 39 lands)
 // PROXY CANDIDATES ($$): Aesi, Scute Swarm
 // Tags: role tags after each card (see AGENTS.md tag vocabulary)
 
@@ -81,7 +81,7 @@
 1 Generous Gift  #interaction
 1 Counterspell  #interaction #protection
 1 Devastation Tide  #interaction #wincon
-// Lands (38) — Towns (12)
+// Lands (39) — Towns (12)
 1 Capital City  #land #town #fixing
 1 Balamb Garden, SeeD Academy  #land #town #fixing
 1 Guadosalam, Farplane Gateway  #land #town #fixing
@@ -104,7 +104,7 @@
 1 Terramorphic Expanse  #land #fixing #landfall
 // Utility (1)
 1 Myriad Landscape  #land #ramp #fixing
-// Basics (19)
+// Basics (20)
 11 Forest  #land
 5 Island  #land
 2 Plains  #land

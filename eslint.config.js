@@ -17,8 +17,18 @@ export default tseslint.config(
   depend.configs["flat/recommended"],
   {
     rules: {
+      // Named imports from node builtins (e.g. node:path) are clear and tree-shakeable.
+      "unicorn/import-style": "off",
       "unicorn/no-null": "off",
       "unicorn/prevent-abbreviations": "off",
+    },
+  },
+  {
+    // These modules legitimately touch the filesystem with caller-supplied paths (CLI args,
+    // resolved bulk/DB locations); the security plugin's non-literal-path heuristic is noise here.
+    files: ["src/cli.ts", "src/db/**/*.ts", "src/scryfall/**/*.ts"],
+    rules: {
+      "security/detect-non-literal-fs-filename": "off",
     },
   },
   {
