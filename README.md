@@ -5,69 +5,52 @@ GitHub Copilot. It stores decklists, the reasoning behind every build, reusable 
 tooling, and evergreen mechanic notes so that any future session can pick up where the last
 one left off.
 
+## Stack
+
+The tooling is written in **TypeScript** and runs on **[Bun](https://bun.sh)** (no build step
+for dev scripts). It follows the studio code standards:
+
+- **Runtime & package manager:** Bun
+- **Language:** TypeScript (strict)
+- **Lint/format:** ESLint (unicorn, perfectionist, depend, security) + Prettier (defaults)
+- **Dead code:** knip
+- **Tests:** Vitest with `@vitest/coverage-v8` (80% line-coverage CI gate)
+
+> **Migration note:** the tooling was previously a set of Python scripts (`scripts/scryfall.py`,
+> `scripts/tagger_catalog.py`). Those have been removed and are being reimplemented in
+> TypeScript. This PR scaffolds the Bun + TypeScript project and CI gates; the deck analyzer,
+> SQLite data layer, and card-discovery CLI land in a follow-up.
+
+## Scripts
+
+| Script          | What it does                                                                       |
+| --------------- | ---------------------------------------------------------------------------------- |
+| `bun run check` | `tsc --noEmit && knip && eslint . && bun audit` — full static analysis.            |
+| `bun run test`  | Vitest with coverage (80% line threshold).                                         |
+| `bun run ci`    | `bun run check && bun run test` — exactly what CI runs.                            |
+| `bun run deck`  | The deck CLI entry point (`bun src/cli.ts`). Subcommands land in the follow-up PR. |
+
+Install and verify locally:
+
+```bash
+bun install
+bun run ci
+```
+
 ## What's here
 
-| Path | Purpose |
-| --- | --- |
-| `AGENTS.md` | House style & owner preferences. **Read this first** — power level, banned Game Changers, budget, and process conventions. |
-| `decks/<deck-slug>/` | One folder per deck: `list.txt` (the decklist) and `notes.md` (a decision log / "why" history). |
-| `scripts/scryfall.py` | Decklist analyzer (count, curve, pips, fetch-vs-basics, price, tag distribution) **and** card discovery via Scryfall Tagger tags. |
-| `scripts/tagger_catalog.py` | Fetches the full Scryfall Tagger function-tag catalog into `reference/oracle-tags.txt`. |
-| `reference/set-mechanics.md` | Evergreen notes on recent set mechanics (Waterbend, Earthbend, Final Fantasy Towns). |
-| `reference/oracle-tags.txt` | The full Scryfall Tagger function-tag (`otag:`) catalog — valid slugs for discovery. |
+| Path                         | Purpose                                                                                                                                    |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| `AGENTS.md`                  | House style & owner preferences. **Read this first** — power level, banned Game Changers, budget, tag vocabulary, and process conventions. |
+| `decks/<deck-slug>/`         | One folder per deck: `list.txt` (the decklist) and `notes.md` (a decision log / "why" history).                                            |
+| `src/`                       | TypeScript tooling (analysis, Scryfall bulk data, SQLite data layer, CLI).                                                                 |
+| `reference/set-mechanics.md` | Evergreen notes on recent set mechanics (Waterbend, Earthbend, Final Fantasy Towns).                                                       |
+| `reference/oracle-tags.txt`  | The Scryfall function-tag (`otag:`) catalog — valid slugs for discovery.                                                                   |
 
 ## Decks
 
-- **`decks/wandering-minstrel/`** — *The Wandering Minstrel*, a Simic-centered 5-color
+- **`decks/wandering-minstrel/`** — _The Wandering Minstrel_, a Simic-centered 5-color
   landfall + go-wide tokens deck with a Towns finisher and a light Waterbend package.
-
-## Running the Scryfall analysis
-
-The analyzer reads a decklist and reports count, curve, pips, a fetch-vs-basics note, and
-total USD price:
-
-```bash
-python3 scripts/scryfall.py decks/wandering-minstrel/list.txt
-```
-
-**Environment note:** this workspace's `python3` has SSL certificate failures with `urllib`,
-so the script shells out to **`curl`** to reach Scryfall. Card data is fetched via the
-`/cards/collection` endpoint, batched at the API's max of **75 identifiers per POST**. If the
-network is unavailable, the parsing/curve/pip sections still work and the price fetch fails
-gracefully.
-
-## Card discovery via Scryfall Tagger (otag)
-
-Scryfall's **Tagger** dataset powers function-based search. Two filters matter:
-
-- `otag:<slug>` (alias `function:`) — what a card *does*, e.g. `otag:landfall`, `otag:removal`.
-- `arttag:<slug>` (alias `art:`) — what a card's art *depicts*, e.g. `arttag:dragon`.
-
-The Game Changers ban is enforced with `-is:gamechanger` (on by default in discovery — a raw
-`otag:landfall` would otherwise surface banned cards like Field of the Dead).
-
-The complete list of function-tag slugs lives in `reference/oracle-tags.txt`, generated by:
-
-```bash
-python3 scripts/tagger_catalog.py     # writes/overwrites reference/oracle-tags.txt
-```
-
-Discover candidate cards for a tag (ranked by EDHREC popularity), filtered by color identity
-and price, skipping cards already in a deck:
-
-```bash
-# NEW landfall payoffs in Simic under $8, excluding Game Changers and cards we already run:
-python3 scripts/scryfall.py --discover landfall --id gu --max-price 8 --limit 10 \
-    --deck decks/wandering-minstrel/list.txt
-
-# Find valid tag slugs offline (searches reference/oracle-tags.txt):
-python3 scripts/scryfall.py --list-tags landfall
-```
-
-Discovery flags: `--id <colors>` (default `gu`; use `wubrg` for 5c), `--set <code>`,
-`--max-price <usd>`, `--limit N`, `--include-gamechangers` (opt back in), and `--deck <file>`
-(mark/skip owned cards). Owned cards are shown as context marked `=` and don't consume the
-`--limit` budget, so you always see that many *new* candidates.
 
 ## Conventions
 
@@ -75,5 +58,7 @@ Discovery flags: `--id <colors>` (default `gu`; use `wubrg` for 5c), `--set <cod
   ```bash
   grep -vE '^//|^$' decks/wandering-minstrel/list.txt | awk '{s+=$1} END{print s}'
   ```
-- Decklist format: `<count> <card name>` per line; `// ` for comment/section headers.
-- Always verify card text and legality against the **Scryfall API**, never memory.
+- Decklist format: `<count> <card name>` per line, with optional inline `#tags` (two spaces
+  before the first tag); `// ` for comment/section headers.
+- Always verify card text and legality against the **Scryfall API** / its bulk-data exports,
+  never memory.
