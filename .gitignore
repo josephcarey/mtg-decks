@@ -1,0 +1,6 @@
+# Tagger GraphQL temp cookie jar (created/removed by scripts/tagger_catalog.py)
+scripts/.tagger-cookies.txt
+
+# Python
+__pycache__/
+*.pyc

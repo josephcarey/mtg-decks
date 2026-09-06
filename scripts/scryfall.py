@@ -1,14 +1,23 @@
 #!/usr/bin/env python3
-"""Scryfall-backed decklist analyzer for the MTG Commander workspace.
+"""Scryfall-backed decklist analyzer + card discovery for the MTG Commander workspace.
 
-Reads a decklist file (the workspace's `<count> <card name>` format, with `//` comment
-lines) and reports:
+Two modes:
 
-  (a) total card count with a pass/fail check against 100,
-  (b) mana curve — average mana value (MV), a histogram, and the count of cards at MV 5+,
-  (c) color pip ratio across all mana costs,
-  (d) a fetch-vs-basics note listing basic land counts, and
-  (e) total deck price using Scryfall `prices.usd`.
+  1. Analyze mode (default): `scryfall.py <decklist.txt>` reads a decklist file (the
+     workspace's `<count> <card name>` format with optional inline `#tags`, and `//` comment
+     lines) and reports:
+       (a) total card count with a pass/fail check against 100,
+       (b) mana curve — average mana value (MV), a histogram, and the count of cards at MV 5+,
+       (c) color pip ratio across all mana costs,
+       (d) a fetch-vs-basics note listing basic land counts,
+       (e) total deck price using Scryfall `prices.usd`, and
+       (f) a distribution of the inline role tags.
+
+  2. Discovery mode: `scryfall.py --discover <otag-slug> [...]` queries Scryfall's Tagger
+     dataset (via the normal search API's `otag:` filter) for cards matching a function tag,
+     filtered by color identity, price, and set, with the banned Game Changers list excluded
+     by default, ranked by EDHREC popularity. `--list-tags [substr]` searches the local tag
+     catalog (reference/oracle-tags.txt) for valid slugs offline.
 
 Environment quirks (important):
   * This environment's `python3` has SSL certificate failures when using `urllib`/`requests`
@@ -18,23 +27,36 @@ Environment quirks (important):
 
 Usage:
     python3 scripts/scryfall.py decks/wandering-minstrel/list.txt
+    python3 scripts/scryfall.py --discover landfall --id gu --max-price 8 --limit 10 \
+        --deck decks/wandering-minstrel/list.txt
+    python3 scripts/scryfall.py --list-tags landfall
 
-If the network is unavailable, the parsing / curve / pip / basics sections still run using
-whatever card data was retrievable; the price and curve sections degrade gracefully and note
-how many cards could not be fetched.
+If the network is unavailable, the analyze mode's parsing / curve / pip / basics / tag
+sections still run using whatever card data was retrievable; the price and curve sections
+degrade gracefully and note how many cards could not be fetched.
 """
 
 from __future__ import annotations
 
+import argparse
 import json
+import os
 import subprocess
 import sys
+import urllib.parse
 from collections import Counter
-from typing import Dict, List, Tuple
+from typing import Dict, List, Optional, Tuple
 
 SCRYFALL_COLLECTION_URL = "https://api.scryfall.com/cards/collection"
+SCRYFALL_SEARCH_URL = "https://api.scryfall.com/cards/search"
 BATCH_SIZE = 75  # Scryfall /cards/collection hard limit: 75 identifiers per POST.
 TARGET_DECK_SIZE = 100
+
+ORACLE_TAGS_PATH = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+    "reference",
+    "oracle-tags.txt",
+)
 
 BASIC_LAND_NAMES = {"Plains", "Island", "Swamp", "Mountain", "Forest", "Wastes"}
 PIP_COLORS = ["W", "U", "B", "R", "G"]
@@ -371,12 +393,174 @@ def analyze(path: str) -> int:
     return 0 if total == TARGET_DECK_SIZE else 1
 
 
+def curl_search(query: str) -> Tuple[Optional[List[dict]], Optional[str]]:
+    """Run a Scryfall /cards/search via curl. Returns (cards, error_message).
+
+    `query` is the raw (un-encoded) Scryfall query string; it is URL-encoded here.
+    On the "no cards matched" case Scryfall returns HTTP 404 with a JSON error body; we
+    surface that as a friendly message rather than a crash.
+    """
+    encoded = urllib.parse.quote(query)
+    url = f"{SCRYFALL_SEARCH_URL}?q={encoded}&order=edhrec"
+    try:
+        proc = subprocess.run(
+            ["curl", "-sS", url, "-H", "Accept: application/json"],
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+    except (subprocess.SubprocessError, OSError) as exc:
+        return None, f"curl failed: {exc}"
+
+    if not proc.stdout.strip():
+        return None, f"empty response (curl exit {proc.returncode})"
+
+    try:
+        body = json.loads(proc.stdout)
+    except json.JSONDecodeError as exc:
+        return None, f"could not parse Scryfall response: {exc}"
+
+    if body.get("object") == "error":
+        return None, body.get("details", "Scryfall returned an error.")
+
+    return body.get("data", []), None
+
+
+def deck_card_names(deck_path: str) -> set:
+    """Return a set of lowercase card names already in a decklist (for skip/mark)."""
+    names = set()
+    for _, name, _ in parse_decklist(deck_path):
+        names.add(name.lower())
+    return names
+
+
+def discover(args: argparse.Namespace) -> int:
+    """Discover candidate cards for an otag via Scryfall search, ranked by EDHREC."""
+    slug = args.slug
+    parts = [f"otag:{slug}"]
+    if args.id:
+        parts.append(f"id:{args.id}")
+    if not args.include_gamechangers:
+        parts.append("-is:gamechanger")
+    if args.set:
+        parts.append(f"set:{args.set}")
+    if args.max_price is not None:
+        parts.append(f"usd<={args.max_price}")
+    query = " ".join(parts)
+
+    print(f"Discovery query: {query}   (order=edhrec)")
+    cards, err = curl_search(query)
+    if err is not None:
+        print(f"  [error] {err}")
+        print(f"  Hint: check the slug against the tag catalog: "
+              f"python3 {os.path.basename(sys.argv[0])} --list-tags {slug}")
+        return 1
+    if not cards:
+        print("  No cards matched.")
+        return 1
+
+    owned = deck_card_names(args.deck) if args.deck else set()
+
+    print(f"  {len(cards)} match(es); showing up to {args.limit}"
+          + (" NEW candidates (owned cards shown as context, marked '=')" if owned else "")
+          + ":\n")
+    print(f"  {'#':>3}  {'MV':>3}  {'USD':>7}  {'':1} {'Name':<32} Type")
+    print("  " + "-" * 78)
+
+    new_shown = 0
+    rank = 0
+    for card in cards:
+        if new_shown >= args.limit:
+            break
+        name = card.get("name", "?")
+        is_owned = args.deck and name.lower() in owned
+        marker = "=" if is_owned else " "
+        # Owned cards are shown for context but don't consume the NEW-candidate budget.
+        if not is_owned:
+            new_shown += 1
+        rank += 1
+        mv = card.get("cmc", 0.0)
+        prices = card.get("prices", {}) or {}
+        usd = prices.get("usd") or prices.get("usd_foil") or "-"
+        usd_str = f"{float(usd):.2f}" if usd not in ("-", None) else "-"
+        type_line = card.get("type_line", "")
+        print(f"  {rank:>3}  {mv:>3.0f}  {usd_str:>7}  {marker} {name:<32.32} {type_line}")
+
+    if owned:
+        print("\n  Legend: '=' already in the target deck (context only, not counted "
+              "toward the NEW limit).")
+    return 0
+
+
+def list_tags(substring: Optional[str]) -> int:
+    """Search the local Tagger catalog for slugs containing `substring`."""
+    if not os.path.exists(ORACLE_TAGS_PATH):
+        print(f"[note] Tag catalog not found at {ORACLE_TAGS_PATH}.")
+        print("       Generate it with: python3 scripts/tagger_catalog.py")
+        return 1
+    needle = (substring or "").lower()
+    matches: List[Tuple[str, str]] = []
+    with open(ORACLE_TAGS_PATH, encoding="utf-8") as fh:
+        for line in fh:
+            if line.startswith("#") or not line.strip():
+                continue
+            slug, _, name = line.rstrip("\n").partition("\t")
+            if not needle or needle in slug.lower() or needle in name.lower():
+                matches.append((slug, name))
+    if not matches:
+        print(f"No tags matching '{substring}'.")
+        return 1
+    print(f"{len(matches)} tag(s) matching '{substring or '*'}':")
+    for slug, name in matches:
+        print(f"  {slug}\t{name}")
+    return 0
+
+
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        description="Analyze a Commander decklist, or discover cards via Scryfall Tagger tags.",
+    )
+    parser.add_argument("decklist", nargs="?",
+                        help="Path to a decklist file to analyze (analyze mode).")
+    parser.add_argument("--discover", metavar="OTAG-SLUG", dest="slug",
+                        help="Discovery mode: find cards with this Scryfall function tag "
+                             "(otag). See reference/oracle-tags.txt for valid slugs.")
+    parser.add_argument("--id", default="gu",
+                        help="Color identity filter for discovery (default: gu). "
+                             "Use e.g. wubrg for all colors.")
+    parser.add_argument("--set", dest="set", metavar="CODE",
+                        help="Restrict discovery to a set code (e.g. fin).")
+    parser.add_argument("--max-price", type=float, metavar="USD",
+                        help="Max USD price for discovery candidates.")
+    parser.add_argument("--limit", type=int, default=25,
+                        help="Max candidates to show in discovery (default: 25).")
+    parser.add_argument("--include-gamechangers", action="store_true",
+                        help="Do NOT exclude the banned Game Changers list (off by default).")
+    parser.add_argument("--deck", metavar="DECKLIST",
+                        help="A decklist to compare against; owned cards are marked.")
+    parser.add_argument("--list-tags", nargs="?", const="", metavar="SUBSTR",
+                        dest="list_tags",
+                        help="List tag slugs from the local catalog containing SUBSTR.")
+    return parser
+
+
 def main(argv: List[str]) -> int:
-    if len(argv) != 2:
-        print(f"Usage: python3 {argv[0] if argv else 'scryfall.py'} <decklist.txt>",
-              file=sys.stderr)
+    parser = build_parser()
+    args = parser.parse_args(argv[1:])
+
+    # --list-tags is an offline lookup mode.
+    if args.list_tags is not None:
+        return list_tags(args.list_tags)
+
+    # Discovery mode.
+    if args.slug:
+        return discover(args)
+
+    # Analyze mode.
+    if not args.decklist:
+        parser.print_help(sys.stderr)
         return 2
-    return analyze(argv[1])
+    return analyze(args.decklist)
 
 
 if __name__ == "__main__":
