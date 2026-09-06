@@ -9,7 +9,7 @@ import type {
   PipCounts,
   TagCount,
 } from "./analysis.ts";
-import type { Candidate, TagListItem } from "./db/queries.ts";
+import type { Candidate, DeckCardRow, TagListItem } from "./db/queries.ts";
 
 import { PIP_COLORS, TARGET_DECK_SIZE } from "./constants.ts";
 
@@ -120,6 +120,26 @@ const money = (usd: null | number): string =>
   usd === null ? "  —  " : `$${usd.toFixed(2)}`;
 
 /**
+ * Format `deck cards <slug>` — each card with its resolved corpus function tags.
+ * @param slug - The deck slug (for the header).
+ * @param rows - The deck's cards with corpus tags.
+ * @returns Multi-line output.
+ */
+export function formatDeckCards(
+  slug: string,
+  rows: readonly DeckCardRow[],
+): string {
+  const unresolved = rows.filter((row) => !row.resolved).length;
+  const header = `${slug}: ${rows.length} cards (${unresolved} unresolved)`;
+  const lines = rows.map((row) => {
+    const marker = markerFor(row);
+    const tags = row.corpusTags.length > 0 ? row.corpusTags.join(" ") : "—";
+    return `  ${marker} ${row.count}x ${row.name}  [${tags}]`;
+  });
+  return [header, ...lines].join("\n");
+}
+
+/**
  * Format the discovery results as a ranked table. Owned cards are shown as context (marked
  * `=`) and do not consume a rank number.
  * @param description - The tag's description (header line).
@@ -152,4 +172,9 @@ export function formatDiscoverTable(
 export function formatTagList(items: readonly TagListItem[]): string {
   if (items.length === 0) return "(no matching tags)";
   return items.map((item) => `  ${item.slug} — ${item.description}`).join("\n");
+}
+
+function markerFor(row: DeckCardRow): string {
+  if (row.isCommander) return "★";
+  return row.resolved ? " " : "?";
 }

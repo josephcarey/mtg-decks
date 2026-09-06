@@ -47,6 +47,7 @@ Changers list (53 cards) — the analyzer lints against it. See
 | `analyze <decklist>`            | Report count / curve / pips / lands / price / tags + Game-Changer lint. |
 | `discover <slug> [opts]`        | Find cards for a function tag, EDHREC-ranked (see options below).       |
 | `card <name>`                   | Print one card's pinned mana cost / type / oracle text.                 |
+| `cards <deck-slug>`             | List an ingested deck's cards with their resolved corpus tags.          |
 | `search <query>`                | Full-text (FTS5) search over card names + oracle text.                  |
 | `tags <substr>`                 | Search the tag catalog by slug / label / alias.                         |
 | `synergy <slug>`                | Show a tag's parent and child tags (navigate the taxonomy).             |
@@ -54,7 +55,7 @@ Changers list (53 cards) — the analyzer lints against it. See
 | `gen-reference [--deck <path>]` | Regenerate `reference/oracle-tags.txt` + the per-deck card cache.       |
 
 `discover` options: `--id <colors=gu>` (color-identity subset), `--set <code>`,
-`--max-price <usd>`, `--limit <n=25>`, `--include-gamechangers`, `--deck <path>` (skip cards
+`--max-price <usd>`, `--limit <n=25>`, `--include-gamechangers`, `--deck <slug|path>` (skip cards
 already in that deck so only NEW candidates count toward the limit). Game Changers are excluded
 by default.
 

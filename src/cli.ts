@@ -8,6 +8,7 @@
  *   analyze <decklist>              report card count/curve/pips/basics/price/tags + GC lint
  *   discover <slug> [opts]          find tagged cards (color/price/set filters, EDHREC-ranked)
  *   card <name>                     print one card's pinned text from the cache
+ *   cards <deck-slug>               list a deck's cards with their resolved corpus tags
  *   search <query>                  full-text (FTS5) search over card names + oracle text
  *   tags <substr>                   search the tag catalog (slug/label/alias)
  *   synergy <slug>                  show a tag's parent/child tags
@@ -38,6 +39,9 @@ import {
 import { ftsMatchQuery } from "./db/model.ts";
 import {
   allTagsBySlug,
+  deckCardNames,
+  deckCards,
+  deckExists,
   discover,
   getCard,
   getCardsByNames,
@@ -59,6 +63,7 @@ import {
   formatBasics,
   formatCount,
   formatCurve,
+  formatDeckCards,
   formatDiscoverTable,
   formatGameChangerLint,
   formatPips,
@@ -172,15 +177,22 @@ async function buildDbCommand(): Promise<void> {
       const text = await Bun.file(path).text();
       const slug = basename(dirname(path));
       const entries = parseDecklist(text);
-      const inserted = ingestDeck(db, {
+      const commander = deckCommander(text);
+      const result = ingestDeck(db, {
+        commander,
         entries,
-        name: deckDisplayName(text, slug),
+        name: commander ?? slug,
         path,
         slug,
       });
       deckCount += 1;
+      const warn =
+        result.unresolved.length > 0
+          ? ` — unresolved: ${result.unresolved.join(", ")}`
+          : "";
       out(
-        `  ingested deck "${slug}": ${inserted} rows (${totalCount(entries)} cards)`,
+        `  ingested deck "${slug}": ${result.inserted} rows, ${totalCount(entries)} cards; ` +
+          `${result.resolved} resolved, ${result.unresolved.length} unresolved${warn}`,
       );
     }
     out(`Done. Ingested ${deckCount} deck(s).`);
@@ -215,6 +227,34 @@ function cardCommand(name: string | undefined): void {
   }
 }
 
+function cardsCommand(slug: string | undefined): void {
+  if (slug === undefined) {
+    fail("usage: deck cards <deck-slug>");
+    return;
+  }
+  const dbResult = openDatabase(DEFAULT_DB_PATH);
+  if (dbResult.isErr()) {
+    fail(dbResult.error.message);
+    return;
+  }
+  const db = dbResult.value;
+  try {
+    const result = deckCards(db, slug);
+    if (result.isErr()) {
+      fail(result.error.message);
+      return;
+    }
+    out(formatDeckCards(slug, result.value));
+  } finally {
+    db.close();
+  }
+}
+
+function deckCommander(text: string): null | string {
+  const match = /^\/\/\s*Commander:\s*(.+)$/m.exec(text);
+  return match?.[1]?.trim() ?? null;
+}
+
 function deckDisplayName(text: string, slug: string): string {
   const match = /^\/\/\s*Commander:\s*(.+)$/m.exec(text);
   return match?.[1]?.trim() ?? slug;
@@ -226,7 +266,7 @@ async function discoverCommand(
 ): Promise<void> {
   if (slug === undefined) {
     fail(
-      "usage: deck discover <slug> [--id gu] [--set] [--max-price] [--limit] [--deck]",
+      "usage: deck discover <slug> [--id gu] [--set] [--max-price] [--limit] [--deck <slug|path>]",
     );
     return;
   }
@@ -237,13 +277,7 @@ async function discoverCommand(
   }
   const db = dbResult.value;
   try {
-    let deckNames: ReadonlySet<string> = new Set();
-    if (typeof values.deck === "string") {
-      const deckText = await Bun.file(values.deck)
-        .text()
-        .catch(() => "");
-      deckNames = deckNameSet(parseDecklist(deckText));
-    }
+    const deckNames = await resolveDeckNames(db, values.deck);
     const maxPriceRaw = values["max-price"];
     const limitRaw = values.limit;
     const result = discover(db, {
@@ -368,6 +402,22 @@ function parseOptions(argv: readonly string[]): {
   return { positionals, values };
 }
 
+/**
+ * Resolve the `--deck` argument (a known deck slug OR a decklist file path) to the set of
+ * lowercased card names used to dedupe discovery results.
+ */
+async function resolveDeckNames(
+  db: Database,
+  deckArg: boolean | string | undefined,
+): Promise<ReadonlySet<string>> {
+  if (typeof deckArg !== "string") return new Set();
+  if (deckExists(db, deckArg)) return deckCardNames(db, deckArg);
+  const deckText = await Bun.file(deckArg)
+    .text()
+    .catch(() => "");
+  return deckNameSet(parseDecklist(deckText));
+}
+
 async function run(argv: readonly string[]): Promise<void> {
   const [command, ...rest] = argv;
   const { positionals, values } = parseOptions(rest);
@@ -383,6 +433,10 @@ async function run(argv: readonly string[]): Promise<void> {
     }
     case "card": {
       cardCommand(positionals[0]);
+      return;
+    }
+    case "cards": {
+      cardsCommand(positionals[0]);
       return;
     }
     case "discover": {
@@ -417,7 +471,7 @@ async function run(argv: readonly string[]): Promise<void> {
     }
     default: {
       out(
-        "Usage: deck <fetch-bulk|build-db|analyze|discover|card|search|tags|synergy|sql|gen-reference> [...]",
+        "Usage: deck <fetch-bulk|build-db|analyze|discover|card|cards|search|tags|synergy|sql|gen-reference> [...]",
       );
       if (command !== undefined && command !== "help") process.exitCode = 1;
     }

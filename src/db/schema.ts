@@ -65,18 +65,21 @@ CREATE VIRTUAL TABLE cards_fts USING fts5(name, oracle_text, oracle_id UNINDEXED
 CREATE TABLE decks (
   slug       TEXT PRIMARY KEY,
   name       TEXT NOT NULL,
+  commander  TEXT,
   path       TEXT NOT NULL,
   card_count INTEGER NOT NULL
 );
 
 CREATE TABLE deck_cards (
-  deck_slug TEXT NOT NULL,
-  oracle_id TEXT,
-  name      TEXT NOT NULL,
-  count     INTEGER NOT NULL,
-  tags      TEXT NOT NULL
+  deck_slug    TEXT NOT NULL,
+  oracle_id    TEXT,
+  name         TEXT NOT NULL,
+  count        INTEGER NOT NULL,
+  tags         TEXT NOT NULL,
+  is_commander INTEGER NOT NULL DEFAULT 0
 );
 CREATE INDEX idx_deck_cards_deck ON deck_cards(deck_slug);
+CREATE INDEX idx_deck_cards_oracle ON deck_cards(oracle_id);
 `;
 
 /**

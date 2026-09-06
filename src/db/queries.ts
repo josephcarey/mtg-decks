@@ -150,6 +150,111 @@ const RESOLVE_NAME_SQL = `SELECT * FROM cards
    ORDER BY (name_lower = ?1) DESC, edhrec_rank IS NULL, edhrec_rank ASC
    LIMIT 1`;
 
+/** One row of `deck cards <slug>`: the deck card plus its resolved corpus tags. */
+export type DeckCardRow = {
+  readonly corpusTags: string[];
+  readonly count: number;
+  readonly inlineTags: string[];
+  readonly isCommander: boolean;
+  readonly name: string;
+  readonly resolved: boolean;
+};
+
+/**
+ * Ingest a decklist into the `decks` + `deck_cards` tables, resolving each card to an
+ * oracle_id where possible. Replaces any existing rows for the same deck slug.
+ * @param db - A writable database.
+ * @param deck - The deck's slug, display name, source path, and parsed entries.
+ * @returns The number of ingested card rows.
+ */
+/** Result of ingesting one deck: how many rows/cards resolved to the corpus. */
+type IngestResult = {
+  readonly inserted: number;
+  readonly resolved: number;
+  readonly unresolved: string[];
+};
+
+/**
+ * The set of card names (lowercased) belonging to an ingested deck.
+ * @param db - An open database.
+ * @param slug - The deck slug.
+ * @returns A set of lowercased card names for dedupe.
+ */
+export function deckCardNames(db: Database, slug: string): ReadonlySet<string> {
+  const rows = db
+    .query<{ name: string }, [string]>(
+      "SELECT name FROM deck_cards WHERE deck_slug = ?",
+    )
+    .all(slug);
+  return new Set(rows.map((row) => row.name.toLowerCase()));
+}
+
+/**
+ * List a deck's cards with the function tags each card carries in the corpus (not just the
+ * inline role tags from the decklist).
+ * @param db - An open database.
+ * @param slug - The deck slug.
+ * @returns One {@link DeckCardRow} per card, or a {@link DbError} if the deck isn't ingested.
+ */
+export function deckCards(
+  db: Database,
+  slug: string,
+): Result<DeckCardRow[], DbError> {
+  if (!deckExists(db, slug)) {
+    return err(
+      dbError(`deck "${slug}" is not in the database — run build-db first`),
+    );
+  }
+  const rows = db
+    .query<
+      {
+        count: number;
+        is_commander: number;
+        name: string;
+        oracle_id: null | string;
+        tags: string;
+      },
+      [string]
+    >(
+      `SELECT name, count, oracle_id, tags, is_commander
+       FROM deck_cards WHERE deck_slug = ? ORDER BY is_commander DESC, name ASC`,
+    )
+    .all(slug);
+  const tagStmt = db.query<{ slug: string }, [string]>(
+    `SELECT t.slug FROM card_tags ct JOIN tags t ON t.id = ct.tag_id
+     WHERE ct.oracle_id = ? ORDER BY t.slug`,
+  );
+  return ok(
+    rows.map((row) => ({
+      corpusTags:
+        row.oracle_id === null
+          ? []
+          : tagStmt.all(row.oracle_id).map((tag) => tag.slug),
+      count: row.count,
+      inlineTags: JSON.parse(row.tags) as string[],
+      isCommander: row.is_commander === 1,
+      name: row.name,
+      resolved: row.oracle_id !== null,
+    })),
+  );
+}
+
+/**
+ * Whether a deck slug has been ingested into the `decks` table.
+ * @param db - An open database.
+ * @param slug - The deck slug (folder name).
+ * @returns `true` if the deck exists.
+ */
+export function deckExists(db: Database, slug: string): boolean {
+  return (
+    db
+      .query<{ slug: string }, [string]>(
+        "SELECT slug FROM decks WHERE slug = ?",
+      )
+      .get(slug) !== null
+  );
+}
+
 /**
  * Look up a single card by name (case-insensitive), including double-faced front names.
  * @param db - An open database.
@@ -180,29 +285,26 @@ export function getCardsByNames(
   return found;
 }
 
-/**
- * Ingest a decklist into the `decks` + `deck_cards` tables, resolving each card to an
- * oracle_id where possible. Replaces any existing rows for the same deck slug.
- * @param db - A writable database.
- * @param deck - The deck's slug, display name, source path, and parsed entries.
- * @returns The number of ingested card rows.
- */
 export function ingestDeck(
   db: Database,
   deck: {
+    commander: null | string;
     entries: readonly DeckEntry[];
     name: string;
     path: string;
     slug: string;
   },
-): number {
+): IngestResult {
   const cardCount = deck.entries.reduce((sum, entry) => sum + entry.count, 0);
-  const tx = db.transaction(() => {
+  const commanderLower = deck.commander?.toLowerCase() ?? null;
+  const tx = db.transaction((): IngestResult => {
     db.run("DELETE FROM deck_cards WHERE deck_slug = ?", [deck.slug]);
     db.run("DELETE FROM decks WHERE slug = ?", [deck.slug]);
     db.query(
-      "INSERT INTO decks (slug, name, path, card_count) VALUES ($slug, $name, $path, $count)",
+      `INSERT INTO decks (slug, name, commander, path, card_count)
+       VALUES ($slug, $name, $commander, $path, $count)`,
     ).run({
+      $commander: deck.commander,
       $count: cardCount,
       $name: deck.name,
       $path: deck.path,
@@ -215,22 +317,30 @@ export function ingestDeck(
        LIMIT 1`,
     );
     const insert = db.query(
-      `INSERT INTO deck_cards (deck_slug, oracle_id, name, count, tags)
-       VALUES ($deck, $oracle, $name, $count, $tags)`,
+      `INSERT INTO deck_cards (deck_slug, oracle_id, name, count, tags, is_commander)
+       VALUES ($deck, $oracle, $name, $count, $tags, $isCommander)`,
     );
     let inserted = 0;
+    let resolved = 0;
+    const unresolved: string[] = [];
     for (const entry of deck.entries) {
       const match = lookup.get(entry.name.toLowerCase());
+      const isCommander =
+        entry.name.toLowerCase() === commanderLower ||
+        entry.tags.includes("commander");
       insert.run({
         $count: entry.count,
         $deck: deck.slug,
+        $isCommander: isCommander ? 1 : 0,
         $name: entry.name,
         $oracle: match?.oracle_id ?? null,
         $tags: JSON.stringify(entry.tags),
       });
       inserted += 1;
+      if (match === null) unresolved.push(entry.name);
+      else resolved += 1;
     }
-    return inserted;
+    return { inserted, resolved, unresolved };
   });
   return tx();
 }

@@ -17,12 +17,18 @@ CI gate. Use `bun run ci` before every PR.
   - `analyze <decklist>` — count / curve / pips / lands / price / tag distribution + a
     Game-Changer lint (should report none).
   - `discover <slug> [--id gu] [--set] [--max-price] [--limit] [--include-gamechangers] [--deck]`
-    — function-tag card discovery, color-identity-subset filtered, EDHREC-ranked; `--deck` skips
+    — function-tag card discovery, color-identity-subset filtered, EDHREC-ranked; `--deck` accepts a
+    known deck **slug** (deduped against the ingested `deck_cards`) or a decklist path, and skips
     owned cards. Game Changers excluded by default.
   - `tags <substr>` / `synergy <slug>` — search the tag catalog / navigate a tag's parent+child
     tags. Umbrella tags (e.g. `protection`) have no direct cards — use `synergy` to drill down.
   - `card <name>` / `search <query>` — pinned card text / FTS5 oracle-text search.
+  - `cards <deck-slug>` — list an ingested deck's cards with their resolved corpus tags.
   - `sql <query>` — read-only `SELECT` passthrough. `gen-reference` — regenerate the artifacts.
+- **Deck ingestion**: `build-db` scans `decks/*/list.txt`, resolves each card name to the corpus
+  (`decks`, `deck_cards` tables; DFC front-face names resolved), so decks are joinable against the
+  card/tag corpus. Example — a deck's top corpus tags:
+  `bun run deck sql "SELECT t.slug, COUNT(*) n FROM deck_cards dc JOIN card_tags ct ON ct.oracle_id=dc.oracle_id JOIN tags t ON t.id=ct.tag_id WHERE dc.deck_slug='wandering-minstrel' GROUP BY t.slug ORDER BY n DESC LIMIT 15"`.
 - **Committed artifacts** (regenerated from the DB): `reference/oracle-tags.txt` (tag catalog),
   `reference/cards/<deck>.md` (pinned card text), `reference/cookbook.md` (data recipes).
 

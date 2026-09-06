@@ -1,12 +1,13 @@
 import { describe, expect, it } from "vitest";
 
 import type { BasicsAudit, CurveSummary } from "./analysis.ts";
-import type { Candidate, TagListItem } from "./db/queries.ts";
+import type { Candidate, DeckCardRow, TagListItem } from "./db/queries.ts";
 
 import {
   formatBasics,
   formatCount,
   formatCurve,
+  formatDeckCards,
   formatDiscoverTable,
   formatGameChangerLint,
   formatPips,
@@ -159,5 +160,42 @@ describe("formatTagList", () => {
   });
   it("notes no matches", () => {
     expect(formatTagList([])).toBe("(no matching tags)");
+  });
+});
+
+describe("formatDeckCards", () => {
+  const rows: DeckCardRow[] = [
+    {
+      corpusTags: ["commander"],
+      count: 1,
+      inlineTags: ["commander"],
+      isCommander: true,
+      name: "The Wandering Minstrel",
+      resolved: true,
+    },
+    {
+      corpusTags: ["landfall", "tokens"],
+      count: 1,
+      inlineTags: ["payoff"],
+      isCommander: false,
+      name: "Scute Swarm",
+      resolved: true,
+    },
+    {
+      corpusTags: [],
+      count: 1,
+      inlineTags: [],
+      isCommander: false,
+      name: "Brand New Card",
+      resolved: false,
+    },
+  ];
+
+  it("marks the commander, lists corpus tags, and counts unresolved", () => {
+    const out = formatDeckCards("wandering-minstrel", rows);
+    expect(out).toContain("wandering-minstrel: 3 cards (1 unresolved)");
+    expect(out).toContain("★ 1x The Wandering Minstrel");
+    expect(out).toContain("[landfall tokens]");
+    expect(out).toContain("? 1x Brand New Card  [—]");
   });
 });
