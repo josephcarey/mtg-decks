@@ -44,3 +44,34 @@ finisher**.
 - **Field of the Dead → Zanarkand, Ancient Metropolis** (a Town). Cutting Field removed a
   Game Changer while _adding_ a Town, bumping the Towns count to **12** and directly
   strengthening the commander's scaling pump finisher.
+
+## Candidates to evaluate (not yet in deck)
+
+From recent-set research — verify exact names/text on Scryfall before adding, and run through PRIORITIES.md (no Game Changers unless essential, mid-budget, avoid non-games, on-theme first).
+
+### Landfall / ramp (Edge of Eternities — Lander tokens)
+
+- **Lander token makers** — Landers sac to fetch a basic (enters tapped → **untapped under Minstrel**): repeatable ramp + landfall trigger. E.g. `Edge Rover` ({G}, dies → each player makes a Lander). Enumerate via Scryfall `set:eoe o:"Lander"`.
+- `Eumidian Terrabotanist` ({1}{G}) — cheap landfall lifegain body.
+
+### Landfall payoff + go-wide (Avatar — earthbend/waterbend)
+
+- `Earthbender Ascension` ({2}{G}) — ETB ramp + landfall quest-counter engine → +1/+1/trample finisher.
+- **Waterbend payoffs** (blue/white) — convoke/improvise hybrid; wide token board becomes a cost-reduction engine. Enumerate via `keyword:waterbend`.
+- `Ba Sing Se` — green earthbend utility land.
+- `Toph, the First Metalbender` (RGW; legal via WUBRG identity) — repeatable earthbend = recurring landfall + attacking lands.
+
+### Token / go-wide (other recent sets)
+
+- Tarkir: **Mobilize** (attacking Warrior tokens), **Endure** (counters-or-token), **Harmonize** (tap creatures to cast — waterbend-adjacent).
+- Bloomburrow: **Offspring** creatures (ETB 1/1 token copy).
+
+### Known-staple landfall adds surfaced by `discover`
+
+- Tireless Provisioner, Lotus Cobra, Evolution Sage, Ancient Greenwarden (evaluate vs. budget/theme).
+
+### Protection gap fillers (deck's one measurable gap)
+
+- Lightning Greaves, Snakeskin Veil, Veil of Summer, Inspiring Call, Whispersilk Cloak, Tyvar's Stand — note: protection is deprioritized here since Minstrel is cheap/recastable (per PRIORITIES.md), so this is optional.
+
+Reminder: Minstrel color identity is WUBRG via the {3}{W}{U}{B}{R}{G} ability, so off-color cards above are legal.
