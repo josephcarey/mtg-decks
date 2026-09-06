@@ -16,3 +16,8 @@
 ## Repo conventions
 - One folder per deck under decks/<deck-slug>/ containing: list.txt (the decklist) and notes.md (a decision log / 'why' history).
 - Decklist format: '<count> <card name>' one per line; '// ' comments for section headers; header comment block with commander, archetype, card count, and proxy candidates.
+- Inline role tags: list.txt supports optional inline role tags appended after the card name, with two spaces before the first tag and each token starting with '#', e.g. `1 Avenger of Zendikar  #payoff #tokens #landfall`. Tags are informational and are stripped before Scryfall lookups; `scripts/scryfall.py` reports a tag distribution.
+- Shared tag vocabulary (reuse these for consistency across decks):
+  - Role tags: `ramp`, `fixing`, `draw`, `payoff`, `enabler`, `interaction`, `wincon`, `protection`, `land`, `utility`.
+  - Archetype tags: `landfall`, `tokens`, `gowide`, `waterbend`, `town` (plus `commander` for the commander).
+  - Decks may add their own archetype tags, but should reuse the role tags above for consistency.

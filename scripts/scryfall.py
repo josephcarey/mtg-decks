@@ -41,12 +41,26 @@ PIP_COLORS = ["W", "U", "B", "R", "G"]
 COLOR_NAMES = {"W": "White", "U": "Blue", "B": "Black", "R": "Red", "G": "Green"}
 
 
-def parse_decklist(path: str) -> List[Tuple[int, str]]:
-    """Parse a decklist file into a list of (count, card_name) tuples.
+def parse_decklist(path: str) -> List[Tuple[int, str, List[str]]]:
+    """Parse a decklist file into a list of (count, card_name, tags) tuples.
+
+    Line format: `<count> <card name>` with optional trailing inline role tags,
+    each a whitespace-delimited token starting with `#` (two spaces before the
+    first tag by convention), e.g.:
+
+        1 Avenger of Zendikar  #payoff #tokens #landfall
+
+    Parsing rules:
+      * Split off the leading integer count.
+      * In the remainder, find the first whitespace-delimited token that starts
+        with `#`. Everything before it is the card name (trailing spaces stripped);
+        everything from that token on is the tag list. Tags are stored without the
+        leading `#`.
+      * Lines with no `#` token have tags = [].
 
     Ignores blank lines and lines that start with `//`.
     """
-    entries: List[Tuple[int, str]] = []
+    entries: List[Tuple[int, str, List[str]]] = []
     with open(path, encoding="utf-8") as fh:
         for raw in fh:
             line = raw.strip()
@@ -57,8 +71,25 @@ def parse_decklist(path: str) -> List[Tuple[int, str]]:
                 # Not a `<count> <name>` line; skip defensively.
                 continue
             count = int(parts[0])
-            name = parts[1].strip()
-            entries.append((count, name))
+            remainder = parts[1]
+
+            # Find the first whitespace-delimited token starting with '#'.
+            tokens = remainder.split()
+            tag_start = None
+            for idx, tok in enumerate(tokens):
+                if tok.startswith("#"):
+                    tag_start = idx
+                    break
+
+            if tag_start is None:
+                name = remainder.strip()
+                tags: List[str] = []
+            else:
+                name = " ".join(tokens[:tag_start]).strip()
+                tags = [tok.lstrip("#") for tok in tokens[tag_start:]
+                        if tok.startswith("#") and tok.lstrip("#")]
+
+            entries.append((count, name, tags))
     return entries
 
 
@@ -184,7 +215,7 @@ def count_pips(mana_cost: str) -> Counter:
 
 def analyze(path: str) -> int:
     entries = parse_decklist(path)
-    total = sum(count for count, _ in entries)
+    total = sum(count for count, _, _ in entries)
 
     print("=" * 60)
     print(f"Deck analysis: {path}")
@@ -197,7 +228,7 @@ def analyze(path: str) -> int:
         print(f"    (off by {total - TARGET_DECK_SIZE:+d})")
 
     # Fetch card data ------------------------------------------------------
-    unique_names = sorted({name for _, name in entries})
+    unique_names = sorted({name for _, name, _ in entries})
     print(f"\nFetching {len(unique_names)} unique cards from Scryfall "
           f"(batched at {BATCH_SIZE}/request)...")
     data, not_found = curl_collection(unique_names)
@@ -217,7 +248,7 @@ def analyze(path: str) -> int:
     mv_count = 0
     five_plus = 0
     unpriced_curve = 0
-    for count, name in entries:
+    for count, name, tags in entries:
         card = lookup(name)
         if card is None:
             unpriced_curve += count
@@ -250,7 +281,7 @@ def analyze(path: str) -> int:
     # (c) Color pip ratio --------------------------------------------------
     print("\n[c] Color pip ratio (across mana costs):")
     pip_totals: Counter = Counter()
-    for count, name in entries:
+    for count, name, tags in entries:
         card = lookup(name)
         if card is None:
             continue
@@ -272,7 +303,7 @@ def analyze(path: str) -> int:
     # (d) Fetch-vs-basics --------------------------------------------------
     print("\n[d] Fetch-vs-basics audit:")
     basics: Counter = Counter()
-    for count, name in entries:
+    for count, name, tags in entries:
         # Match on the printed name so this works even offline.
         if name in BASIC_LAND_NAMES:
             basics[name] += count
@@ -292,7 +323,7 @@ def analyze(path: str) -> int:
     priced = 0
     missing_price = 0
     priciest: List[Tuple[float, str]] = []
-    for count, name in entries:
+    for count, name, tags in entries:
         card = lookup(name)
         if card is None:
             missing_price += count
@@ -312,6 +343,29 @@ def analyze(path: str) -> int:
         print("    Priciest cards:")
         for usd, name in priciest[:5]:
             print(f"      ${usd:>7.2f}  {name}")
+
+    # (f) Tag distribution -------------------------------------------------
+    print("\n[f] Tag distribution (from inline #tags in the decklist):")
+    tag_totals: Counter = Counter()
+    tagged_cards = 0
+    untagged_cards = 0
+    for count, name, tags in entries:
+        if tags:
+            tagged_cards += count
+        else:
+            untagged_cards += count
+        for tag in tags:
+            tag_totals[tag] += count
+    if tag_totals:
+        max_bar = max(tag_totals.values())
+        # Sort by count descending, then alphabetically for stable output.
+        for tag, n in sorted(tag_totals.items(), key=lambda kv: (-kv[1], kv[0])):
+            bar = "#" * int(round(n / max_bar * 30)) if n else ""
+            print(f"    {tag:>12}: {n:2d}  {bar}")
+        print(f"    Cards with tags: {tagged_cards}"
+              + (f"; without tags: {untagged_cards}" if untagged_cards else ""))
+    else:
+        print("    No inline tags found in this decklist.")
 
     print("\n" + "=" * 60)
     return 0 if total == TARGET_DECK_SIZE else 1
