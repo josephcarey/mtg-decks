@@ -7,6 +7,7 @@ Unfiltered, speculative, or research-dependent ideas. **Not** committed work. Pr
 - **Semantic search / embeddings** over oracle text — "find cards similar to Scute Swarm" beyond exact tags.
 - **Auto-tuner** — given a goal (more protection, lower curve, tighter budget), propose specific add/cut swaps with rationale.
 - **Web UI** (SvelteKit over the DB) — browse decks, run discovery, view analytics.
+- **Bracket / power estimator** (deprioritized) — general-tool idea, but our pod's power spread is wide so we don't track bracket; revisit only if it helps as a sanity check.
 
 ## Integrations to explore (see Research)
 - Import decks directly from **Moxfield / Archidekt** (API) instead of pasting.
@@ -22,4 +23,4 @@ Unfiltered, speculative, or research-dependent ideas. **Not** committed work. Pr
 ## Open research questions
 _Being investigated by research agents — findings will be summarized here._
 1. What MTG data sources / APIs are available (EDHREC, Commander Spellbook, Moxfield, Archidekt), with endpoints, auth, rate limits, and licensing?
-2. How is Commander power level / bracket estimated, and which features can we compute from Scryfall / our DB to approximate it?
+2. Recent MTG set mechanics (2024–2026: Bloomburrow, Duskmourn, Foundations, Aetherdrift, Tarkir, Final Fantasy, Avatar/waterbend, etc.) — which new keywords and green/blue cards fit a landfall + tokens + go-wide deck?

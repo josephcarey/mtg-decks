@@ -11,7 +11,6 @@ Concrete, sequenced build work. Speculative or unshaped ideas live in `IDEAS.md`
 - Offline data layer: Scryfall bulk (`oracle_cards` + `oracle_tags`) loaded into `bun:sqlite` with FTS5; decks ingested and joinable; `deck` CLI (`build-db`, `analyze`, `discover`, `tags`, `synergy`, `cards`, `sql`).
 
 ## Near-term
-- **Bracket / power estimator** — heuristic score from DB features (tutors, fast mana, combos, interaction density, curve) to self-check bracket compliance.
 - **Deck-diff tool** — compare two list versions; show delta in count / curve / pips / tags / price.
 - **Decisions & rejections ledger** (`decisions.jsonl`) — record cut/rejected cards + reasons; `discover` excludes rejected cards; prevents re-litigating settled calls.
 - **Card knowledge cache expansion** — extend `reference/cards/` to every deck (exact oracle text; anti-hallucination).
