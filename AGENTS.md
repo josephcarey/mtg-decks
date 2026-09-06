@@ -34,6 +34,7 @@ CI gate. Use `bun run ci` before every PR.
 
 ## Owner preferences (read first)
 
+- See `PRIORITIES.md` for the owner's standing deckbuilding preferences (Game Changers, budget, non-games, theme-vs-power, interaction, Day/Night dislike, commander-cycle meta-project). Apply them by default.
 - Format: Commander / EDH (100-card singleton).
 - Power level: semi-optimized casual, roughly Bracket 3 ("B to C" tier). Fun and synergy over raw efficiency.
 - Game Changers: NONE. The official Commander 'Game Changers' list is banned at the owner's table. Never include cards from that list (e.g. Cyclonic Rift, Field of the Dead, Smothering Tithe, The Great Henge, etc.). When suggesting a card, check it is not a Game Changer.
