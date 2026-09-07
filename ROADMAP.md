@@ -16,7 +16,8 @@ Concrete, sequenced build work. Speculative or unshaped ideas live in `IDEAS.md`
 
 - **Deck-diff tool** — compare two list versions; show delta in count / curve / pips / tags / price.
 - **Decisions & rejections ledger** (`decisions.jsonl`) — record cut/rejected cards + reasons; `discover` excludes rejected cards; prevents re-litigating settled calls.
-- **Non-games lint** — the `game_changer` flag catches the official list, but the owner's "no non-games" preference (infinite combos, stax / resource denial like Hullbreacher, extra-turns like Wanderwine Prophets, MLD) is unlinted and cards slip through. Add a heuristic/curated lint alongside the GC check.
+- **Non-games lint** — the `game_changer` flag catches the official list, but the owner's "no non-games" preference (infinite combos, stax / resource denial like Hullbreacher, extra-turns like Wanderwine Prophets, MLD, mindslaver effects like Secret of Bloodbending) is unlinted and cards slip through. Add a heuristic/curated lint alongside the GC check.
+- **MDFC / split / battle front-face mana costs** — the DB flattens `mana_cost` and leaves it blank for modal DFCs, split cards, sagas, and battles (e.g. Jwari Disruption, Silundi Vision, Invasion of Segovia, Summon: Leviathan). Blue-pip / curve analysis is blind to their front faces — a real gap for a pip-scaling commander like Namor. Store per-face costs (from `card_faces`) so pip counts are accurate.
 - **Price-watch workflow** — scheduled job snapshots deck prices and flags proxies that dropped below a buy threshold.
 
 ## Later

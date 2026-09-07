@@ -100,158 +100,20 @@ At the beginning of combat on your turn, target creature you control connives. (
 Other Merfolk you control get +1/+1.
 Whenever one or more Merfolk you control attack a player, draw a card.
 
-## Silvergill Adept
+## Hydro-Channeler
 
 - **Mana cost:** {1}{U} · **MV:** 2
 - **Type:** Creature — Merfolk Wizard
 
-As an additional cost to cast this spell, reveal a Merfolk card from your hand or pay {3}.
-When this creature enters, draw a card.
+{T}: Add {U}. Spend this mana only to cast an instant or sorcery spell.
+{1}, {T}: Add one mana of any color. Spend this mana only to cast an instant or sorcery spell.
 
-## Benthic Biomancer
-
-- **Mana cost:** {U} · **MV:** 1
-- **Type:** Creature — Merfolk Wizard Mutant
-
-{1}{U}: Adapt 1. (If this creature has no +1/+1 counters on it, put a +1/+1 counter on it.)
-Whenever one or more +1/+1 counters are put on this creature, draw a card, then discard a card.
-
-## Merfolk Looter
+## Volshe Tideturner
 
 - **Mana cost:** {1}{U} · **MV:** 2
-- **Type:** Creature — Merfolk Rogue
-
-{T}: Draw a card, then discard a card.
-
-## Fallowsage
-
-- **Mana cost:** {3}{U} · **MV:** 4
 - **Type:** Creature — Merfolk Wizard
 
-Whenever this creature becomes tapped, you may draw a card.
-
-## Seafloor Oracle
-
-- **Mana cost:** {2}{U}{U} · **MV:** 4
-- **Type:** Creature — Merfolk Wizard
-
-Whenever a Merfolk you control deals combat damage to a player, draw a card.
-
-## Sage of Fables
-
-- **Mana cost:** {2}{U} · **MV:** 3
-- **Type:** Creature — Merfolk Wizard
-
-Each other Wizard creature you control enters with an additional +1/+1 counter on it.
-{2}, Remove a +1/+1 counter from a creature you control: Draw a card.
-
-## Kiora, the Rising Tide
-
-- **Mana cost:** {2}{U} · **MV:** 3
-- **Type:** Legendary Creature — Merfolk Noble
-
-When Kiora enters, draw two cards, then discard two cards.
-Threshold — Whenever Kiora attacks, if there are seven or more cards in your graveyard, you may create Scion of the Deep, a legendary 8/8 blue Octopus creature token.
-
-## Neerdiv, Devious Diver
-
-- **Mana cost:** {2}{U} · **MV:** 3
-- **Type:** Legendary Creature — Merfolk Rogue
-
-Whenever Neerdiv becomes tapped, target player mills cards equal to its power.
-Whenever you cast a spell from your graveyard or activate an ability of a card in your graveyard, draw a card and put a +1/+1 counter on Neerdiv.
-
-## Cursecatcher
-
-- **Mana cost:** {U} · **MV:** 1
-- **Type:** Creature — Merfolk Wizard
-
-Sacrifice this creature: Counter target instant or sorcery spell unless its controller pays {1}.
-
-## Mist-Cloaked Herald
-
-- **Mana cost:** {U} · **MV:** 1
-- **Type:** Creature — Merfolk Warrior
-
-This creature can't be blocked.
-
-## Triton Shorestalker
-
-- **Mana cost:** {U} · **MV:** 1
-- **Type:** Creature — Merfolk Rogue
-
-This creature can't be blocked.
-
-## Merfolk Windrobber
-
-- **Mana cost:** {U} · **MV:** 1
-- **Type:** Creature — Merfolk Rogue
-
-Flying
-Whenever this creature deals combat damage to a player, that player mills a card. (They put the top card of their library into their graveyard.)
-Sacrifice this creature: Draw a card. Activate only if an opponent has eight or more cards in their graveyard.
-
-## River Sneak
-
-- **Mana cost:** {1}{U} · **MV:** 2
-- **Type:** Creature — Merfolk Warrior
-
-This creature can't be blocked.
-Whenever another Merfolk you control enters, this creature gets +1/+1 until end of turn.
-
-## Merfolk Cave-Diver
-
-- **Mana cost:** {2}{U} · **MV:** 3
-- **Type:** Creature — Merfolk Scout
-
-Whenever a creature you control explores, this creature gets +1/+0 until end of turn and can't be blocked this turn.
-
-## Sure-Footed Infiltrator
-
-- **Mana cost:** {3}{U} · **MV:** 4
-- **Type:** Creature — Merfolk Rogue
-
-Tap another untapped Rogue you control: This creature can't be blocked this turn.
-Whenever this creature deals combat damage to a player, draw a card.
-
-## Streambed Aquitects
-
-- **Mana cost:** {1}{U}{U} · **MV:** 3
-- **Type:** Creature — Merfolk Scout
-
-{T}: Target Merfolk creature gets +1/+1 and gains islandwalk until end of turn. (It can't be blocked as long as defending player controls an Island.)
-{T}: Target land becomes an Island until end of turn.
-
-## Brineborn Cutthroat
-
-- **Mana cost:** {1}{U} · **MV:** 2
-- **Type:** Creature — Merfolk Pirate
-
-Flash (You may cast this spell any time you could cast an instant.)
-Whenever you cast a spell during an opponent's turn, put a +1/+1 counter on this creature.
-
-## Merfolk Trickster
-
-- **Mana cost:** {U}{U} · **MV:** 2
-- **Type:** Creature — Merfolk Wizard
-
-Flash
-When this creature enters, tap target creature an opponent controls. It loses all abilities until end of turn.
-
-## Tishana's Tidebinder
-
-- **Mana cost:** {2}{U} · **MV:** 3
-- **Type:** Creature — Merfolk Wizard
-
-Flash
-When this creature enters, counter up to one target activated or triggered ability. If an ability of an artifact, creature, or planeswalker is countered this way, that permanent loses all abilities for as long as this creature remains on the battlefield. (Mana abilities can't be targeted.)
-
-## Surgespanner
-
-- **Mana cost:** {2}{U}{U} · **MV:** 4
-- **Type:** Creature — Merfolk Wizard
-
-Whenever this creature becomes tapped, you may pay {1}{U}. If you do, return target permanent to its owner's hand.
+{T}: Add {U}. Spend this mana only to cast an instant or sorcery spell or a kicked spell.
 
 ## Stonybrook Banneret
 
@@ -261,20 +123,19 @@ Whenever this creature becomes tapped, you may pay {1}{U}. If you do, return tar
 Islandwalk (This creature can't be blocked as long as defending player controls an Island.)
 Merfolk spells and Wizard spells you cast cost {1} less to cast.
 
-## Harbinger of the Seas
+## Talrand, Sky Summoner
 
-- **Mana cost:** {1}{U}{U} · **MV:** 3
+- **Mana cost:** {2}{U}{U} · **MV:** 4
+- **Type:** Legendary Creature — Merfolk Wizard
+
+Whenever you cast an instant or sorcery spell, create a 2/2 blue Drake creature token with flying.
+
+## Seafloor Oracle
+
+- **Mana cost:** {2}{U}{U} · **MV:** 4
 - **Type:** Creature — Merfolk Wizard
 
-Nonbasic lands are Islands.
-
-## Merrow Harbinger
-
-- **Mana cost:** {3}{U} · **MV:** 4
-- **Type:** Creature — Merfolk Wizard
-
-Islandwalk (This creature can't be blocked as long as defending player controls an Island.)
-When this creature enters, you may search your library for a Merfolk card, reveal it, then shuffle and put that card on top.
+Whenever a Merfolk you control deals combat damage to a player, draw a card.
 
 ## Kopala, Warden of Waves
 
@@ -291,12 +152,43 @@ Abilities your opponents activate that target a Merfolk you control cost {2} mor
 
 Blue creatures you control can't be blocked.
 
-## Talrand, Sky Summoner
+## Archmage Emeritus
 
 - **Mana cost:** {2}{U}{U} · **MV:** 4
-- **Type:** Legendary Creature — Merfolk Wizard
+- **Type:** Creature — Human Wizard
 
-Whenever you cast an instant or sorcery spell, create a 2/2 blue Drake creature token with flying.
+Magecraft — Whenever you cast or copy an instant or sorcery spell, draw a card.
+
+## Curiosity Crafter
+
+- **Mana cost:** {3}{U} · **MV:** 4
+- **Type:** Creature — Bird Wizard
+
+Flying
+You have no maximum hand size.
+Whenever a creature token you control deals combat damage to a player, draw a card.
+
+## Deeproot Waters
+
+- **Mana cost:** {2}{U} · **MV:** 3
+- **Type:** Enchantment
+
+Whenever you cast a Merfolk spell, create a 1/1 blue Merfolk creature token with hexproof. (A creature with hexproof can't be the target of spells or abilities your opponents control.)
+
+## Deeproot Pilgrimage
+
+- **Mana cost:** {1}{U} · **MV:** 2
+- **Type:** Enchantment
+
+Whenever one or more nontoken Merfolk you control become tapped, create a 1/1 blue Merfolk creature token with hexproof.
+
+## Reflections of Littjara
+
+- **Mana cost:** {4}{U} · **MV:** 5
+- **Type:** Enchantment
+
+As this enchantment enters, choose a creature type.
+Whenever you cast a spell of the chosen type, copy that spell. (A copy of a permanent spell becomes a token.)
 
 ## Kindred Discovery
 
@@ -314,55 +206,74 @@ Whenever a creature you control of the chosen type enters or attacks, draw a car
 Cumulative upkeep {1} (At the beginning of your upkeep, put an age counter on this permanent, then sacrifice it unless you pay its upkeep cost for each age counter on it.)
 Whenever an opponent casts a noncreature spell, you may draw a card unless that player pays {4}.
 
-## Distant Melody
+## Coastal Piracy
+
+- **Mana cost:** {2}{U}{U} · **MV:** 4
+- **Type:** Enchantment
+
+Whenever a creature you control deals combat damage to an opponent, you may draw a card.
+
+## Reconnaissance Mission
+
+- **Mana cost:** {2}{U}{U} · **MV:** 4
+- **Type:** Enchantment
+
+Whenever a creature you control deals combat damage to a player, you may draw a card.
+Cycling {2} ({2}, Discard this card: Draw a card.)
+
+## Bident of Thassa
+
+- **Mana cost:** {2}{U}{U} · **MV:** 4
+- **Type:** Legendary Enchantment Artifact
+
+Whenever a creature you control deals combat damage to a player, you may draw a card.
+{1}{U}, {T}: Creatures your opponents control attack this turn if able.
+
+## Future Sight
+
+- **Mana cost:** {2}{U}{U}{U} · **MV:** 5
+- **Type:** Enchantment
+
+Play with the top card of your library revealed.
+You may play lands and cast spells from the top of your library.
+
+## The Water Crystal
+
+- **Mana cost:** {2}{U}{U} · **MV:** 4
+- **Type:** Legendary Artifact
+
+Blue spells you cast cost {1} less to cast.
+If an opponent would mill one or more cards, they mill that many cards plus four instead.
+{4}{U}{U}, {T}: Each opponent mills cards equal to the number of cards in your hand.
+
+## Jace's Sanctum
 
 - **Mana cost:** {3}{U} · **MV:** 4
-- **Type:** Sorcery
+- **Type:** Enchantment
 
-Choose a creature type. Draw a card for each permanent you control of that type.
+Instant and sorcery spells you cast cost {1} less to cast.
+Whenever you cast an instant or sorcery spell, scry 1.
 
-## Merrow Commerce
-
-- **Mana cost:** {1}{U} · **MV:** 2
-- **Type:** Kindred Enchantment — Merfolk
-
-At the beginning of your end step, untap all Merfolk you control.
-
-## Brainstorm
-
-- **Mana cost:** {U} · **MV:** 1
-- **Type:** Instant
-
-Draw three cards, then put two cards from your hand on top of your library in any order.
-
-## Preordain
-
-- **Mana cost:** {U} · **MV:** 1
-- **Type:** Sorcery
-
-Scry 2, then draw a card. (To scry 2, look at the top two cards of your library, then put any number of them on the bottom and the rest on top in any order.)
-
-## Ponder
-
-- **Mana cost:** {U} · **MV:** 1
-- **Type:** Sorcery
-
-Look at the top three cards of your library, then put them back in any order. You may shuffle.
-Draw a card.
-
-## Fact or Fiction
-
-- **Mana cost:** {3}{U} · **MV:** 4
-- **Type:** Instant
-
-Reveal the top five cards of your library. An opponent separates those cards into two piles. Put one pile into your hand and the other into your graveyard.
-
-## Windfall
+## Case of the Ransacked Lab
 
 - **Mana cost:** {2}{U} · **MV:** 3
-- **Type:** Sorcery
+- **Type:** Enchantment — Case
 
-Each player discards their hand, then draws cards equal to the greatest number of cards a player discarded this way.
+Instant and sorcery spells you cast cost {1} less to cast.
+To solve — You've cast four or more instant and sorcery spells this turn. (If unsolved, solve at the beginning of your end step.)
+Solved — Whenever you cast an instant or sorcery spell, draw a card.
+
+## Wizard Class
+
+- **Mana cost:** {U} · **MV:** 1
+- **Type:** Enchantment — Class
+
+(Gain the next level as a sorcery to add its ability.)
+You have no maximum hand size.
+{2}{U}: Level 2
+When this Class becomes level 2, draw two cards.
+{4}{U}: Level 3
+Whenever you draw a card, put a +1/+1 counter on target creature you control.
 
 ## Sol Ring
 
@@ -394,14 +305,62 @@ Each player discards their hand, then draws cards equal to the greatest number o
 You have no maximum hand size.
 {T}: Add {C}.
 
-## Everflowing Chalice
+## Brainstorm
 
-- **Mana cost:** {0} · **MV:** 0
-- **Type:** Artifact
+- **Mana cost:** {U} · **MV:** 1
+- **Type:** Instant
 
-Multikicker {2} (You may pay an additional {2} any number of times as you cast this spell.)
-This artifact enters with a charge counter on it for each time it was kicked.
-{T}: Add {C} for each charge counter on this artifact.
+Draw three cards, then put two cards from your hand on top of your library in any order.
+
+## Preordain
+
+- **Mana cost:** {U} · **MV:** 1
+- **Type:** Sorcery
+
+Scry 2, then draw a card. (To scry 2, look at the top two cards of your library, then put any number of them on the bottom and the rest on top in any order.)
+
+## Ponder
+
+- **Mana cost:** {U} · **MV:** 1
+- **Type:** Sorcery
+
+Look at the top three cards of your library, then put them back in any order. You may shuffle.
+Draw a card.
+
+## Frantic Search
+
+- **Mana cost:** {2}{U} · **MV:** 3
+- **Type:** Instant
+
+Draw two cards, then discard two cards. Untap up to three lands.
+
+## Mission Briefing
+
+- **Mana cost:** {U}{U} · **MV:** 2
+- **Type:** Instant
+
+Surveil 2, then choose an instant or sorcery card in your graveyard. You may cast it this turn. If that spell would be put into your graveyard, exile it instead. (To surveil 2, look at the top two cards of your library, then put any number of them into your graveyard and the rest on top of your library in any order.)
+
+## Pull from Tomorrow
+
+- **Mana cost:** {X}{U}{U} · **MV:** 2
+- **Type:** Instant
+
+Draw X cards, then discard a card.
+
+## Fact or Fiction
+
+- **Mana cost:** {3}{U} · **MV:** 4
+- **Type:** Instant
+
+Reveal the top five cards of your library. An opponent separates those cards into two piles. Put one pile into your hand and the other into your graveyard.
+
+## Distant Melody
+
+- **Mana cost:** {3}{U} · **MV:** 4
+- **Type:** Sorcery
+
+Choose a creature type. Draw a card for each permanent you control of that type.
 
 ## Counterspell
 
@@ -410,6 +369,43 @@ This artifact enters with a charge counter on it for each time it was kicked.
 
 Counter target spell.
 
+## Archmage's Charm
+
+- **Mana cost:** {U}{U}{U} · **MV:** 3
+- **Type:** Instant
+
+Choose one —
+• Counter target spell.
+• Target player draws two cards.
+• Gain control of target nonland permanent with mana value 1 or less.
+
+## Mystic Confluence
+
+- **Mana cost:** {3}{U}{U} · **MV:** 5
+- **Type:** Instant
+
+Choose three. You may choose the same mode more than once.
+• Counter target spell unless its controller pays {3}.
+• Return target creature to its owner's hand.
+• Draw a card.
+
+## Disallow
+
+- **Mana cost:** {1}{U}{U} · **MV:** 3
+- **Type:** Instant
+
+Counter target spell, activated ability, or triggered ability. (Mana abilities can't be targeted.)
+
+## Insidious Will
+
+- **Mana cost:** {2}{U}{U} · **MV:** 4
+- **Type:** Instant
+
+Choose one —
+• Counter target spell.
+• You may choose new targets for target spell.
+• Copy target instant or sorcery spell. You may choose new targets for the copy.
+
 ## An Offer You Can't Refuse
 
 - **Mana cost:** {U} · **MV:** 1
@@ -417,12 +413,13 @@ Counter target spell.
 
 Counter target noncreature spell. Its controller creates two Treasure tokens. (They're artifacts with "{T}, Sacrifice this token: Add one mana of any color.")
 
-## Whirlwind Denial
+## Long River's Pull
 
-- **Mana cost:** {2}{U} · **MV:** 3
+- **Mana cost:** {U}{U} · **MV:** 2
 - **Type:** Instant
 
-For each spell and ability your opponents control, counter it unless its controller pays {4}.
+Gift a card (You may promise an opponent a gift as you cast this spell. If you do, they draw a card before its other effects.)
+Counter target creature spell. If the gift was promised, instead counter target spell.
 
 ## Pongify
 
@@ -453,13 +450,12 @@ Exile target creature. Its controller manifests the top card of their library. (
 Kicker {1}{U} (You may pay an additional {1}{U} as you cast this spell.)
 Return target nonland permanent to its owner's hand. If this spell was kicked, draw a card.
 
-## Blink of an Eye
+## Curse of the Swine
 
-- **Mana cost:** {1}{U} · **MV:** 2
-- **Type:** Instant
+- **Mana cost:** {X}{U}{U} · **MV:** 2
+- **Type:** Sorcery
 
-Kicker {1}{U} (You may pay an additional {1}{U} as you cast this spell.)
-Return target nonland permanent to its owner's hand. If this spell was kicked, draw a card.
+Exile X target creatures. For each creature exiled this way, its controller creates a 2/2 green Boar creature token.
 
 ## Evacuation
 
@@ -475,13 +471,27 @@ Return all creatures to their owners' hands.
 
 Return all nonland permanents target player controls to their owner's hand.
 
-## Coastal Breach
+## Wanderwine Farewell
 
-- **Mana cost:** {6}{U} · **MV:** 7
+- **Mana cost:** {5}{U}{U} · **MV:** 7
+- **Type:** Kindred Sorcery — Merfolk
+
+Convoke (Your creatures can help cast this spell. Each creature you tap while casting this spell pays for {1} or one mana of that creature's color.)
+Return one or two target nonland permanents to their owners' hands. Then if you control a Merfolk, create a 1/1 white and blue Merfolk creature token for each permanent returned to its owner's hand this way.
+
+## Sleep
+
+- **Mana cost:** {2}{U}{U} · **MV:** 4
 - **Type:** Sorcery
 
-Undaunted (This spell costs {1} less to cast for each opponent.)
-Return all nonland permanents to their owners' hands.
+Tap all creatures target player controls. Those creatures don't untap during that player's next untap step.
+
+## Mass Manipulation
+
+- **Mana cost:** {X}{X}{U}{U}{U}{U} · **MV:** 4
+- **Type:** Sorcery
+
+Gain control of X target creatures and/or planeswalkers.
 
 ## Rite of Replication
 
@@ -491,21 +501,20 @@ Return all nonland permanents to their owners' hands.
 Kicker {5} (You may pay an additional {5} as you cast this spell.)
 Create a token that's a copy of target creature. If this spell was kicked, create five of those tokens instead.
 
-## Whispersilk Cloak
+## Quasiduplicate
 
-- **Mana cost:** {3} · **MV:** 3
-- **Type:** Artifact — Equipment
+- **Mana cost:** {1}{U}{U} · **MV:** 3
+- **Type:** Sorcery
 
-Equipped creature can't be blocked and has shroud. (It can't be the target of spells or abilities.)
-Equip {2}
+Create a token that's a copy of target creature you control.
+Jump-start (You may cast this card from your graveyard by discarding a card in addition to paying its other costs. Then exile this card.)
 
-## Swiftfoot Boots
+## Open into Wonder
 
-- **Mana cost:** {2} · **MV:** 2
-- **Type:** Artifact — Equipment
+- **Mana cost:** {X}{U}{U} · **MV:** 2
+- **Type:** Sorcery
 
-Equipped creature has hexproof and haste. (It can't be the target of spells or abilities your opponents control. It can attack and {T} no matter when it came under your control.)
-Equip {1} ({1}: Attach to target creature you control. Equip only as a sorcery.)
+X target creatures can't be blocked this turn. Until end of turn, those creatures gain "Whenever this creature deals combat damage to a player, draw a card."
 
 ## Command Tower
 
