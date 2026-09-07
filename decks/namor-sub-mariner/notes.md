@@ -62,8 +62,14 @@ Reworked from a creature-forward Merfolk tribal list into the "accidentally Merf
 
 ## Budget & proxies
 
-Deck ~ **$195**. Flagged **PROXY CANDIDATES**: Cavern of Souls (~$50), Otawara (~$28), Mystic
-Remora (~$13), Lord of Atlantis (~$10). Everything else is < ~$6.
+Deck ~ **$120**. Only remaining **PROXY CANDIDATE**: Lord of Atlantis (~$10). Everything else is
+< ~$7. The owner trimmed the mana base deliberately (dislikes hyper-optimized lands):
+
+- **Otawara, Soaring City** → basic Island (owned, but cut to keep the base humble).
+- **Cavern of Souls** → basic Island. Its only relevant clause here is "Merfolk can't be countered"
+  (mono-U makes the fixing moot); Kopala + Svyelun already cover creature protection.
+- **Mystic Remora** → **Kumena's Awakening**. Repeatable escalating draw that *also* carries two blue
+  pips, so casting it makes 2 Merfolk off Namor — draw engine and payoff in one on-theme card.
 
 ## Excluded on rules/preferences (from the research list — not oversights)
 

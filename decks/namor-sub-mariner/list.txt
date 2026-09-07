@@ -5,7 +5,7 @@
 // + blue-spell cost reduction (more spells/turn = more triggers). Cycle slot: U (mono-blue).
 // Bracket 3 casual, no Game Changers, no non-games (no stax/mindslaver/combo/extra-turns).
 // 100 cards (1 commander + 64 nonland + 35 lands)
-// PROXY CANDIDATES ($$): Cavern of Souls, Otawara Soaring City, Mystic Remora, Lord of Atlantis
+// PROXY CANDIDATES ($$): Lord of Atlantis
 // Tags: role tags after each card (see AGENTS.md); archetype tags #merfolk #tokens #discount
 
 1 Namor the Sub-Mariner  #commander #merfolk
@@ -42,7 +42,7 @@
 1 Kindred Discovery  #draw #payoff
 
 // Card-advantage enchantments
-1 Mystic Remora  #draw
+1 Kumena's Awakening  #draw #payoff
 1 Coastal Piracy  #draw #payoff
 1 Reconnaissance Mission  #draw #payoff
 1 Bident of Thassa  #draw #payoff
@@ -101,9 +101,7 @@
 // Lands (35) — utility (13)
 1 Command Tower  #land #fixing
 1 Path of Ancestry  #land #fixing
-1 Cavern of Souls  #land #fixing
 1 Unclaimed Territory  #land #fixing
-1 Otawara, Soaring City  #land #interaction
 1 Rogue's Passage  #land #wincon
 1 Reliquary Tower  #land #utility
 1 War Room  #land #draw
@@ -113,4 +111,4 @@
 1 Faerie Conclave  #land #utility
 1 Mystic Sanctuary  #land #utility
 // Basics (22)
-22 Island  #land
+24 Island  #land

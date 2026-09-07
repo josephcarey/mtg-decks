@@ -2,7 +2,7 @@
 
 Real card text pinned from Scryfall bulk data (oracle_cards, updated 2026-09-06T21:00:37.490+00:00). Regenerate with `bun run deck gen-reference`.
 
-Cards: 79
+Cards: 77
 ## Namor the Sub-Mariner
 
 - **Mana cost:** {1}{U}{U} · **MV:** 3
@@ -198,13 +198,13 @@ Whenever you cast a spell of the chosen type, copy that spell. (A copy of a perm
 As this enchantment enters, choose a creature type.
 Whenever a creature you control of the chosen type enters or attacks, draw a card.
 
-## Mystic Remora
+## Kumena's Awakening
 
-- **Mana cost:** {U} · **MV:** 1
+- **Mana cost:** {2}{U}{U} · **MV:** 4
 - **Type:** Enchantment
 
-Cumulative upkeep {1} (At the beginning of your upkeep, put an age counter on this permanent, then sacrifice it unless you pay its upkeep cost for each age counter on it.)
-Whenever an opponent casts a noncreature spell, you may draw a card unless that player pays {4}.
+Ascend (If you control ten or more permanents, you get the city's blessing for the rest of the game.)
+At the beginning of your upkeep, each player draws a card. If you have the city's blessing, instead only you draw a card.
 
 ## Coastal Piracy
 
@@ -531,15 +531,6 @@ X target creatures can't be blocked this turn. Until end of turn, those creature
 This land enters tapped.
 {T}: Add one mana of any color in your commander's color identity. When that mana is spent to cast a creature spell that shares a creature type with your commander, scry 1. (Look at the top card of your library. You may put that card on the bottom.)
 
-## Cavern of Souls
-
-- **Mana cost:** — · **MV:** 0
-- **Type:** Land
-
-As this land enters, choose a creature type.
-{T}: Add {C}.
-{T}: Add one mana of any color. Spend this mana only to cast a creature spell of the chosen type, and that spell can't be countered.
-
 ## Unclaimed Territory
 
 - **Mana cost:** — · **MV:** 0
@@ -548,14 +539,6 @@ As this land enters, choose a creature type.
 As this land enters, choose a creature type.
 {T}: Add {C}.
 {T}: Add one mana of any color. Spend this mana only to cast a creature spell of the chosen type.
-
-## Otawara, Soaring City
-
-- **Mana cost:** — · **MV:** 0
-- **Type:** Legendary Land
-
-{T}: Add {U}.
-Channel — {3}{U}, Discard this card: Return target artifact, creature, enchantment, or planeswalker to its owner's hand. This ability costs {1} less to activate for each legendary creature you control.
 
 ## Rogue's Passage
 
