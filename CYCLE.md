@@ -15,8 +15,8 @@ commander deck per color identity, skipping 4-color. Colorless `{C}` counts. **2
 
 | Status | Count |
 |---|---|
-| ✅ Built | 1 (The Wandering Minstrel) |
-| ⬜ Not yet built | 26 |
+| ✅ Built | 2 (The Wandering Minstrel, Namor the Sub-Mariner) |
+| ⬜ Not yet built | 25 |
 
 ## Pre-built decks (themes already SPOKEN FOR — off-limits to reuse)
 
@@ -34,7 +34,7 @@ commander deck per color identity, skipping 4-color. Colorless `{C}` counts. **2
 |---|---|---|---|
 | C | Graaz, Unstoppable Juggernaut | Juggernaut anthem beatdown | ⬜ |
 | W | Balan, Wandering Knight | Equipment Voltron (budget: 358 W/C equip under $5; proxy 3–4 Swords) | ⬜ |
-| U | Namor the Sub-Mariner | Merfolk kindred (kindred slot used) | ⬜ |
+| U | Namor the Sub-Mariner | Merfolk kindred (kindred slot used) | ✅ |
 | B | The Raven Man | Discard-matters → Bird tokens (keep FAIR, not stax) | ⬜ |
 | R | J. Jonah Jameson | Menace + Treasure | ⬜ |
 | GW | Storm, Windrider | Flyers / pillow-fort | ⬜ |

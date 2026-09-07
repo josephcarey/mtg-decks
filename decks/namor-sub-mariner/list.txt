@@ -1,0 +1,111 @@
+// Commander: Namor the Sub-Mariner ({1}{U}{U}) — mono-U
+// Merfolk kindred + blue-spell token engine (noncreature blue spells make Merfolk = # blue pips)
+// Cycle slot: U (mono-blue). Bracket 3 casual, no Game Changers, no non-games.
+// 100 cards (1 commander + 64 nonland + 35 lands); 37 Merfolk bodies before tokens
+// PROXY CANDIDATES ($$): Cavern of Souls, Otawara Soaring City, Mystic Remora, Lord of Atlantis
+// Tags: role tags after each card (see AGENTS.md tag vocabulary); archetype tag #merfolk
+
+1 Namor the Sub-Mariner  #commander #merfolk
+
+// Merfolk lords / anthems (kindred payoffs)
+1 Lord of Atlantis  #payoff #merfolk
+1 Master of the Pearl Trident  #payoff #merfolk
+1 Merrow Reejerey  #payoff #ramp #merfolk
+1 Merfolk Sovereign  #payoff #wincon #merfolk
+1 Coralhelm Commander  #payoff #merfolk
+1 Vodalian Hexcatcher  #payoff #interaction #merfolk
+1 Svyelun of Sea and Sky  #payoff #draw #protection #merfolk
+1 Emperor Mihail II  #payoff #tokens #merfolk
+1 Namor, Scourge of the Seas  #payoff #merfolk
+1 Attuma, Atlantean Warlord  #payoff #draw #merfolk
+
+// Merfolk — card advantage
+1 Silvergill Adept  #draw #merfolk
+1 Benthic Biomancer  #draw #merfolk
+1 Merfolk Looter  #draw #merfolk
+1 Fallowsage  #draw #merfolk
+1 Seafloor Oracle  #draw #payoff #merfolk
+1 Sage of Fables  #draw #merfolk
+1 Kiora, the Rising Tide  #draw #merfolk
+1 Neerdiv, Devious Diver  #draw #merfolk
+
+// Merfolk — evasion / enablers
+1 Cursecatcher  #interaction #merfolk
+1 Mist-Cloaked Herald  #enabler #merfolk
+1 Triton Shorestalker  #enabler #merfolk
+1 Merfolk Windrobber  #enabler #merfolk
+1 River Sneak  #enabler #merfolk
+1 Merfolk Cave-Diver  #enabler #merfolk
+1 Sure-Footed Infiltrator  #enabler #draw #merfolk
+1 Streambed Aquitects  #enabler #merfolk
+1 Brineborn Cutthroat  #enabler #merfolk
+
+// Merfolk — tempo / utility / protection
+1 Merfolk Trickster  #interaction #merfolk
+1 Tishana's Tidebinder  #interaction #merfolk
+1 Surgespanner  #interaction #merfolk
+1 Stonybrook Banneret  #ramp #merfolk
+1 Harbinger of the Seas  #utility #merfolk
+1 Merrow Harbinger  #utility #merfolk
+1 Kopala, Warden of Waves  #protection #merfolk
+1 Deepchannel Mentor  #wincon #merfolk
+
+// Spell payoff creature
+1 Talrand, Sky Summoner  #payoff #tokens #merfolk
+
+// Kindred engines / recurring draw
+1 Kindred Discovery  #draw #payoff
+1 Mystic Remora  #draw
+1 Distant Melody  #draw
+1 Merrow Commerce  #utility
+
+// Card selection (blue-pip spells feed Namor tokens)
+1 Brainstorm  #draw
+1 Preordain  #draw
+1 Ponder  #draw
+1 Fact or Fiction  #draw
+1 Windfall  #draw
+
+// Ramp (artifacts)
+1 Sol Ring  #ramp
+1 Arcane Signet  #ramp #fixing
+1 Mind Stone  #ramp #draw
+1 Thought Vessel  #ramp
+1 Everflowing Chalice  #ramp
+
+// Interaction — single target (each blue spell = Merfolk tokens via Namor)
+1 Counterspell  #interaction
+1 An Offer You Can't Refuse  #interaction
+1 Whirlwind Denial  #interaction
+1 Pongify  #interaction
+1 Rapid Hybridization  #interaction
+1 Reality Shift  #interaction
+1 Into the Roil  #interaction
+1 Blink of an Eye  #interaction
+
+// Mass tempo / resets (bounce, not stax)
+1 Evacuation  #interaction #wincon
+1 River's Rebuke  #interaction
+1 Coastal Breach  #interaction #wincon
+
+// Payoffs / finishers
+1 Rite of Replication  #payoff #wincon
+1 Whispersilk Cloak  #protection #wincon
+1 Swiftfoot Boots  #protection
+
+// Lands (35) — utility (13)
+1 Command Tower  #land #fixing
+1 Path of Ancestry  #land #fixing
+1 Cavern of Souls  #land #fixing
+1 Unclaimed Territory  #land #fixing
+1 Otawara, Soaring City  #land #interaction
+1 Rogue's Passage  #land #wincon
+1 Reliquary Tower  #land #utility
+1 War Room  #land #draw
+1 Mikokoro, Center of the Sea  #land #draw
+1 Castle Vantress  #land #draw
+1 Halimar Depths  #land #draw
+1 Faerie Conclave  #land #utility
+1 Mystic Sanctuary  #land #utility
+// Basics (22)
+22 Island  #land

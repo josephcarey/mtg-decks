@@ -1,9 +1,8 @@
 # Card knowledge cache — The Wandering Minstrel
 
-Real card text pinned from Scryfall bulk data (oracle_cards, updated 2026-09-05T21:00:33.363+00:00). Regenerate with `bun run deck gen-reference`.
+Real card text pinned from Scryfall bulk data (oracle_cards, updated 2026-09-06T21:00:37.490+00:00). Regenerate with `bun run deck gen-reference`.
 
 Cards: 85
-
 ## The Wandering Minstrel
 
 - **Mana cost:** {G}{U} · **MV:** 2

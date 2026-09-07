@@ -355,36 +355,37 @@ async function genReferenceCommand(
     await writeFile(REFERENCE_TAGS_PATH, tagsFile);
     out(`wrote ${REFERENCE_TAGS_PATH}`);
 
-    const listPath =
-      deckPath ?? join(DECKS_DIR, "wandering-minstrel", "list.txt");
-    const text = await Bun.file(listPath)
-      .text()
-      .catch(() => null);
-    if (text === null) {
-      fail(`cannot read decklist: ${listPath}`);
-      return;
+    const listPaths = deckPath ? [deckPath] : await findDeckLists();
+    for (const listPath of listPaths) {
+      const text = await Bun.file(listPath)
+        .text()
+        .catch(() => null);
+      if (text === null) {
+        fail(`cannot read decklist: ${listPath}`);
+        continue;
+      }
+      const slug = basename(dirname(listPath));
+      const entries = parseDecklist(text);
+      const resolved = getCardsByNames(
+        db,
+        entries.map((entry) => entry.name),
+      );
+      const knowledge = entries
+        .map((entry) => resolved.get(entry.name.toLowerCase()))
+        .filter((row): row is NonNullable<typeof row> => row !== undefined)
+        .map((row) => cardKnowledgeFromRow(row));
+      const markdown = formatCardCacheMarkdown(
+        deckDisplayName(text, slug),
+        knowledge,
+        date,
+      );
+      const cachePath = join("reference", "cards", `${slug}.md`);
+      await mkdir(dirname(cachePath), { recursive: true });
+      await writeFile(cachePath, markdown);
+      out(
+        `wrote ${cachePath} (${knowledge.length}/${entries.length} cards resolved)`,
+      );
     }
-    const slug = basename(dirname(listPath));
-    const entries = parseDecklist(text);
-    const resolved = getCardsByNames(
-      db,
-      entries.map((entry) => entry.name),
-    );
-    const knowledge = entries
-      .map((entry) => resolved.get(entry.name.toLowerCase()))
-      .filter((row): row is NonNullable<typeof row> => row !== undefined)
-      .map((row) => cardKnowledgeFromRow(row));
-    const markdown = formatCardCacheMarkdown(
-      deckDisplayName(text, slug),
-      knowledge,
-      date,
-    );
-    const cachePath = join("reference", "cards", `${slug}.md`);
-    await mkdir(dirname(cachePath), { recursive: true });
-    await writeFile(cachePath, markdown);
-    out(
-      `wrote ${cachePath} (${knowledge.length}/${entries.length} cards resolved)`,
-    );
   } finally {
     db.close();
   }
