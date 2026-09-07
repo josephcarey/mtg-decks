@@ -6,7 +6,9 @@
 import type {
   BasicsAudit,
   CurveSummary,
+  IdentityViolation,
   PipCounts,
+  PriceBreakdown,
   TagCount,
 } from "./analysis.ts";
 import type { Candidate, DeckCardRow, TagListItem } from "./db/queries.ts";
@@ -77,6 +79,34 @@ export function formatGameChangerLint(names: readonly string[]): string {
 }
 
 /**
+ * Format the `[h]` color-identity lint line. Flags any card whose identity isn't a subset of the
+ * commander's — an illegal inclusion the pip/curve stats would otherwise hide.
+ * @param commanderIdentity - The commander's identity string (e.g. `U`, `GU`), or `null` if the
+ *   commander couldn't be resolved.
+ * @param violations - Cards falling outside the commander's identity.
+ * @returns A single formatted line (multi-line when violations exist).
+ */
+export function formatIdentityLint(
+  commanderIdentity: null | string,
+  violations: readonly IdentityViolation[],
+): string {
+  if (commanderIdentity === null) {
+    return "[h] Color identity: commander unresolved — skipped";
+  }
+  const label = commanderIdentity === "" ? "colorless" : commanderIdentity;
+  if (violations.length === 0) {
+    return `[h] Color identity: all cards within {${label}} ✓`;
+  }
+  const lines = violations.map(
+    (violation) => `    ${violation.name} — {${violation.identity || "?"}}`,
+  );
+  return [
+    `[h] Color identity ⚠ ${violations.length} card(s) outside {${label}}:`,
+    ...lines,
+  ].join("\n");
+}
+
+/**
  * Format the `[c]` color-pip ratio section.
  * @param pips - Total per-color pip counts.
  * @returns A single formatted line with per-color counts and percentages.
@@ -99,6 +129,44 @@ export function formatPips(pips: PipCounts): string {
 export function formatPrice(totalUsd: number, missing: number): string {
   const suffix = missing > 0 ? ` (${missing} without price data)` : "";
   return `[e] Approx. deck price: $${totalUsd.toFixed(2)}${suffix}`;
+}
+
+/**
+ * Format the `deck price <deck>` budget report.
+ * @param label - The deck label (slug or path) for the header.
+ * @param breakdown - The computed price breakdown.
+ * @param threshold - The per-copy USD threshold used to flag proxy candidates.
+ * @returns Multi-line budget output.
+ */
+export function formatPriceReport(
+  label: string,
+  breakdown: PriceBreakdown,
+  threshold: number,
+): string {
+  const missing =
+    breakdown.missing > 0
+      ? ` (${breakdown.missing} without price data)`
+      : "";
+  const lines = [
+    `# Price report — ${label}`,
+    `Total: $${breakdown.total.toFixed(2)}${missing}`,
+    `Without proxy candidates: $${breakdown.totalWithoutProxies.toFixed(2)}`,
+  ];
+  lines.push(
+    breakdown.proxies.length === 0
+      ? `Proxy candidates (≥ $${threshold.toFixed(2)}): none`
+      : `Proxy candidates (≥ $${threshold.toFixed(2)}), ${breakdown.proxies.length}:`,
+  );
+  for (const card of breakdown.proxies) {
+    lines.push(`    ${money(card.priceUsd).padStart(8)}  ${card.name}`);
+  }
+  if (breakdown.top.length > 0) {
+    lines.push(`Most expensive:`);
+    for (const card of breakdown.top) {
+      lines.push(`    ${money(card.priceUsd).padStart(8)}  ${card.name}`);
+    }
+  }
+  return lines.join("\n");
 }
 
 /**

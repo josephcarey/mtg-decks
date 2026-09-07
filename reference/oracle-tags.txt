@@ -1,6 +1,6 @@
 # Scryfall oracle (function) tag catalog
 # Source: Scryfall bulk data (oracle_tags export)
-# Bulk updated_at: 2026-09-05T21:00:33.363+00:00
+# Bulk updated_at: 2026-09-06T21:00:37.490+00:00
 # Total tags: 4524
 # Format: slug<TAB>label<TAB>description
 # Note: `cycle-*` slugs are Tagger's internal per-set bookkeeping (usually not useful
@@ -121,7 +121,7 @@ block-trigger	block trigger	Effects that trigger on a creature blocking or becom
 block-unlimited	block unlimited	Block an unlimited, or practically unlimited, number of creatures.
 block-when-tapped	block when tapped	
 block-without-creature	block without creature	These cards make something be blocked ... without anything actually doing the blocking.
-blood-artist-ability	blood artist ability	Cards that have abilities along the lines of: "Whenever creature dies target/each opponent loses 1 life (and you gain 1 life)."
+blood-artist-ability	blood artist ability	Cards that have abilities along the lines of: "Whenever creature dies target/each opponent loses X life and you gain X life."
 blood-moon-effect	blood moon effect	Derived from the titular card, this refers to the effect in which lands lose their land type and/or abilities, being replaced by something else.
 blue-effect	blue effect	Effects which are iconically blue.
 board-reset	board-reset	Cards that remove the entire battlefield.

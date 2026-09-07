@@ -15,7 +15,11 @@ CI gate. Use `bun run ci` before every PR.
 - **CLI** (`bun run deck <subcommand>`):
   - `fetch-bulk` / `build-db` — download the bulk exports and build/ingest the DB.
   - `analyze <decklist>` — count / curve / pips / lands / price / tag distribution + a
-    Game-Changer lint (should report none).
+    Game-Changer lint (should report none) + a color-identity lint (`[h]`, flags any card whose
+    identity isn't a subset of the commander's, resolved from the `// Commander:` header).
+  - `price <deck-slug|decklist> [--over <usd>] [--top N]` — budget report: total, total without
+    proxy candidates, cards flagged as proxy candidates at/above the threshold (default $15), and
+    the priciest cards.
   - `discover <slug> [--id gu] [--set] [--max-price] [--limit] [--include-gamechangers] [--deck]`
     — function-tag card discovery, color-identity-subset filtered, EDHREC-ranked; `--deck` accepts a
     known deck **slug** (deduped against the ingested `deck_cards`) or a decklist path, and skips
@@ -35,6 +39,7 @@ CI gate. Use `bun run ci` before every PR.
 ## Owner preferences (read first)
 
 - See `PRIORITIES.md` for the owner's standing deckbuilding preferences (Game Changers, budget, non-games, theme-vs-power, interaction, Day/Night dislike, commander-cycle meta-project). Apply them by default.
+- See `CYCLE.md` for the commander-cycle master board: all 27 locked commander/color slots, their archetypes, and build status. Consult it before starting a new cycle deck.
 - Format: Commander / EDH (100-card singleton).
 - Power level: semi-optimized casual, roughly Bracket 3 ("B to C" tier). Fun and synergy over raw efficiency.
 - Game Changers: NONE. The official Commander 'Game Changers' list is banned at the owner's table. Never include cards from that list (e.g. Cyclonic Rift, Field of the Dead, Smothering Tithe, The Great Henge, etc.). When suggesting a card, check it is not a Game Changer.

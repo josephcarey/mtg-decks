@@ -8,6 +8,7 @@ import {
   computePips,
   fetchVsBasics,
   isLand,
+  priceBreakdown,
   tagDistribution,
 } from "./analysis.ts";
 import { parseDecklist } from "./decklist.ts";
@@ -107,5 +108,28 @@ describe("fetchVsBasics", () => {
     expect(audit.basics.get("Island")).toBe(5);
     expect(audit.totalBasics).toBe(16);
     expect(audit.totalLands).toBe(17);
+  });
+});
+
+describe("priceBreakdown", () => {
+  const cards = [
+    { count: 1, name: "Chase", priceUsd: 50 },
+    { count: 4, name: "Cheap", priceUsd: 2 },
+    { count: 1, name: "Mid", priceUsd: 16 },
+    { count: 1, name: "Unpriced", priceUsd: null },
+  ];
+  it("totals price weighted by copy count and counts missing copies", () => {
+    const result = priceBreakdown(cards, { threshold: 15, top: 10 });
+    expect(result.total).toBe(50 + 8 + 16);
+    expect(result.missing).toBe(1);
+  });
+  it("flags proxy candidates at or above the threshold and totals without them", () => {
+    const result = priceBreakdown(cards, { threshold: 15, top: 10 });
+    expect(result.proxies.map((card) => card.name)).toEqual(["Chase", "Mid"]);
+    expect(result.totalWithoutProxies).toBe(8);
+  });
+  it("returns the priciest cards up to the top limit, unit-price descending", () => {
+    const result = priceBreakdown(cards, { threshold: 15, top: 2 });
+    expect(result.top.map((card) => card.name)).toEqual(["Chase", "Mid"]);
   });
 });

@@ -1,0 +1,114 @@
+// Commander: Namor the Sub-Mariner ({1}{U}{U}) — mono-U
+// "Accidentally Merfolk": mono-U draw/interaction/enchantment control where Namor turns
+// noncreature BLUE spells into Merfolk (tokens = # blue mana symbols). Lords pump the tokens.
+// Balanced interaction (~7 flexible counters) + heavy card draw + Merfolk-token enchantments
+// + blue-spell cost reduction (more spells/turn = more triggers). Cycle slot: U (mono-blue).
+// Bracket 3 casual, no Game Changers, no non-games (no stax/mindslaver/combo/extra-turns).
+// 100 cards (1 commander + 64 nonland + 35 lands)
+// PROXY CANDIDATES ($$): Lord of Atlantis
+// Tags: role tags after each card (see AGENTS.md); archetype tags #merfolk #tokens #discount
+
+1 Namor the Sub-Mariner  #commander #merfolk
+
+// Merfolk lords / anthems (pump the tokens Namor makes)
+1 Lord of Atlantis  #payoff #merfolk
+1 Master of the Pearl Trident  #payoff #merfolk
+1 Merrow Reejerey  #payoff #ramp #merfolk
+1 Merfolk Sovereign  #payoff #wincon #merfolk
+1 Coralhelm Commander  #payoff #merfolk
+1 Vodalian Hexcatcher  #payoff #interaction #merfolk
+1 Svyelun of Sea and Sky  #payoff #draw #protection #merfolk
+1 Emperor Mihail II  #payoff #tokens #merfolk
+1 Namor, Scourge of the Seas  #payoff #merfolk
+1 Attuma, Atlantean Warlord  #payoff #draw #merfolk
+
+// Merfolk — spell-engine support (ramp for spells / cost reduction / payoffs / finisher)
+1 Hydro-Channeler  #ramp #merfolk
+1 Volshe Tideturner  #ramp #merfolk
+1 Stonybrook Banneret  #discount #merfolk
+1 Talrand, Sky Summoner  #payoff #tokens #merfolk
+1 Seafloor Oracle  #draw #payoff #merfolk
+1 Kopala, Warden of Waves  #protection #merfolk
+1 Deepchannel Mentor  #wincon #merfolk
+
+// Non-Merfolk engine creatures (spell payoffs)
+1 Archmage Emeritus  #draw #payoff
+1 Curiosity Crafter  #draw #payoff
+
+// Token / kindred enchantments (each triggers Namor on cast, then makes more Merfolk)
+1 Deeproot Waters  #tokens #payoff #merfolk
+1 Deeproot Pilgrimage  #tokens #payoff #merfolk
+1 Reflections of Littjara  #tokens #payoff #merfolk
+1 Kindred Discovery  #draw #payoff
+
+// Card-advantage enchantments
+1 Kumena's Awakening  #draw #payoff
+1 Coastal Piracy  #draw #payoff
+1 Reconnaissance Mission  #draw #payoff
+1 Bident of Thassa  #draw #payoff
+1 Future Sight  #draw
+
+// Cost reduction (more spells per turn = more Namor triggers)
+1 The Water Crystal  #discount
+1 Jace's Sanctum  #discount #draw
+1 Case of the Ransacked Lab  #discount #draw
+1 Wizard Class  #draw #utility
+
+// Ramp (colorless rocks — accelerate the pip-heavy spells)
+1 Sol Ring  #ramp
+1 Arcane Signet  #ramp #fixing
+1 Mind Stone  #ramp #draw
+1 Thought Vessel  #ramp
+
+// Card draw / selection
+1 Brainstorm  #draw
+1 Preordain  #draw
+1 Ponder  #draw
+1 Frantic Search  #draw
+1 Mission Briefing  #draw
+1 Pull from Tomorrow  #draw
+1 Fact or Fiction  #draw
+1 Distant Melody  #draw
+
+// Interaction — counters (balanced ~7; flexible / high-pip preferred)
+1 Counterspell  #interaction
+1 Archmage's Charm  #interaction #draw
+1 Mystic Confluence  #interaction #draw
+1 Disallow  #interaction
+1 Insidious Will  #interaction
+1 An Offer You Can't Refuse  #interaction
+1 Long River's Pull  #interaction
+
+// Interaction — spot removal / bounce
+1 Pongify  #interaction
+1 Rapid Hybridization  #interaction
+1 Reality Shift  #interaction
+1 Into the Roil  #interaction
+1 Curse of the Swine  #interaction
+
+// Mass tempo / resets (bounce + tap; not stax)
+1 Evacuation  #interaction #wincon
+1 River's Rebuke  #interaction
+1 Wanderwine Farewell  #interaction #tokens
+1 Sleep  #wincon
+
+// Big payoffs / finishers
+1 Mass Manipulation  #payoff #wincon
+1 Rite of Replication  #payoff #wincon
+1 Quasiduplicate  #payoff #tokens
+1 Open into Wonder  #draw #wincon
+
+// Lands (35) — utility (13)
+1 Command Tower  #land #fixing
+1 Path of Ancestry  #land #fixing
+1 Unclaimed Territory  #land #fixing
+1 Rogue's Passage  #land #wincon
+1 Reliquary Tower  #land #utility
+1 War Room  #land #draw
+1 Mikokoro, Center of the Sea  #land #draw
+1 Castle Vantress  #land #draw
+1 Halimar Depths  #land #draw
+1 Faerie Conclave  #land #utility
+1 Mystic Sanctuary  #land #utility
+// Basics (22)
+24 Island  #land

@@ -32,5 +32,5 @@ Owner's standing preferences. The tooling and any agent should apply these by de
 
 ## Meta-project
 
-- Building a **full cycle of commanders, one per color / color-set**.
+- Building a **full cycle of commanders, one per color / color-set**. The full board of chosen commanders (27 slots, all locked) and build status lives in **`CYCLE.md`** — consult it before starting a new cycle deck.
 - Started between **Final Fantasy (FF)** and **Edge of Eternities (EoE)**, so those sets are the best-known reference points.

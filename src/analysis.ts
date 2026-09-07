@@ -31,8 +31,30 @@ export type CurveSummary = {
   readonly nonlandCount: number;
 };
 
+/** A card whose color identity falls outside the commander's — an illegal inclusion. */
+export type IdentityViolation = {
+  readonly identity: string;
+  readonly name: string;
+};
+
 /** A per-color tally of mana pips. */
 export type PipCounts = Record<PipColor, number>;
+
+/** Budget breakdown for a decklist: totals, proxy candidates, and the priciest cards. */
+export type PriceBreakdown = {
+  readonly missing: number;
+  readonly proxies: readonly PricedCard[];
+  readonly top: readonly PricedCard[];
+  readonly total: number;
+  readonly totalWithoutProxies: number;
+};
+
+/** A card with its per-copy USD price (null when the cache has no price). */
+export type PricedCard = {
+  readonly count: number;
+  readonly name: string;
+  readonly priceUsd: null | number;
+};
 
 /** One tag's weighted occurrence count. */
 export type TagCount = { readonly count: number; readonly tag: string };
@@ -129,6 +151,45 @@ export function fetchVsBasics(entries: readonly DeckEntry[]): BasicsAudit {
  */
 export function isLand(typeLine: string): boolean {
   return /\bLand\b/.test(typeLine);
+}
+
+/**
+ * Summarise a decklist's cost: total price, cards missing price data, "proxy candidate" cards
+ * at or above a per-copy threshold, the total once those are removed, and the priciest cards.
+ * @param cards - Priced cards (per-copy price and copy count).
+ * @param options - `threshold` USD for proxy flagging and `top` count to list.
+ * @returns A {@link PriceBreakdown}.
+ */
+export function priceBreakdown(
+  cards: readonly PricedCard[],
+  options: { readonly threshold: number; readonly top: number },
+): PriceBreakdown {
+  let total = 0;
+  let proxyTotal = 0;
+  let missing = 0;
+  const priced: PricedCard[] = [];
+  const proxies: PricedCard[] = [];
+  for (const card of cards) {
+    if (card.priceUsd === null) {
+      missing += card.count;
+      continue;
+    }
+    total += card.priceUsd * card.count;
+    priced.push(card);
+    if (card.priceUsd >= options.threshold) {
+      proxies.push(card);
+      proxyTotal += card.priceUsd * card.count;
+    }
+  }
+  const byUnitDesc = (a: PricedCard, b: PricedCard): number =>
+    (b.priceUsd ?? 0) - (a.priceUsd ?? 0) || a.name.localeCompare(b.name);
+  return {
+    missing,
+    proxies: [...proxies].sort(byUnitDesc),
+    top: [...priced].sort(byUnitDesc).slice(0, options.top),
+    total,
+    totalWithoutProxies: total - proxyTotal,
+  };
 }
 
 /**

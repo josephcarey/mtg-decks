@@ -5,8 +5,9 @@
  * Commands:
  *   fetch-bulk                      download the Scryfall bulk exports into data/
  *   build-db                        build data/mtg.db from the bulk exports + ingest decks/
- *   analyze <decklist>              report card count/curve/pips/basics/price/tags + GC lint
+ *   analyze <decklist>              report card count/curve/pips/basics/price/tags + GC/identity lint
  *   discover <slug> [opts]          find tagged cards (color/price/set filters, EDHREC-ranked)
+ *   price <deck> [--over][--top]    budget report: total, proxy candidates, priciest cards
  *   card <name>                     print one card's pinned text from the cache
  *   cards <deck-slug>               list a deck's cards with their resolved corpus tags
  *   search <query>                  full-text (FTS5) search over card names + oracle text
@@ -21,7 +22,7 @@ import { mkdir, readdir, writeFile } from "node:fs/promises";
 import { basename, dirname, join } from "node:path";
 import { parseArgs } from "node:util";
 
-import type { AnalyzedCard } from "./analysis.ts";
+import type { AnalyzedCard, IdentityViolation, PricedCard } from "./analysis.ts";
 import type { DeckEntry } from "./decklist.ts";
 import type { BulkType } from "./scryfall/bulk.ts";
 
@@ -29,14 +30,17 @@ import {
   computeCurve,
   computePips,
   fetchVsBasics,
+  priceBreakdown,
   tagDistribution,
 } from "./analysis.ts";
 import {
   DEFAULT_DB_PATH,
   DEFAULT_DISCOVER_ID,
   DEFAULT_DISCOVER_LIMIT,
+  DEFAULT_PRICE_TOP,
+  DEFAULT_PROXY_THRESHOLD_USD,
 } from "./constants.ts";
-import { ftsMatchQuery } from "./db/model.ts";
+import { ciSubsetOf, ftsMatchQuery } from "./db/model.ts";
 import {
   allTagsBySlug,
   deckCardNames,
@@ -66,8 +70,10 @@ import {
   formatDeckCards,
   formatDiscoverTable,
   formatGameChangerLint,
+  formatIdentityLint,
   formatPips,
   formatPrice,
+  formatPriceReport,
   formatTagDistribution,
   formatTagList,
 } from "./report.ts";
@@ -91,7 +97,9 @@ const OPTIONS = {
   "include-gamechangers": { type: "boolean" },
   limit: { type: "string" },
   "max-price": { type: "string" },
+  over: { type: "string" },
   set: { type: "string" },
+  top: { type: "string" },
 } as const;
 
 type OptionValues = Partial<Record<keyof typeof OPTIONS, boolean | string>>;
@@ -125,16 +133,21 @@ async function analyzeCommand(decklistPath: string | undefined): Promise<void> {
   }
   const db = dbResult.value;
   try {
-    const { cards, gameChangers, missing, priceUsd } = toAnalyzedCards(
-      entries,
-      db,
-    );
+    const {
+      cards,
+      commanderIdentity,
+      gameChangers,
+      identityViolations,
+      missing,
+      priceUsd,
+    } = toAnalyzedCards(entries, db, deckCommander(text));
     out(formatCurve(computeCurve(cards)));
     out(formatPips(computePips(cards)));
     out(formatBasics(fetchVsBasics(entries)));
     out(formatPrice(priceUsd, missing));
     out(formatTagDistribution(tagDistribution(entries)));
     out(formatGameChangerLint(gameChangers));
+    out(formatIdentityLint(commanderIdentity, identityViolations));
   } finally {
     db.close();
   }
@@ -252,7 +265,9 @@ function cardsCommand(slug: string | undefined): void {
 
 function deckCommander(text: string): null | string {
   const match = /^\/\/\s*Commander:\s*(.+)$/m.exec(text);
-  return match?.[1]?.trim() ?? null;
+  if (match?.[1] === undefined) return null;
+  // Strip any trailing annotation like " ({1}{U}{U}) — mono-U" to leave a clean card name.
+  return match[1].replace(/\s+(?:\(|[—–-]\s).*$/, "").trim();
 }
 
 function deckDisplayName(text: string, slug: string): string {
@@ -355,36 +370,37 @@ async function genReferenceCommand(
     await writeFile(REFERENCE_TAGS_PATH, tagsFile);
     out(`wrote ${REFERENCE_TAGS_PATH}`);
 
-    const listPath =
-      deckPath ?? join(DECKS_DIR, "wandering-minstrel", "list.txt");
-    const text = await Bun.file(listPath)
-      .text()
-      .catch(() => null);
-    if (text === null) {
-      fail(`cannot read decklist: ${listPath}`);
-      return;
+    const listPaths = deckPath ? [deckPath] : await findDeckLists();
+    for (const listPath of listPaths) {
+      const text = await Bun.file(listPath)
+        .text()
+        .catch(() => null);
+      if (text === null) {
+        fail(`cannot read decklist: ${listPath}`);
+        continue;
+      }
+      const slug = basename(dirname(listPath));
+      const entries = parseDecklist(text);
+      const resolved = getCardsByNames(
+        db,
+        entries.map((entry) => entry.name),
+      );
+      const knowledge = entries
+        .map((entry) => resolved.get(entry.name.toLowerCase()))
+        .filter((row): row is NonNullable<typeof row> => row !== undefined)
+        .map((row) => cardKnowledgeFromRow(row));
+      const markdown = formatCardCacheMarkdown(
+        deckDisplayName(text, slug),
+        knowledge,
+        date,
+      );
+      const cachePath = join("reference", "cards", `${slug}.md`);
+      await mkdir(dirname(cachePath), { recursive: true });
+      await writeFile(cachePath, markdown);
+      out(
+        `wrote ${cachePath} (${knowledge.length}/${entries.length} cards resolved)`,
+      );
     }
-    const slug = basename(dirname(listPath));
-    const entries = parseDecklist(text);
-    const resolved = getCardsByNames(
-      db,
-      entries.map((entry) => entry.name),
-    );
-    const knowledge = entries
-      .map((entry) => resolved.get(entry.name.toLowerCase()))
-      .filter((row): row is NonNullable<typeof row> => row !== undefined)
-      .map((row) => cardKnowledgeFromRow(row));
-    const markdown = formatCardCacheMarkdown(
-      deckDisplayName(text, slug),
-      knowledge,
-      date,
-    );
-    const cachePath = join("reference", "cards", `${slug}.md`);
-    await mkdir(dirname(cachePath), { recursive: true });
-    await writeFile(cachePath, markdown);
-    out(
-      `wrote ${cachePath} (${knowledge.length}/${entries.length} cards resolved)`,
-    );
   } finally {
     db.close();
   }
@@ -400,6 +416,62 @@ function parseOptions(argv: readonly string[]): {
     options: OPTIONS,
   });
   return { positionals, values };
+}
+
+async function priceCommand(
+  deckArg: string | undefined,
+  values: OptionValues,
+): Promise<void> {
+  if (deckArg === undefined) {
+    fail("usage: deck price <deck-slug|decklist.txt> [--over USD] [--top N]");
+    return;
+  }
+  const path = await resolveDecklistPath(deckArg);
+  if (path === null) {
+    fail(`cannot find a decklist for "${deckArg}" (tried the path and decks/<slug>/list.txt)`);
+    return;
+  }
+  const threshold =
+    typeof values.over === "string"
+      ? Number.parseFloat(values.over)
+      : DEFAULT_PROXY_THRESHOLD_USD;
+  const top =
+    typeof values.top === "string"
+      ? Number.parseInt(values.top, 10)
+      : DEFAULT_PRICE_TOP;
+
+  const dbResult = openDatabase(DEFAULT_DB_PATH);
+  if (dbResult.isErr()) {
+    fail(dbResult.error.message);
+    return;
+  }
+  const db = dbResult.value;
+  try {
+    const entries = parseDecklist(await Bun.file(path).text());
+    const resolved = getCardsByNames(
+      db,
+      entries.map((entry) => entry.name),
+    );
+    const cards: PricedCard[] = entries.map((entry) => {
+      const row = resolved.get(entry.name.toLowerCase());
+      return {
+        count: entry.count,
+        name: row?.name ?? entry.name,
+        priceUsd: row?.price_usd ?? null,
+      };
+    });
+    out(formatPriceReport(path, priceBreakdown(cards, { threshold, top }), threshold));
+  } finally {
+    db.close();
+  }
+}
+
+/** Resolve a `price`/analyze deck argument (a decklist path OR a known deck slug) to a path. */
+async function resolveDecklistPath(arg: string): Promise<null | string> {
+  if (await Bun.file(arg).exists()) return arg;
+  const slugPath = join(DECKS_DIR, arg, "list.txt");
+  if (await Bun.file(slugPath).exists()) return slugPath;
+  return null;
 }
 
 /**
@@ -453,6 +525,10 @@ async function run(argv: readonly string[]): Promise<void> {
       );
       return;
     }
+    case "price": {
+      await priceCommand(positionals[0], values);
+      return;
+    }
     case "search": {
       searchCommand(positionals[0]);
       return;
@@ -471,7 +547,7 @@ async function run(argv: readonly string[]): Promise<void> {
     }
     default: {
       out(
-        "Usage: deck <fetch-bulk|build-db|analyze|discover|card|cards|search|tags|synergy|sql|gen-reference> [...]",
+        "Usage: deck <fetch-bulk|build-db|analyze|discover|price|card|cards|search|tags|synergy|sql|gen-reference> [...]",
       );
       if (command !== undefined && command !== "help") process.exitCode = 1;
     }
@@ -587,9 +663,12 @@ function tagsCommand(substr: string | undefined): void {
 function toAnalyzedCards(
   entries: readonly DeckEntry[],
   db: Database,
+  commanderName?: null | string,
 ): {
   cards: AnalyzedCard[];
+  commanderIdentity: null | string;
   gameChangers: string[];
+  identityViolations: IdentityViolation[];
   missing: number;
   priceUsd: number;
 } {
@@ -597,8 +676,14 @@ function toAnalyzedCards(
     db,
     entries.map((entry) => entry.name),
   );
+  const commanderRow =
+    typeof commanderName === "string"
+      ? (resolved.get(commanderName.toLowerCase()) ?? getCard(db, commanderName))
+      : null;
+  const commanderIdentity = commanderRow?.color_identity ?? null;
   const cards: AnalyzedCard[] = [];
   const gameChangers: string[] = [];
+  const identityViolations: IdentityViolation[] = [];
   let priceUsd = 0;
   let missing = 0;
   for (const entry of entries) {
@@ -616,8 +701,21 @@ function toAnalyzedCards(
     });
     if (row.game_changer === 1) gameChangers.push(row.name);
     if (row.price_usd !== null) priceUsd += row.price_usd * entry.count;
+    if (
+      commanderRow !== null &&
+      !ciSubsetOf(row.ci_mask, commanderRow.ci_mask)
+    ) {
+      identityViolations.push({ identity: row.color_identity, name: row.name });
+    }
   }
-  return { cards, gameChangers, missing, priceUsd };
+  return {
+    cards,
+    commanderIdentity,
+    gameChangers,
+    identityViolations,
+    missing,
+    priceUsd,
+  };
 }
 
 await run(process.argv.slice(2));

@@ -10,8 +10,10 @@ import {
   formatDeckCards,
   formatDiscoverTable,
   formatGameChangerLint,
+  formatIdentityLint,
   formatPips,
   formatPrice,
+  formatPriceReport,
   formatTagDistribution,
   formatTagList,
 } from "./report.ts";
@@ -197,5 +199,50 @@ describe("formatDeckCards", () => {
     expect(out).toContain("★ 1x The Wandering Minstrel");
     expect(out).toContain("[landfall tokens]");
     expect(out).toContain("? 1x Brand New Card  [—]");
+  });
+});
+
+describe("formatIdentityLint", () => {
+  it("skips when the commander is unresolved", () => {
+    expect(formatIdentityLint(null, [])).toContain("commander unresolved");
+  });
+  it("passes when all cards are within identity", () => {
+    expect(formatIdentityLint("U", [])).toContain("within {U} ✓");
+  });
+  it("renders colorless commanders", () => {
+    expect(formatIdentityLint("", [])).toContain("within {colorless} ✓");
+  });
+  it("lists violations with their identity", () => {
+    const out = formatIdentityLint("U", [
+      { identity: "GU", name: "Kumena, Tyrant of Orazca" },
+    ]);
+    expect(out).toContain("1 card(s) outside {U}");
+    expect(out).toContain("Kumena, Tyrant of Orazca — {GU}");
+  });
+});
+
+describe("formatPriceReport", () => {
+  const breakdown = {
+    missing: 2,
+    proxies: [{ count: 1, name: "Pricey", priceUsd: 20 }],
+    top: [
+      { count: 1, name: "Pricey", priceUsd: 20 },
+      { count: 1, name: "Cheapish", priceUsd: 3 },
+    ],
+    total: 23,
+    totalWithoutProxies: 3,
+  };
+  it("reports totals, missing data, proxies, and priciest cards", () => {
+    const out = formatPriceReport("my-deck", breakdown, 15);
+    expect(out).toContain("# Price report — my-deck");
+    expect(out).toContain("Total: $23.00 (2 without price data)");
+    expect(out).toContain("Without proxy candidates: $3.00");
+    expect(out).toContain("Proxy candidates (≥ $15.00), 1:");
+    expect(out).toContain("$20.00  Pricey");
+    expect(out).toContain("Most expensive:");
+  });
+  it("notes when there are no proxy candidates", () => {
+    const out = formatPriceReport("d", { ...breakdown, proxies: [] }, 15);
+    expect(out).toContain("Proxy candidates (≥ $15.00): none");
   });
 });

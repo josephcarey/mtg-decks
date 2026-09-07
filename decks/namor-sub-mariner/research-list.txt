@@ -1,0 +1,180 @@
+1 Namor the Sub-Mariner (MSH) 69
+1 Adaptive Training Post (TDC) 18
+1 Admiral's Order (RIX) 31
+1 Aether Syphon (DFT) 38
+1 Agna Qel'a (TLA) 264
+1 Amazing Acrobatics (SPM) 25
+1 Amphibian Downpour (MH3) 51
+1 Ancestral Memories (7ED) 59
+1 Aquatic Incursion (RIX) 32
+1 Archmage's Charm (OTP) 8
+1 Artistic Refusal (MOM) 46
+1 Astrologian's Planisphere (FIN) 46
+1 Attuma, Atlantean Warlord (MSH) 47
+1 Bane's Contingency (CLB) 57
+1 Bender's Waterskin (TLA) 255
+1 Bident of Thassa (LCC) 146
+1 Bloodline Pretender (MOC) 350
+1 Brineborn Cutthroat (FDN) 152
+1 Cancel (FDN) 505
+1 Case of the Ransacked Lab (MKM) 45
+1 Castle Vantress (DSC) 267
+1 Coastal Piracy (ACR) 84
+1 Commander's Insight (SOC) 113
+1 Contradict (DTK) 49
+1 Counterspell (DSC) 114
+1 Crashing Wave (TLA) 47
+1 Crown of Gondor (LTC) 75
+1 Curiosity Crafter (SOC) 191
+1 Curse of the Swine (SOC) 192
+1 Cyber Conversion (WHO) 38
+1 Dawn-Blessed Pennant (ECL) 254
+1 Deeproot Pilgrimage (LCI) 52
+1 Deeproot Waters (LCC) 152
+1 Desertion (CN2) 107
+1 Dictate of Kruphix (FDN) 587
+1 Didn't Say Please (ELD) 42
+1 Disallow (DRC) 74
+1 Disappearing Act (KLD) 43
+1 Discontinuity (M21) 48
+1 Dissipate (MID) 49
+1 Dissolve (IMA) 51
+1 Distant Melody (MOR) 32
+1 Distorting Wake (C14) 107
+1 Diviner's Portent (AFC) 15
+1 Drain Power (4ED) 67
+1 Emperor Mihail II (LCC) 155
+1 Essence Capture (NEO) 52
+1 Even the Score (SNC) 42
+1 Familiar's Ruse (MM3) 37
+1 Fated Infatuation (BNG) 39
+1 Fireshrieker (FDN) 674
+1 Flood of Recollection (CMR) 61
+1 Forbid (EXO) 35
+1 Forger's Foundry (OTC) 14
+1 Fuel for the Cause (MBS) 25
+1 Future Sight (MH1) 53
+1 Gather Specimens (ALA) 45
+1 Get Out (DSK) 60
+1 Glen Elendra's Answer (ECL) 52
+1 Gossip's Talent (BLB) 51
+1 Halimar Depths (DSC) 282
+1 Harmonized Crescendo (ECL) 54
+1 Harmonized Trio / Brainstorm (SOS) 52
+1 Heraldic Banner (FDN) 254
+1 High Tide (DMR) 54
+1 Hydro-Channeler (SOS) 54
+1 Ice Out (WOE) 54
+1 Illusionist's Gambit (C13) 47
+1 In Too Deep (NCC) 27
+1 Insidious Will (KLD) 52
+1 Invasion of Segovia / Caetus, Sea Tyrant of Segovia (MOM) 63
+1 Invoke the Winds (NEO) 58
+1 Jace's Sanctum (C19) 88
+1 Jwari Disruption / Jwari Ruins (ZNR) 64
+1 Katara's Reversal (TLE) 63
+1 Kopala, Warden of Waves (LCC) 160
+1 Long River's Pull (BLB) 58
+1 Lost in the Maze (MKM) 64
+1 Lullmage's Domination (ZNR) 66
+1 Mana Sculpt (SOS) 57
+1 Mass Manipulation (RNA) 42
+1 Master of the Pearl Trident (LCC) 162
+1 Meeting of Minds (MOM) 66
+1 Merfolk Sovereign (LCC) 164
+1 Merrow Reejerey (LCC) 165
+1 Mindspring Merfolk (DFT) 51
+1 Mission Briefing (MKC) 110
+1 Mister Fantastic, Reed Richards (MSH) 66
+1 Moonlit Meditation (EOE) 69
+1 Muddle the Mixture (RVR) 50
+1 Muse Vortex (C21) 28
+1 Mystic Sanctuary (SOC) 388
+1 Narset's Reversal (TDC) 92
+1 Neutralize (IKO) 59
+1 Octopus Umbra (C18) 11
+1 One with the Multiverse (DSC) 121
+1 Ooze Spill (TMT) 48
+1 Open into Wonder (ZNC) 34
+1 Opposition (DMR) 62
+1 Overwhelming Denial (OGW) 61
+1 Path of Ancestry (MSC) 254
+1 Perplexing Test (SOC) 197
+1 Pore Over the Pages (SOI) 79
+1 Press the Enemy (LTR) 65
+1 Proft's Eidetic Memory (MKM) 67
+1 Protective Bubble (LRW) 80
+1 Psychic Barrier (NPH) 43
+1 Pull from the Deep (JOU) 47
+1 Pull from Tomorrow (SOC) 116
+1 Pym Particles (MSH) 70
+1 Quasiduplicate (RVR) 55
+1 Quiet Contemplation (KTK) 50
+1 Reality Spasm (ROE) 81
+1 Reconnaissance Mission (MSC) 153
+1 Redirect (M13) 64
+1 Reenact the Crime (MKM) 70
+1 Refute (FDN) 48
+1 Reject Imperfection (ONE) 67
+1 Reliquary Tower (SOC) 398
+1 Reset (MB2) 170
+1 Reverse the Polarity (WHO) 54
+1 Rewind (9ED) 94
+1 Rimefire Torque (ECL) 65
+1 Rite of Replication (SOC) 202
+1 River Sneak (XLN) 70
+1 Rogue's Passage (SOC) 400
+1 Scattering Stroke (CMD) 60
+1 Seafloor Oracle (LCC) 170
+1 Secret of Bloodbending (TLA) 69
+1 Shifting Grift (OTJ) 66
+1 Silundi Vision / Silundi Isle (ZNR) 80
+1 Silver Scrutiny (DMU) 65
+1 Sleep (M19) 74
+1 Sokka's Haiku (TLA) 71
+1 Spell Snuff (MH1) 70
+1 Spellgyre (BLB) 72
+1 Spelljack (JUD) 51
+1 Spirit Water Revival (TLA) 73
+1 Stolen by the Fae (ELD) 66
+1 Stonybrook Banneret (LCC) 173
+1 Summon: Leviathan (FIN) 77
+1 Svyelun of Sea and Sky (LCC) 175
+1 Swat Away (ECL) 75
+1 Talrand, Sky Summoner (OTC) 116
+1 Teleport (CHR) 26
+1 Tempted by the Oriq (STX) 58
+1 Thassa's Intervention (THB) 72
+1 The Magic Mirror (ELD) 51
+1 The Tale of Tamiyo (DSK) 75
+1 The Water Crystal (FIN) 85
+1 Thought Vessel (MSC) 222
+1 Transcendent Message (MOM) 83
+1 Turbulent Dreams (TOR) 49
+1 Turnabout (DMR) 70
+1 Unstoppable Plan (DFT) 72
+1 Urza's Rebuff (BRO) 71
+1 Vodalian Arcanist (M21) 83
+1 Volshe Tideturner (DMU) 77
+1 Water Whip (TLE) 227
+1 Waterbender Ascension (TLA) 79
+1 Waterbending Scroll (TLA) 81
+1 Wicked Slumber (MOM) 84
+1 Wipe Away (TSR) 100
+1 Wisdom of Ages (SOS) 71
+1 Wizard Class (AFR) 81
+1 Wizard's Retort (JMP) 198
+1 Abjure (WTH) 31
+1 Archmage Emeritus (STX) 37
+1 Cast Through Time (ROE) 55
+1 Daughter of the Deep (MSC) 618
+1 Day of the Dragons (KHC) 38
+1 Deepchannel Mentor (PLST) SHM-35
+1 Frantic Search (UMA) 57
+1 Mystic Confluence (PLST) BBD-122
+1 Patchwork Banner (MSC) 207
+1 Reflections of Littjara (KHM) 73
+1 Rod of Absorption (AFC) 19
+1 Snap (DMR) 66
+1 Unwind (DOM) 72
+1 Wanderwine Farewell (ECL) 83
