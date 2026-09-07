@@ -40,6 +40,12 @@ export const DEFAULT_DISCOVER_ID = "gu";
 /** Default number of NEW candidates shown by discovery. */
 export const DEFAULT_DISCOVER_LIMIT = 25;
 
+/** Per-copy USD price at or above which `deck price` flags a card as a proxy candidate. */
+export const DEFAULT_PROXY_THRESHOLD_USD = 15;
+
+/** Default number of priciest cards listed by `deck price`. */
+export const DEFAULT_PRICE_TOP = 12;
+
 /** Repo-relative path of the derived SQLite database. */
 export const DEFAULT_DB_PATH = "data/mtg.db";
 

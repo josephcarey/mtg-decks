@@ -15,7 +15,11 @@ CI gate. Use `bun run ci` before every PR.
 - **CLI** (`bun run deck <subcommand>`):
   - `fetch-bulk` / `build-db` — download the bulk exports and build/ingest the DB.
   - `analyze <decklist>` — count / curve / pips / lands / price / tag distribution + a
-    Game-Changer lint (should report none).
+    Game-Changer lint (should report none) + a color-identity lint (`[h]`, flags any card whose
+    identity isn't a subset of the commander's, resolved from the `// Commander:` header).
+  - `price <deck-slug|decklist> [--over <usd>] [--top N]` — budget report: total, total without
+    proxy candidates, cards flagged as proxy candidates at/above the threshold (default $15), and
+    the priciest cards.
   - `discover <slug> [--id gu] [--set] [--max-price] [--limit] [--include-gamechangers] [--deck]`
     — function-tag card discovery, color-identity-subset filtered, EDHREC-ranked; `--deck` accepts a
     known deck **slug** (deduped against the ingested `deck_cards`) or a decklist path, and skips
