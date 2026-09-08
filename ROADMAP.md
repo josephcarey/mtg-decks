@@ -1,6 +1,6 @@
 # MTG Deck-Building Workspace — Roadmap
 
-Concrete, sequenced build work. Speculative or unshaped ideas live in `IDEAS.md`; when an idea is ready to build it graduates here.
+Concrete, sequenced build work. Speculative or unshaped ideas live in `IDEAS.md`; when an idea is ready to build it graduates here. The commander-per-color-identity meta-project is planned out in `CYCLE.md`.
 
 ## Done
 
