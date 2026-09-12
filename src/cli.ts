@@ -9,7 +9,7 @@
  *   discover <slug> [opts]          find tagged cards (color/price/set filters, EDHREC-ranked)
  *   affinity <tag>|--deck [opts]    rank co-occurring tags for a theme (share + lift, depth 2)
  *   edhrec <commander>|<deck> [opts] cross-reference EDHREC picks not already in the deck
- *   export <deck> [--format --out] emit a clean paste-ready decklist (e.g. for ManaBox import)
+ *   export <deck> [--format --out]  paste-ready decklist (moxfield keeps inline #tags)
  *   card <name>                     print one card's pinned text from the cache
  *   cards <deck-slug>               list a deck's cards with their resolved corpus tags
  *   search <query>                  full-text (FTS5) search over card names + oracle text
@@ -337,7 +337,10 @@ function cardsCommand(slug: string | undefined): void {
 
 function deckCommander(text: string): null | string {
   const match = /^\/\/\s*Commander:\s*(.+)$/m.exec(text);
-  return match?.[1]?.trim() ?? null;
+  const name = match?.[1]?.trim();
+  if (name === undefined) return null;
+  // Drop a trailing annotation like " ({3}{W}{U}{B}, Esper)" so the name slugs cleanly.
+  return name.replace(/\s*\(.*\)\s*$/, "").trim();
 }
 
 function deckDisplayName(text: string, slug: string): string {
@@ -421,6 +424,16 @@ async function edhrecCommand(
     if (deckText !== null && headerCommander !== null) {
       commanderName = headerCommander;
       owned = deckNameSet(parseDecklist(deckText));
+    }
+    // Prefer the ingested deck's resolved commander card name — the free-form `// Commander:`
+    // header may carry annotations (mana cost, archetype) that would corrupt the EDHREC slug.
+    if (deckExists(db, target)) {
+      const cards = deckCards(db, target);
+      if (cards.isOk()) {
+        const commander = cards.value.find((card) => card.isCommander);
+        if (commander !== undefined) commanderName = commander.name;
+        owned = deckCardNames(db, target);
+      }
     }
     if (typeof values.deck === "string") {
       owned = await resolveDeckNames(db, values.deck);

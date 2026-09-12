@@ -11,7 +11,7 @@ describe("isExportFormat", () => {
   });
 
   it("rejects unknown formats", () => {
-    expect(isExportFormat("moxfield")).toBe(false);
+    expect(isExportFormat("mtggoldfish")).toBe(false);
     expect(isExportFormat("")).toBe(false);
   });
 });
@@ -33,11 +33,20 @@ describe("formatExport", () => {
     );
   });
 
-  it("emits identical clean output for every format", () => {
+  it("emits identical clean output for the non-moxfield formats", () => {
     const entries = parseDecklist("1 Sol Ring  #ramp\n2 Island");
     const text = formatExport(entries, "text");
     expect(formatExport(entries, "manabox")).toBe(text);
     expect(formatExport(entries, "arena")).toBe(text);
+  });
+
+  it("preserves inline tags for moxfield, single-spaced, comments dropped", () => {
+    const entries = parseDecklist(
+      "// Ramp\n1 Sol Ring  #ramp #artifact\n2 Island",
+    );
+    expect(formatExport(entries, "moxfield")).toBe(
+      "1 Sol Ring #ramp #artifact\n2 Island\n",
+    );
   });
 
   it("returns an empty string for no entries", () => {

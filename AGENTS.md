@@ -33,10 +33,12 @@ CI gate. Use `bun run ci` before every PR.
     against the deck's cards). Fetches the static EDHREC JSON (cached under `data/edhrec/`, keyed by
     name-slug), color-identity-subset filtered, Game Changers excluded by default. Names that don't
     resolve to the corpus are shown flagged (`?`) rather than dropped.
-  - `export <deck-slug|path> [--format text|manabox|arena] [--out <file>]` — emit a clean,
-    paste-ready `<count> <name>` decklist (comments + inline role tags stripped) for import into
-    external tools. **ManaBox has no write API and its Google Drive `.backup` is an opaque
-    app-private blob — don't edit it; use ManaBox's deck text import instead** (see IDEAS.md).
+  - `export <deck-slug|path> [--format text|manabox|moxfield|arena] [--out <file>]` — emit a
+    paste-ready decklist for import into external tools. `moxfield` keeps inline `#tags`
+    (`<count> <name> #tag #tag`, Moxfield's bulk-edit format); `text`/`manabox`/`arena` strip
+    them to a bare `<count> <name>`. **ManaBox has no write API and its Google Drive `.backup` is
+    an opaque app-private blob — don't edit it; use ManaBox's deck text import instead** (see
+    IDEAS.md).
   - `tags <substr>` / `synergy <slug>` — search the tag catalog / navigate a tag's parent+child
     tags. Umbrella tags (e.g. `protection`) have no direct cards — use `synergy` to drill down.
   - `card <name>` / `search <query>` — pinned card text / FTS5 oracle-text search.
