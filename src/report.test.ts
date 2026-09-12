@@ -1,9 +1,15 @@
 import { describe, expect, it } from "vitest";
 
 import type { BasicsAudit, CurveSummary } from "./analysis.ts";
-import type { Candidate, DeckCardRow, TagListItem } from "./db/queries.ts";
+import type {
+  AffinityResult,
+  Candidate,
+  DeckCardRow,
+  TagListItem,
+} from "./db/queries.ts";
 
 import {
+  formatAffinity,
   formatBasics,
   formatCount,
   formatCurve,
@@ -15,6 +21,47 @@ import {
   formatTagDistribution,
   formatTagList,
 } from "./report.ts";
+
+describe("formatAffinity", () => {
+  const result: AffinityResult = {
+    rows: [
+      {
+        children: [
+          {
+            lift: 8.5,
+            seedCount: 6,
+            share: 0.6,
+            slug: "removal-fight",
+            univCount: 40,
+          },
+        ],
+        lift: 5,
+        seedCount: 10,
+        share: 0.1,
+        slug: "niche",
+        univCount: 20,
+      },
+    ],
+    seedLabel: "otag:modal",
+    seedN: 100,
+    univN: 1000,
+  };
+
+  it("renders the header, a row, and the depth-2 child", () => {
+    const out = formatAffinity(result, "lift");
+    expect(out).toContain("otag:modal");
+    expect(out).toContain("seed 100 cards");
+    expect(out).toContain("niche");
+    expect(out).toContain("5.0×");
+    expect(out).toContain("↳");
+    expect(out).toContain("removal-fight");
+  });
+
+  it("notes when nothing passes the filter", () => {
+    const empty: AffinityResult = { ...result, rows: [] };
+    expect(formatAffinity(empty, "lift")).toContain("no co-tags");
+  });
+});
 
 describe("formatCount", () => {
   it("passes at exactly 100", () => {

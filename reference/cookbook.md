@@ -49,6 +49,34 @@ This workspace builds a `bun:sqlite` database (`data/mtg.db`) from these two exp
   name; decklists use the front-face name, so name resolution falls back to a
   `name_lower LIKE '<front> // %'` match.
 
+## Tag affinity (sub-theme discovery)
+
+`bun run deck affinity <tag>|--deck <slug|path>` ranks the tags that co-occur with a seed
+theme, to surface natural **sub-themes**. Definitions (universe = all cards passing the
+`--id` / Game-Changer filters; seed = universe cards matching the tag or deck):
+
+- `share = seedCount / seedN` — fraction of the seed carrying the co-tag.
+- `lift = share / (univCount / univN)` — enrichment vs. the universe base rate. Lift surfaces
+  the _distinctive_ pairings; combine with `--min-count` to drop rare noise.
+
+Base rates are constant for a given universe, so the CLI computes `univCount`/`univN` **once**
+and reuses them for the depth-2 drill-down (each first-order tag re-seeds the same machinery).
+The whole tag×tag co-occurrence is tiny (~832K nonzero pairs over ~4,533 tags), so the
+self-join is milliseconds. The core primitive (co-occurrence for the universe cards carrying a
+tag) is:
+
+```sql
+SELECT t2.slug, COUNT(DISTINCT ct2.oracle_id) sc FROM card_tags ct1
+JOIN cards c ON c.oracle_id = ct1.oracle_id AND c.game_changer = 0 AND (c.ci_mask & ~:req) = 0
+JOIN card_tags ct2 ON ct2.oracle_id = ct1.oracle_id
+JOIN tags t1 ON t1.id = ct1.tag_id
+JOIN tags t2 ON t2.id = ct2.tag_id
+WHERE t1.slug = :seed GROUP BY t2.slug;
+```
+
+A deck seed swaps the `t1.slug` filter for `json_each(:oracleIds)` over the deck's resolved
+`oracle_id`s. See `src/affinity.ts` (pure ranking) and `affinity()` in `src/db/queries.ts`.
+
 ## Tagger GraphQL (fallback — not preferred)
 
 The full function-tag catalog is also reachable via the Tagger GraphQL API, but **bulk data is
