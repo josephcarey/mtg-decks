@@ -8,6 +8,8 @@
  *   analyze <decklist>              report card count/curve/pips/basics/price/tags + GC lint
  *   discover <slug> [opts]          find tagged cards (color/price/set filters, EDHREC-ranked)
  *   affinity <tag>|--deck [opts]    rank co-occurring tags for a theme (share + lift, depth 2)
+ *   edhrec <commander>|<deck> [opts] cross-reference EDHREC picks not already in the deck
+ *   export <deck> [--format --out]  paste-ready decklist (moxfield keeps inline #tags)
  *   card <name>                     print one card's pinned text from the cache
  *   cards <deck-slug>               list a deck's cards with their resolved corpus tags
  *   search <query>                  full-text (FTS5) search over card names + oracle text
@@ -43,7 +45,7 @@ import {
   DEFAULT_DISCOVER_ID,
   DEFAULT_DISCOVER_LIMIT,
 } from "./constants.ts";
-import { ftsMatchQuery } from "./db/model.ts";
+import { colorMask, ftsMatchQuery } from "./db/model.ts";
 import {
   affinity,
   allTagsBySlug,
@@ -63,6 +65,14 @@ import {
 } from "./db/queries.ts";
 import { buildDb } from "./db/schema.ts";
 import { deckNameSet, parseDecklist, totalCount } from "./decklist.ts";
+import { fetchCommanderPage } from "./edhrec/client.ts";
+import {
+  crossReference,
+  parseEdhrecPage,
+  parseThemes,
+  selectCardviews,
+} from "./edhrec/model.ts";
+import { EXPORT_FORMATS, formatExport, isExportFormat } from "./export.ts";
 import {
   cardKnowledgeFromRow,
   formatCardCacheMarkdown,
@@ -75,6 +85,8 @@ import {
   formatCurve,
   formatDeckCards,
   formatDiscoverTable,
+  formatEdhrec,
+  formatEdhrecThemes,
   formatGameChangerLint,
   formatPips,
   formatPrice,
@@ -98,13 +110,17 @@ const fail = (message: string): void => {
 const OPTIONS = {
   deck: { type: "string" },
   depth: { type: "string" },
+  format: { type: "string" },
   id: { type: "string" },
   "include-gamechangers": { type: "boolean" },
   limit: { type: "string" },
   "max-price": { type: "string" },
   "min-count": { type: "string" },
+  out: { type: "string" },
   set: { type: "string" },
   sort: { type: "string" },
+  theme: { type: "string" },
+  themes: { type: "boolean" },
 } as const;
 
 type OptionValues = Partial<Record<keyof typeof OPTIONS, boolean | string>>;
@@ -325,7 +341,10 @@ function cardsCommand(slug: string | undefined): void {
 
 function deckCommander(text: string): null | string {
   const match = /^\/\/\s*Commander:\s*(.+)$/m.exec(text);
-  return match?.[1]?.trim() ?? null;
+  const name = match?.[1]?.trim();
+  if (name === undefined) return null;
+  // Drop a trailing annotation like " ({3}{W}{U}{B}, Esper)" so the name slugs cleanly.
+  return name.replace(/\s*\(.*\)\s*$/, "").trim();
 }
 
 function deckDisplayName(text: string, slug: string): string {
@@ -382,6 +401,123 @@ async function discoverCommand(
   } finally {
     db.close();
   }
+}
+
+async function edhrecCommand(
+  target: string | undefined,
+  values: OptionValues,
+): Promise<void> {
+  if (target === undefined) {
+    fail(
+      "usage: deck edhrec <commander-name|deck-slug> [--theme <slug>] [--themes] [--deck <slug|path>] [--id wubrg] [--limit N] [--include-gamechangers]",
+    );
+    return;
+  }
+  const dbResult = openDatabase(DEFAULT_DB_PATH);
+  if (dbResult.isErr()) {
+    fail(dbResult.error.message);
+    return;
+  }
+  const db = dbResult.value;
+  try {
+    let commanderName = target;
+    let owned: ReadonlySet<string> = new Set();
+
+    const deckText = await readDeckText(target);
+    const headerCommander = deckText === null ? null : deckCommander(deckText);
+    if (deckText !== null && headerCommander !== null) {
+      commanderName = headerCommander;
+      owned = deckNameSet(parseDecklist(deckText));
+    }
+    // Prefer the ingested deck's resolved commander card name — the free-form `// Commander:`
+    // header may carry annotations (mana cost, archetype) that would corrupt the EDHREC slug.
+    if (deckExists(db, target)) {
+      const cards = deckCards(db, target);
+      if (cards.isOk()) {
+        const commander = cards.value.find((card) => card.isCommander);
+        if (commander !== undefined) commanderName = commander.name;
+        owned = deckCardNames(db, target);
+      }
+    }
+    if (typeof values.deck === "string") {
+      owned = await resolveDeckNames(db, values.deck);
+    }
+
+    const theme = typeof values.theme === "string" ? values.theme : undefined;
+
+    if (values.themes === true) {
+      const rootResult = await fetchCommanderPage(commanderName);
+      if (rootResult.isErr()) {
+        fail(rootResult.error.message);
+        return;
+      }
+      out(formatEdhrecThemes(commanderName, parseThemes(rootResult.value)));
+      return;
+    }
+
+    const pageResult = await fetchCommanderPage(commanderName, theme);
+    if (pageResult.isErr()) {
+      fail(pageResult.error.message);
+      return;
+    }
+    const page = parseEdhrecPage(pageResult.value);
+    if (page === null) {
+      fail("could not parse EDHREC page (format may have changed)");
+      return;
+    }
+    const cardviews = selectCardviews(page);
+    const rows = getCardsByNames(
+      db,
+      cardviews.map((view) => view.name),
+    );
+    const commanderRow = getCard(db, commanderName);
+    const idMask =
+      typeof values.id === "string"
+        ? colorMask([...values.id.toUpperCase()])
+        : (commanderRow?.ci_mask ?? 0b1_1111);
+    const recommendations = crossReference(cardviews, {
+      idMask,
+      includeGameChangers: values["include-gamechangers"] === true,
+      limit: intOption(values.limit, DEFAULT_DISCOVER_LIMIT),
+      owned,
+      resolve: (nameLower) => rows.get(nameLower),
+    });
+    const label = theme === undefined ? commanderName : `${commanderName} · ${theme}`;
+    out(formatEdhrec(label, recommendations));
+  } finally {
+    db.close();
+  }
+}
+
+async function exportCommand(
+  target: string | undefined,
+  values: OptionValues,
+): Promise<void> {
+  if (target === undefined) {
+    fail(
+      `usage: deck export <deck-slug|path> [--format ${EXPORT_FORMATS.join("|")}] [--out <file>]`,
+    );
+    return;
+  }
+  const format = typeof values.format === "string" ? values.format : "text";
+  if (!isExportFormat(format)) {
+    fail(`invalid --format "${format}" (use ${EXPORT_FORMATS.join(", ")})`);
+    return;
+  }
+  const text = await readDeckText(target);
+  if (text === null) {
+    fail(`cannot read decklist: ${target}`);
+    return;
+  }
+  const entries = parseDecklist(text);
+  const output = formatExport(entries, format);
+  const outPath = typeof values.out === "string" ? values.out : undefined;
+  if (outPath === undefined) {
+    process.stdout.write(output);
+    return;
+  }
+  await writeFile(outPath, output);
+  out(`wrote ${outPath} (${String(entries.length)} lines, ${format})`);
 }
 
 async function fetchBulk(): Promise<void> {
@@ -481,6 +617,17 @@ function parseSort(value: boolean | string | undefined): AffinitySort | null {
   return null;
 }
 
+/** Read a deck's decklist text from a slug (decks/<slug>/list.txt) or a direct file path. */
+async function readDeckText(target: string): Promise<null | string> {
+  const direct = await Bun.file(target)
+    .text()
+    .catch(() => null);
+  if (direct !== null) return direct;
+  return await Bun.file(join(DECKS_DIR, target, "list.txt"))
+    .text()
+    .catch(() => null);
+}
+
 /**
  * Resolve the `--deck` argument (a known deck slug OR a decklist file path) to the set of
  * lowercased card names used to dedupe discovery results.
@@ -551,6 +698,14 @@ async function run(argv: readonly string[]): Promise<void> {
       await discoverCommand(positionals[0], values);
       return;
     }
+    case "edhrec": {
+      await edhrecCommand(positionals[0], values);
+      return;
+    }
+    case "export": {
+      await exportCommand(positionals[0], values);
+      return;
+    }
     case "fetch-bulk": {
       await fetchBulk();
       return;
@@ -579,7 +734,7 @@ async function run(argv: readonly string[]): Promise<void> {
     }
     default: {
       out(
-        "Usage: deck <fetch-bulk|build-db|analyze|discover|affinity|card|cards|search|tags|synergy|sql|gen-reference> [...]",
+        "Usage: deck <fetch-bulk|build-db|analyze|discover|affinity|edhrec|export|card|cards|search|tags|synergy|sql|gen-reference> [...]",
       );
       if (command !== undefined && command !== "help") process.exitCode = 1;
     }

@@ -13,7 +13,7 @@ Unfiltered, speculative, or research-dependent ideas. **Not** committed work. Pr
 ## Integrations to explore (see Research)
 
 - Import decks directly from **Moxfield / Archidekt** (API) instead of pasting.
-- **EDHREC** data integration (popular cards, synergy, average decks).
+- ~~**EDHREC** data integration~~ — shipped as `deck edhrec` (see Roadmap "Done").
 - **Commander Spellbook** (combo database) for the combo detector.
 
 ## Smaller / quality-of-life
@@ -31,6 +31,7 @@ Unfiltered, speculative, or research-dependent ideas. **Not** committed work. Pr
 - **EDHREC** — no official API, but stable static JSON at `https://json.edhrec.com/pages/commanders/<slug>.json` (popular/high-synergy cards, themes, related commanders). Keyed by **name-slug, not oracle_id** (needs mapping). Easy GETs, cache hard, isolate behind an adapter. Medium risk (unofficial, no license grant).
 - **Archidekt** — undocumented but dev-tolerated read API `https://archidekt.com/api/decks/{id}/` (has `oracleCard`); good for deck _import_. Low-medium risk.
 - **Moxfield** — restrictive; no public API, requires a registered User-Agent by request. High policy risk — defer.
+- **ManaBox** (sync-out target) — **no public write API**, so nothing can be pushed into the app programmatically. Its Google Drive backup (a `.backup` file in a `ManaBox Backups` folder; iCloud uses a `ManaBox` folder) is an **opaque, app-private blob** intended only for the in-app Restore flow. It is likely SQLite internally, but the schema is undocumented and unversioned, and Restore **replaces the entire collection** — so editing that file is brittle and destructive (one wrong assumption bricks the backup / wipes real data). **Verdict: do not surgery the Drive backup.** The supported, non-destructive path is ManaBox's **deck text import** (`<count> <card name>` per line — exactly our `list.txt` shape minus comments/tags) or **collection CSV import** (columns incl. `Name`, `Set code`, `Collector number`, `Foil`, `Quantity`, `Scryfall ID`). Shipped: `deck export` emits the clean text list. Follow-up if we ever want printing-accurate CSV: we'd need a printing-level data source (oracle bulk pins only one representative printing).
 - **MTGJSON** — bulk aggregator that ships as **SQLite**; adds legalities, rulings, and **price history** (Scryfall only gives daily snapshots). Drop in alongside our DB when we want those. Joins via `identifiers.scryfallOracleId`.
 - **Scryfall non-bulk** we may underuse: `/cards/collection` (batch 75 by oracle_id/name — great for resolving decklists), `/cards/:id/rulings`.
 - **Recommendation:** integrate Commander Spellbook bulk first (combo detector), then EDHREC JSON (recommendations). Defer deck-import sources; add MTGJSON opportunistically.

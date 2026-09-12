@@ -27,6 +27,20 @@ CI gate. Use `bun run ci` before every PR.
     base rate). `--depth 2` expands each first-order tag into its own top co-tags (`seed → X → Y`
     path drill-down). Great for finding a natural sub-theme for a "main-theme" commander (e.g.
     `affinity modal --id gur` for Riku) or reverse-engineering what defines an existing deck.
+  - `edhrec <commander-name|deck-slug> [--theme <slug>] [--themes] [--deck <slug|path>] [--id wubrg]
+[--limit N] [--include-gamechangers]` — cross-reference EDHREC's high-synergy + top picks against a
+    deck. Accepts a commander name OR an ingested deck slug (reads the `// Commander:` header and diffs
+    against the deck's cards). Fetches the static EDHREC JSON (cached under `data/edhrec/`, keyed by
+    name-slug), color-identity-subset filtered, Game Changers excluded by default. Names that don't
+    resolve to the corpus are shown flagged (`?`) rather than dropped. `--themes` lists the commander's
+    EDHREC themes (from `tag_counts`); `--theme <slug>` cross-references that theme's subpage instead of
+    the root page — useful for surfacing sub-theme cards (e.g. `--theme theft` for Saruman).
+  - `export <deck-slug|path> [--format text|manabox|moxfield|arena] [--out <file>]` — emit a
+    paste-ready decklist for import into external tools. `moxfield` keeps inline `#tags`
+    (`<count> <name> #tag #tag`, Moxfield's bulk-edit format); `text`/`manabox`/`arena` strip
+    them to a bare `<count> <name>`. **ManaBox has no write API and its Google Drive `.backup` is
+    an opaque app-private blob — don't edit it; use ManaBox's deck text import instead** (see
+    IDEAS.md).
   - `tags <substr>` / `synergy <slug>` — search the tag catalog / navigate a tag's parent+child
     tags. Umbrella tags (e.g. `protection`) have no direct cards — use `synergy` to drill down.
   - `card <name>` / `search <query>` — pinned card text / FTS5 oracle-text search.
@@ -60,7 +74,7 @@ CI gate. Use `bun run ci` before every PR.
 
 ## Repo conventions
 
-- One folder per deck under decks/<deck-slug>/ containing: list.txt (the decklist) and notes.md (a decision log / 'why' history).
+- One folder per deck under decks/<deck-slug>/ containing: list.txt (the decklist), notes.md (a decision log / 'why' history), and CONSIDER.md (a running shortlist of cards/ideas to weigh on the next pass — seeded from EDHREC reconciliations and owner ideas; nothing in it is committed to the list).
 - Decklist format: '<count> <card name>' one per line; '// ' comments for section headers; header comment block with commander, archetype, card count, and proxy candidates.
 - Inline role tags: list.txt supports optional inline role tags appended after the card name, with two spaces before the first tag and each token starting with '#', e.g. `1 Avenger of Zendikar  #payoff #tokens #landfall`. Tags are informational and are stripped before card lookups; `bun run deck analyze` reports a tag distribution.
 - Shared tag vocabulary (reuse these for consistency across decks):

@@ -40,20 +40,22 @@ Changers list (53 cards) — the analyzer lints against it. See
 
 `bun run deck <subcommand>` (alias for `bun src/cli.ts`):
 
-| Subcommand                      | What it does                                                            |
-| ------------------------------- | ----------------------------------------------------------------------- |
-| `fetch-bulk`                    | Download the Scryfall bulk exports into `data/`.                        |
-| `build-db`                      | Build `data/mtg.db` from the bulk exports and ingest `decks/`.          |
-| `analyze <decklist>`            | Report count / curve / pips / lands / price / tags + Game-Changer lint. |
-| `discover <slug> [opts]`        | Find cards for a function tag, EDHREC-ranked (see options below).       |
-| `affinity <tag>\|--deck [opts]` | Rank tags that co-occur with a theme (share + lift, optional depth 2).  |
-| `card <name>`                   | Print one card's pinned mana cost / type / oracle text.                 |
-| `cards <deck-slug>`             | List an ingested deck's cards with their resolved corpus tags.          |
-| `search <query>`                | Full-text (FTS5) search over card names + oracle text.                  |
-| `tags <substr>`                 | Search the tag catalog by slug / label / alias.                         |
-| `synergy <slug>`                | Show a tag's parent and child tags (navigate the taxonomy).             |
-| `sql <query>`                   | Run a single **read-only** `SELECT` against the cache.                  |
-| `gen-reference [--deck <path>]` | Regenerate `reference/oracle-tags.txt` + the per-deck card cache.       |
+| Subcommand                       | What it does                                                              |
+| -------------------------------- | ------------------------------------------------------------------------- |
+| `fetch-bulk`                     | Download the Scryfall bulk exports into `data/`.                          |
+| `build-db`                       | Build `data/mtg.db` from the bulk exports and ingest `decks/`.            |
+| `analyze <decklist>`             | Report count / curve / pips / lands / price / tags + Game-Changer lint.   |
+| `discover <slug> [opts]`         | Find cards for a function tag, EDHREC-ranked (see options below).         |
+| `affinity <tag>\|--deck [opts]`  | Rank tags that co-occur with a theme (share + lift, optional depth 2).    |
+| `edhrec <commander>\|<deck>`     | EDHREC high-synergy + top picks the deck isn't running (CI-filtered). `--themes` lists themes; `--theme <slug>` scouts a sub-theme. |
+| `export <deck> [--format --out]` | Paste-ready decklist; `moxfield` keeps inline `#tags`, others strip them. |
+| `card <name>`                    | Print one card's pinned mana cost / type / oracle text.                   |
+| `cards <deck-slug>`              | List an ingested deck's cards with their resolved corpus tags.            |
+| `search <query>`                 | Full-text (FTS5) search over card names + oracle text.                    |
+| `tags <substr>`                  | Search the tag catalog by slug / label / alias.                           |
+| `synergy <slug>`                 | Show a tag's parent and child tags (navigate the taxonomy).               |
+| `sql <query>`                    | Run a single **read-only** `SELECT` against the cache.                    |
+| `gen-reference [--deck <path>]`  | Regenerate `reference/oracle-tags.txt` + the per-deck card cache.         |
 
 `discover` options: `--id <colors=gu>` (color-identity subset), `--set <code>`,
 `--max-price <usd>`, `--limit <n=25>`, `--include-gamechangers`, `--deck <slug|path>` (skip cards
