@@ -74,7 +74,7 @@ CI gate. Use `bun run ci` before every PR.
 
 ## Repo conventions
 
-- One folder per deck under decks/<deck-slug>/ containing: list.txt (the decklist) and notes.md (a decision log / 'why' history).
+- One folder per deck under decks/<deck-slug>/ containing: list.txt (the decklist), notes.md (a decision log / 'why' history), and CONSIDER.md (a running shortlist of cards/ideas to weigh on the next pass — seeded from EDHREC reconciliations and owner ideas; nothing in it is committed to the list).
 - Decklist format: '<count> <card name>' one per line; '// ' comments for section headers; header comment block with commander, archetype, card count, and proxy candidates.
 - Inline role tags: list.txt supports optional inline role tags appended after the card name, with two spaces before the first tag and each token starting with '#', e.g. `1 Avenger of Zendikar  #payoff #tokens #landfall`. Tags are informational and are stripped before card lookups; `bun run deck analyze` reports a tag distribution.
 - Shared tag vocabulary (reuse these for consistency across decks):
