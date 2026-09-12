@@ -51,18 +51,36 @@ distinct from those decks.
   Etali, Tectonic Giant, Titan of Industry, Bonehoard Dracosaur) plus X-burn (Comet Storm, Fireball).
 - **Lands (36):** 19 nonbasics (Temur duals/Triome/Pathways/painlands) + 17 basics.
 
-## Manabase reasoning
-Analyzer pip split came out **R 51% / G 28% / U 22%**, so basics were skewed to match:
-**7 Mountain / 6 Forest / 4 Island**. Green stays well-represented despite fewer pips because the
-green ramp spells fetch Forests (and duals), effectively raising green sources early. Fetch effects
-are all basic-land tutors (Cultivate etc.), so the fetch-vs-basics audit is healthy — no fetch
-outstrips its basic targets.
+## Manabase reasoning (sources-per-color method)
+Rather than matching *basics* to pips, we count **every land as a source for each color it can
+produce** (basics + duals + triomes + Command Tower/Exotic Orchard as all-colors) and compare that
+supply to pip demand:
+
+| Color | Pip demand | Land sources |
+|-------|-----------|--------------|
+| R | ~49% (40 pips) | 22 |
+| G | ~28% (23 pips) | 19 |
+| U | ~22% (18 pips) | 18 |
+
+The Temur duals quietly over-serve green/blue, so a naive basics-only skew leaves red (the workhorse,
+half the deck's pips) with no source edge. We tuned the **basics to 9 Mountain / 5 Forest / 3 Island**,
+which lifts red to a clear lead (R22 > G19 > U18) that tracks demand, while green stays safe — 19
+sources plus green ramp spells that fetch more Forests early (8 Forest-typed fetch targets remain).
+All colors clear Karsten's single- and double-pip thresholds. Rocks reinforce red (Izzet, Gruul, and
+Arcane Signet all make red). Fetch effects are all basic-land tutors, so the fetch-vs-basics audit is
+healthy.
 
 ## Budget
-Mid-budget (~$194 per analyzer). We dropped **Training Center** (a ~$19 marginal dual) for a cheap
-untapped **Barkchannel Pathway** to hold budget discipline without hurting fixing. Remaining chase
-cards flagged as **proxy candidates** in the list header: Ketria Triome, Delayed Blast Fireball,
-Bonehoard Dracosaur, Eldrazi Confluence.
+Mid-budget (~$185 per analyzer). Two budget/theme-driven cuts:
+- Dropped **Training Center** (a ~$19 marginal dual) for a cheap untapped **Barkchannel Pathway**.
+- Dropped **Sword of Forge and Frontier** (a generically-good artifact, not a Riku card) for
+  **Doc Aurlock, Grizzled Genius** — "spells you cast from exile cost {2} less," which multiplies the
+  entire impulse / cast-from-exile package (the real bottleneck of impulse draw is *affording* the
+  exiled cards) and even discounts Riku's own mode-1 exiles.
+
+Remaining chase cards flagged as **proxy candidates** in the list header: Ketria Triome, Delayed Blast
+Fireball, Bonehoard Dracosaur, Eldrazi Confluence — all core to the theme, none replaceable without
+weakening it. Their cost is mostly recent-set scarcity, not raw power.
 
 ## Guardrails honored
 No Game Changers (analyzer lint clean), no non-games (no stax / MLD / extra-turns / infinite combo),

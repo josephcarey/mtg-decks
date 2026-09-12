@@ -360,14 +360,13 @@ Menace
 Whenever one or more creatures you control deal combat damage to a player, create a Treasure token.
 Sacrifice a Treasure: Exile the top card of your library. You may play that card this turn.
 
-## Sword of Forge and Frontier
+## Doc Aurlock, Grizzled Genius
 
-- **Mana cost:** {3} · **MV:** 3
-- **Type:** Artifact — Equipment
+- **Mana cost:** {G}{U} · **MV:** 2
+- **Type:** Legendary Creature — Bear Druid
 
-Equipped creature gets +2/+2 and has protection from red and from green.
-Whenever equipped creature deals combat damage to a player, exile the top two cards of your library. You may play those cards this turn. You may play an additional land this turn.
-Equip {2}
+Spells you cast from your graveyard or from exile cost {2} less to cast.
+Plotting cards from your hand costs {2} less.
 
 ## Archmage Emeritus
 

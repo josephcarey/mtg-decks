@@ -55,7 +55,7 @@
 1 Valakut Exploration  #payoff #draw
 1 Outpost Siege  #payoff #draw
 1 Professional Face-Breaker  #payoff #draw
-1 Sword of Forge and Frontier  #payoff #draw
+1 Doc Aurlock, Grizzled Genius  #payoff #enabler
 1 Archmage Emeritus  #payoff #draw
 1 Laelia, the Blade Reforged  #payoff #wincon
 1 Etali, Primal Storm  #payoff #wincon
@@ -106,6 +106,6 @@
 1 Barkchannel Pathway  #land #fixing
 1 Cascade Bluffs  #land #fixing
 1 Exotic Orchard  #land #fixing
-6 Forest  #land
-4 Island  #land
-7 Mountain  #land
+5 Forest  #land
+3 Island  #land
+9 Mountain  #land
