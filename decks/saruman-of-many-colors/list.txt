@@ -1,0 +1,119 @@
+// Commander: Saruman of Many Colors ({3}{W}{U}{B}, Esper)
+// Archetype: Spellslinger / Theft — "Many Colors, Many Thefts"
+// Cast your 2nd spell each turn -> mill + copy/steal opponents' spells; LOTR villains spine;
+//   light amass/Wraith "armies of Isengard" token payoff.
+// Cycle slot: WUB Esper (owns spellslinger). See CYCLE.md.
+// 100 cards (1 commander + 63 nonland + 36 lands)
+// No Game Changers (owner's table bans them). Extra-turns allowed here (telegraphed, on-flavor).
+// PROXY CANDIDATES ($$): Mystic Remora, Bribery, Metallurgic Summonings
+// Tags: role/archetype tags after each card (see AGENTS.md)
+
+1 Saruman of Many Colors  #commander
+
+// --- Villain spine (LOTR, Esper-legal) ---
+1 Gríma, Saruman's Footman  #theft #payoff #villain
+1 Sauron, the Necromancer  #theft #payoff #villain
+1 Lobelia Sackville-Baggins  #theft #ramp #villain
+1 Gothmog, Morgul Lieutenant  #amass #payoff #villain
+1 Gríma Wormtongue  #amass #utility #villain
+1 King of the Oathbreakers  #payoff #protection #villain
+
+// --- Spellslinger payoffs / amass makers ---
+1 Storm of Saruman  #payoff #copy #villain
+1 Saruman the White  #payoff #amass #villain
+1 Lord of the Nazgûl  #payoff #tokens #villain
+1 Talrand, Sky Summoner  #payoff #tokens
+1 Murmuring Mystic  #payoff #tokens
+1 Metallurgic Summonings  #payoff #tokens #wincon
+1 Docent of Perfection  #payoff #tokens
+1 Archmage Emeritus  #payoff #draw
+1 Baral, Chief of Compliance  #enabler #ramp
+
+// --- Amass enchantments ---
+1 Dreadhorde Invasion  #amass #tokens
+1 March from the Black Gate  #amass #tokens
+
+// --- Copy / theft spells ---
+1 Bribery  #theft #wincon
+1 Agent of Treachery  #theft
+1 Narset's Reversal  #copy #interaction
+1 Twincast  #copy
+1 Rite of Replication  #copy #tokens
+1 Control Magic  #theft
+1 Corrupted Conscience  #theft #wincon
+
+// --- Card draw / cantrips (fuel the 2nd-spell trigger) ---
+1 Ponder  #draw
+1 Preordain  #draw
+1 Brainstorm  #draw
+1 Consider  #draw
+1 Anticipate  #draw
+1 Curate  #draw
+1 Frantic Search  #draw #enabler
+1 Night's Whisper  #draw
+1 Sign in Blood  #draw
+1 Fact or Fiction  #draw
+1 Behold the Multiverse  #draw
+1 Painful Truths  #draw
+1 Windfall  #draw
+1 Mystic Remora  #draw
+
+// --- Interaction (instants/sorceries also feed the trigger) ---
+1 Swords to Plowshares  #interaction
+1 Path to Exile  #interaction
+1 Fatal Push  #interaction
+1 Go for the Throat  #interaction
+1 Anguished Unmaking  #interaction
+1 Counterspell  #interaction
+1 An Offer You Can't Refuse  #interaction #villain
+1 Saruman's Trickery  #interaction #amass
+1 Brazen Borrower  #interaction #tempo
+1 Supreme Verdict  #interaction
+1 Damn  #interaction
+1 Toxic Deluge  #interaction
+
+// --- Extra turns (telegraphed; Saruman is a turn ahead) ---
+1 Time Warp  #extra-turn
+1 Alrund's Epiphany  #extra-turn
+
+// --- Ramp / rocks / fixing ---
+1 Sol Ring  #ramp
+1 Arcane Signet  #ramp #fixing
+1 Talisman of Dominance  #ramp #fixing
+1 Talisman of Progress  #ramp #fixing
+1 Dimir Signet  #ramp #fixing
+1 Azorius Signet  #ramp #fixing
+1 Orzhov Signet  #ramp #fixing
+1 Fellwar Stone  #ramp #fixing
+1 Mind Stone  #ramp #draw
+
+// --- Protection ---
+1 Swiftfoot Boots  #protection
+1 Lightning Greaves  #protection
+
+// --- Lands (36) ---
+1 Command Tower  #land #fixing
+1 Arcane Sanctum  #land #fixing
+1 Barad-dûr  #land #amass #villain
+1 Reliquary Tower  #land #utility
+1 Godless Shrine  #land #fixing
+1 Watery Grave  #land #fixing
+1 Hallowed Fountain  #land #fixing
+1 Drowned Catacomb  #land #fixing
+1 Glacial Fortress  #land #fixing
+1 Isolated Chapel  #land #fixing
+1 Darkslick Shores  #land #fixing
+1 Seachrome Coast  #land #fixing
+1 Concealed Courtyard  #land #fixing
+1 Temple of Silence  #land #fixing
+1 Temple of Deceit  #land #fixing
+1 Temple of Enlightenment  #land #fixing
+1 Fetid Pools  #land #fixing
+1 Irrigated Farmland  #land #fixing
+1 Shineshadow Snarl  #land #fixing
+1 Mystic Sanctuary  #land #utility
+1 Fabled Passage  #land #fixing
+1 Evolving Wilds  #land #fixing
+7 Island  #land
+5 Swamp  #land
+2 Plains  #land

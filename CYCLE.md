@@ -8,12 +8,13 @@ whole cycle (no duplicate landfall, only one spellslinger, etc.). Kindred/typal 
 theme — spent here on Namor (Merfolk) and Torgal (Dog/Wolf).
 
 **Owner priorities** (see `PRIORITIES.md`): no Game Changers, no non-games (infinite combo /
-stax / MLD / extra-turns), no Day/Night, mid-budget with proxies OK, theme-first, casual
+stax / MLD / extra-turn chains — single telegraphed extra turns and incidental combos are OK
+as flagged per-deck overrides), no Day/Night, mid-budget with proxies OK, theme-first, casual
 Bracket 3.
 
 **Status:** planning complete — all commanders chosen. Each deck gets built later in its own
 session, one `decks/<slug>/` folder at a time (`list.txt` + `notes.md` per repo conventions).
-Nothing built yet except **The Wandering Minstrel**.
+Nothing built yet except **The Wandering Minstrel** and **Saruman of Many Colors** (WUB).
 
 ## Mono-color
 
@@ -50,7 +51,7 @@ Nothing built yet except **The Wandering Minstrel**.
 
 | Identity   | Commander                       | Archetype                                |
 | ---------- | ------------------------------- | ---------------------------------------- |
-| WUB Esper  | Saruman of Many Colors          | Spellslinger / theft (owns spellslinger) |
+| WUB Esper  | Saruman of Many Colors _(built)_ | Spellslinger / theft (owns spellslinger) |
 | UBR Grixis | Marchesa villains _(pre-built)_ | Villain-typal                            |
 | BRG Jund   | Thantis, the Warweaver          | Goad / politics                          |
 | RGW Naya   | Aragorn, Hornburg Hero          | Renown counters-aggro                    |

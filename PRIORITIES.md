@@ -6,6 +6,9 @@ Owner's standing preferences. The tooling and any agent should apply these by de
 
 - **Game Changers:** avoid by default. Allow one only when it is _essential_ to the deck's core strategy — not as a generic power upgrade. Keep leaning on the Scryfall `game_changer` flag to flag them.
 - **"Non-games" — avoid across all decks:** infinite combos, stax / resource denial, mass land destruction, extra-turn chains — anything where opponents don't get to play. The only exception is a single deck whose _explicit whole point_ is that theme (e.g. one dedicated MLD deck). Such effects must never leak into any other deck.
+  - **Extra turns (clarified):** what's banned is extra-turn _chains / lock loops_. A **single, telegraphed** extra-turn spell used for value or flavor is allowed as a **per-deck override** when it fits the commander's identity (e.g. Saruman of Many Colors, who is thematically "a turn ahead"). Keep it to a couple, don't chain them, and flag the override in the deck's `notes.md`.
+  - **Infinite combos (clarified):** only **intentional / dedicated** combos are banned. An **incidental** combo that exists only because each piece was independently justified for the deck is fine — don't contort the list to remove it. Just never _assemble_ or _tutor toward_ one as a game plan.
+  - **Per-deck overrides** to any of the above must be called out in the deck's `list.txt` header and `notes.md`.
 
 ## Budget
 
