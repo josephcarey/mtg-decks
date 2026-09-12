@@ -15,6 +15,7 @@ Owner's standing preferences. The tooling and any agent should apply these by de
 - Pod proxies freely, so price is **not a hard barrier**.
 - Still keep a **mid-budget discipline**: a few (~3–4) genuinely high-impact expensive cards per deck are fine; do **not** pay up for marginal upgrades that are ~95% as good as a cheaper option (classic example: skip the pricey land when a cheap one does the job).
 - **Budget-friendliness is a positive**, especially when a cheaper choice increases set coherence / theme — worth it even if strictly weaker.
+- **Expect a "talk me through the most expensive cards" walkthrough after every initial build** — the agent should give it proactively (keep / proxy / cut verdicts), not wait to be asked.
 
 ## Theme vs. power
 
