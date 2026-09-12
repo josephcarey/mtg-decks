@@ -77,6 +77,48 @@ WHERE t1.slug = :seed GROUP BY t2.slug;
 A deck seed swaps the `t1.slug` filter for `json_each(:oracleIds)` over the deck's resolved
 `oracle_id`s. See `src/affinity.ts` (pure ranking) and `affinity()` in `src/db/queries.ts`.
 
+## Manabase — sources per color (count duals, not just basics)
+
+`deck analyze` reports pip demand (`[c]`) and lists only **basic** lands (`[d]`). Basics alone
+understate fixing: dual/triome/flex lands already skew supply toward some colors, so balancing
+basics-against-basics can look even while the real source counts are lopsided. Count **every land
+as a source for each color it can produce** and compare to pip demand:
+
+- Each dual → both its colors; triome / Command Tower / Exotic Orchard → all identity colors;
+  MDFC pathway → both faces.
+- Rule of thumb (Karsten): ~9–10 sources for a single-pip card, ~13–14 for a double-pip.
+- The color with the highest pip share (the "workhorse") usually needs the basics tilted its way,
+  because the multicolor lands tend to over-serve the other two colors.
+
+Quick tally over a deck's lands (parse the produced-color symbols out of each land's oracle text;
+handle Command Tower / Exotic Orchard / pathways specially):
+
+```ts
+// bun run <script>.ts  — sources per color for one deck
+import { Database } from "bun:sqlite";
+const db = new Database("data/mtg.db", { readonly: true });
+const rows = db.query(
+  `SELECT dc.count qty, c.name, c.oracle_text otext FROM deck_cards dc
+   JOIN cards c ON c.oracle_id = dc.oracle_id
+   WHERE dc.deck_slug = ?1 AND c.type_line LIKE '%Land%'`
+).all("<deck-slug>") as { qty: number; name: string; otext: string }[];
+const src: Record<string, number> = { W: 0, U: 0, B: 0, R: 0, G: 0 };
+const basic: Record<string, string> = { Plains: "W", Island: "U", Swamp: "B", Mountain: "R", Forest: "G" };
+for (const r of rows) {
+  const colors = new Set<string>();
+  if (basic[r.name]) colors.add(basic[r.name]);
+  else if (r.name.startsWith("Command Tower") || r.name.startsWith("Exotic Orchard"))
+    for (const c of "WUBRG") colors.add(c); // narrow to the deck's identity in practice
+  else for (const c of "WUBRG") if ((r.otext ?? "").includes(`{${c}}`)) colors.add(c);
+  // NB: pathways have empty oracle_text in bulk data — add their two faces by hand.
+  for (const c of colors) src[c] += r.qty ?? 1;
+}
+console.log(src);
+```
+
+See `decks/riku-of-many-paths/notes.md` for a worked example (demand R49/G28/U22 vs. sources
+R22/G19/U18 after tilting basics to 9 Mountain / 5 Forest / 3 Island).
+
 ## Tagger GraphQL (fallback — not preferred)
 
 The full function-tag catalog is also reachable via the Tagger GraphQL API, but **bulk data is
