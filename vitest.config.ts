@@ -8,6 +8,7 @@ export default defineConfig({
         "src/cli.ts",
         "src/db/schema.ts",
         "src/db/queries.ts",
+        "src/edhrec/client.ts",
         "src/scryfall/bulk.ts",
       ],
       include: ["src/**/*.ts"],

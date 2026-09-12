@@ -16,6 +16,7 @@ import type {
   DeckCardRow,
   TagListItem,
 } from "./db/queries.ts";
+import type { Recommendation } from "./edhrec/model.ts";
 
 import { PIP_COLORS, TARGET_DECK_SIZE } from "./constants.ts";
 
@@ -191,6 +192,33 @@ export function formatDiscoverTable(
     return `${marker}  ${money(candidate.priceUsd).padStart(7)}  ${mv}  ${candidate.name}  — ${candidate.typeLine}`;
   });
   return [`otag:${slug} — ${description}`, ...rows].join("\n");
+}
+
+/**
+ * Format an EDHREC cross-reference: recommended cards not already in the deck, ranked by the
+ * order EDHREC returned them, with synergy, inclusion %, and (when resolved) price.
+ * @param commander - The commander whose page was fetched.
+ * @param recommendations - Cross-referenced recommendations.
+ * @returns Multi-line output, or a not-found note.
+ */
+export function formatEdhrec(
+  commander: string,
+  recommendations: readonly Recommendation[],
+): string {
+  const header = `EDHREC — ${commander}: ${String(recommendations.length)} suggestions not in deck`;
+  if (recommendations.length === 0) {
+    return `${header}\n  (nothing new — the deck already runs EDHREC's top picks, or the name didn't resolve)`;
+  }
+  let rank = 0;
+  const rows = recommendations.map((rec) => {
+    const marker = String(++rank).padStart(3);
+    const synergy = `${rec.synergy >= 0 ? "+" : ""}${(rec.synergy * 100).toFixed(0)}%`;
+    const inclusion = `${(rec.inclusion * 100).toFixed(0)}%`.padStart(4);
+    const flag = rec.resolved ? " " : "?";
+    const type = rec.typeLine === null ? "" : `  — ${rec.typeLine}`;
+    return `${marker}${flag} ${money(rec.priceUsd).padStart(7)}  syn ${synergy.padStart(5)}  in ${inclusion}  ${rec.name}${type}`;
+  });
+  return [header, "  (? = not in local corpus)", ...rows].join("\n");
 }
 
 /**

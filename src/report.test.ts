@@ -15,6 +15,7 @@ import {
   formatCurve,
   formatDeckCards,
   formatDiscoverTable,
+  formatEdhrec,
   formatGameChangerLint,
   formatPips,
   formatPrice,
@@ -244,5 +245,42 @@ describe("formatDeckCards", () => {
     expect(out).toContain("★ 1x The Wandering Minstrel");
     expect(out).toContain("[landfall tokens]");
     expect(out).toContain("? 1x Brand New Card  [—]");
+  });
+});
+
+describe("formatEdhrec", () => {
+  it("ranks suggestions with synergy, inclusion, price, and an unresolved flag", () => {
+    const out = formatEdhrec("Riku of Two Reflections", [
+      {
+        inclusion: 0.42,
+        name: "Tatyova, Benthic Druid",
+        numDecks: 84,
+        priceUsd: 1.5,
+        resolved: true,
+        synergy: 0.31,
+        typeLine: "Legendary Creature",
+      },
+      {
+        inclusion: 0.1,
+        name: "Mystery Card",
+        numDecks: 10,
+        priceUsd: null,
+        resolved: false,
+        synergy: -0.05,
+        typeLine: null,
+      },
+    ]);
+    expect(out).toContain("EDHREC — Riku of Two Reflections: 2 suggestions");
+    expect(out).toContain("$1.50");
+    expect(out).toContain("syn  +31%");
+    expect(out).toContain("Tatyova, Benthic Druid  — Legendary Creature");
+    expect(out).toContain("? ");
+    expect(out).toContain("syn   -5%");
+  });
+
+  it("notes when nothing new is found", () => {
+    expect(formatEdhrec("Riku of Two Reflections", [])).toContain(
+      "nothing new",
+    );
   });
 });

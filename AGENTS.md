@@ -27,6 +27,16 @@ CI gate. Use `bun run ci` before every PR.
     base rate). `--depth 2` expands each first-order tag into its own top co-tags (`seed → X → Y`
     path drill-down). Great for finding a natural sub-theme for a "main-theme" commander (e.g.
     `affinity modal --id gur` for Riku) or reverse-engineering what defines an existing deck.
+  - `edhrec <commander-name|deck-slug> [--deck <slug|path>] [--id wubrg] [--limit N]
+[--include-gamechangers]` — cross-reference EDHREC's high-synergy + top picks against a deck.
+    Accepts a commander name OR an ingested deck slug (reads the `// Commander:` header and diffs
+    against the deck's cards). Fetches the static EDHREC JSON (cached under `data/edhrec/`, keyed by
+    name-slug), color-identity-subset filtered, Game Changers excluded by default. Names that don't
+    resolve to the corpus are shown flagged (`?`) rather than dropped.
+  - `export <deck-slug|path> [--format text|manabox|arena] [--out <file>]` — emit a clean,
+    paste-ready `<count> <name>` decklist (comments + inline role tags stripped) for import into
+    external tools. **ManaBox has no write API and its Google Drive `.backup` is an opaque
+    app-private blob — don't edit it; use ManaBox's deck text import instead** (see IDEAS.md).
   - `tags <substr>` / `synergy <slug>` — search the tag catalog / navigate a tag's parent+child
     tags. Umbrella tags (e.g. `protection`) have no direct cards — use `synergy` to drill down.
   - `card <name>` / `search <query>` — pinned card text / FTS5 oracle-text search.
