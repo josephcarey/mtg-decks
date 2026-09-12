@@ -1,0 +1,111 @@
+// Commander: Riku of Many Paths
+// Archetype: GUR (Temur) modal-spells value — "cast from exile" / impulsive-draw engine
+// Card count: 100 (singleton)
+// Power: casual Bracket 3 — theme-first, no Game Changers, no non-games, no Day/Night
+// Proxy candidates (chase cards): Ketria Triome, Delayed Blast Fireball, Bonehoard Dracosaur, Eldrazi Confluence
+//
+// Plan: Riku turns every modal spell into card advantage (impulse), a growing threat, or Birds.
+// Choosing MORE modes = more triggers, so charms/commands/confluences are the core. A layered
+// impulsive-draw / cast-from-exile package (Riku's own mode 1) keeps the exile cards flowing.
+
+// == Commander ==
+1 Riku of Many Paths  #commander
+
+// == Ramp / fixing ==
+1 Cultivate  #ramp #fixing
+1 Kodama's Reach  #ramp #fixing
+1 Farseek  #ramp #fixing
+1 Nature's Lore  #ramp #fixing
+1 Three Visits  #ramp #fixing
+1 Growth Spiral  #ramp #draw
+1 Sakura-Tribe Elder  #ramp #fixing
+1 Arcane Signet  #ramp #fixing
+1 Fellwar Stone  #ramp #fixing
+1 Izzet Signet  #ramp #fixing
+1 Gruul Signet  #ramp #fixing
+
+// == Modal core (charms / commands / confluences / modal answers) ==
+1 Untimely Malfunction  #modal #interaction
+1 Aether Channeler  #modal #enabler
+1 Flame of Anor  #modal #interaction
+1 Inscription of Abundance  #modal #interaction
+1 Hull Breach  #modal #interaction
+1 Heritage Reclamation  #modal #interaction
+1 Pick Your Poison  #modal #interaction
+1 Fire Magic  #modal #interaction
+1 Insidious Will  #modal #interaction
+1 Kozilek's Command  #modal #interaction
+1 Verdant Command  #modal #utility
+1 Brutal Command  #modal #interaction
+1 Very Cryptic Command  #modal #interaction
+1 Eldrazi Confluence  #modal #interaction
+1 Cosmium Confluence  #modal #utility
+1 Pawpatch Formation  #modal #interaction
+1 Return to Nature  #modal #interaction
+1 Warping Wail  #modal #interaction
+1 Rootcast Apprenticeship  #modal #utility
+1 Tifa's Limit Break  #modal #interaction
+
+// == Impulsive-draw / cast-from-exile engine (sub-theme) ==
+1 Expressive Iteration  #payoff #draw
+1 Glimpse the Impossible  #payoff #draw
+1 Rob the Archives  #payoff #draw
+1 Act on Impulse  #payoff #draw
+1 Experimental Synthesizer  #payoff #draw
+1 Valakut Exploration  #payoff #draw
+1 Outpost Siege  #payoff #draw
+1 Professional Face-Breaker  #payoff #draw
+1 Sword of Forge and Frontier  #payoff #draw
+1 Archmage Emeritus  #payoff #draw
+1 Laelia, the Blade Reforged  #payoff #wincon
+1 Etali, Primal Storm  #payoff #wincon
+
+// == Exile-cast payoffs ==
+1 Wild-Magic Sorcerer  #payoff #enabler
+1 Delayed Blast Fireball  #payoff #interaction
+1 Party Thrasher  #payoff #enabler
+
+// == Interaction (flex) ==
+1 Counterspell  #interaction
+1 Arcane Denial  #interaction #draw
+1 Beast Within  #interaction
+1 Chaos Warp  #interaction
+1 Blasphemous Act  #interaction #wincon
+
+// == Threats / finishers / top-end value ==
+1 Apex of Power  #wincon #payoff
+1 Aminatou's Augury  #wincon #payoff
+1 Comet Storm  #wincon
+1 Fireball  #wincon
+1 Tectonic Giant  #payoff #wincon
+1 Titan of Industry  #modal #payoff
+1 Bonehoard Dracosaur  #payoff #draw
+1 Dragonhawk, Fate's Tempest  #payoff #wincon
+1 Parapet Thrasher  #payoff #draw
+1 Breeches, Eager Pillager  #payoff #enabler
+1 Ral, Monsoon Mage  #payoff #draw
+1 Inti, Seneschal of the Sun  #payoff #enabler
+
+// == Lands (36) ==
+1 Command Tower  #land #fixing
+1 Ketria Triome  #land #fixing
+1 Frontier Bivouac  #land #fixing
+1 Breeding Pool  #land #fixing
+1 Steam Vents  #land #fixing
+1 Stomping Ground  #land #fixing
+1 Hinterland Harbor  #land #fixing
+1 Rootbound Crag  #land #fixing
+1 Sulfur Falls  #land #fixing
+1 Karplusan Forest  #land #fixing
+1 Yavimaya Coast  #land #fixing
+1 Shivan Reef  #land #fixing
+1 Spirebluff Canal  #land #fixing
+1 Botanical Sanctum  #land #fixing
+1 Copperline Gorge  #land #fixing
+1 Rejuvenating Springs  #land #fixing
+1 Barkchannel Pathway  #land #fixing
+1 Cascade Bluffs  #land #fixing
+1 Exotic Orchard  #land #fixing
+6 Forest  #land
+4 Island  #land
+7 Mountain  #land

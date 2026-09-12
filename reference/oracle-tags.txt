@@ -1,7 +1,7 @@
 # Scryfall oracle (function) tag catalog
 # Source: Scryfall bulk data (oracle_tags export)
-# Bulk updated_at: 2026-09-05T21:00:33.363+00:00
-# Total tags: 4524
+# Bulk updated_at: 2026-09-11T21:00:34.893+00:00
+# Total tags: 4533
 # Format: slug<TAB>label<TAB>description
 # Note: `cycle-*` slugs are Tagger's internal per-set bookkeeping (usually not useful
 #       for card search).
@@ -58,7 +58,7 @@ alternate-cost-bounce	alternate-cost-bounce	Cards that let you return permanents
 alternate-cost-gain-life	alternate-cost-gain-life	Cards that let you give your opponents life to play them for less or no mana
 alternate-cost-life	alternate-cost-life	Cards that let you pay life to play them for less or no mana
 alternate-cost-sacrifice	alternate-cost-sacrifice	Cards that let you sacrifice permanents to play them for free/a reduced amount of mana
-alternate-equip-cost	alternate-equip-cost	
+alternate-equip-cost	alternate-equip-cost	Equipment with non-standard equip costs (e.g. equip restriction, sacrifice stuff, etc.)
 alternate-loss-condition	alternate loss condition	New ways for you to lose the game
 alternate-win-condition	alternate win condition	New ways for you to win the game (or cause your opponent to lose)
 alternative-crewing	alternative crewing	Vehicles with crew that also have alternative ways for self-animation. For vehicles without crew see [crewless vehicle](crewless-vehicle).
@@ -121,7 +121,7 @@ block-trigger	block trigger	Effects that trigger on a creature blocking or becom
 block-unlimited	block unlimited	Block an unlimited, or practically unlimited, number of creatures.
 block-when-tapped	block when tapped	
 block-without-creature	block without creature	These cards make something be blocked ... without anything actually doing the blocking.
-blood-artist-ability	blood artist ability	Cards that have abilities along the lines of: "Whenever creature dies target/each opponent loses 1 life (and you gain 1 life)."
+blood-artist-ability	blood artist ability	Cards that have abilities along the lines of: "Whenever creature dies target/each opponent loses X life and you gain X life."
 blood-moon-effect	blood moon effect	Derived from the titular card, this refers to the effect in which lands lose their land type and/or abilities, being replaced by something else.
 blue-effect	blue effect	Effects which are iconically blue.
 board-reset	board-reset	Cards that remove the entire battlefield.
@@ -730,7 +730,7 @@ cycle-con-c-domain-spell	cycle-con-c-domain-spell
 cycle-con-c-two-color	cycle-con-c-two-color	
 cycle-con-enemy-hate	cycle-con-enemy-hate	
 cycle-con-esper-artifact-boost	cycle-con-esper-artifact-boost	
-cycle-con-esper-scepter	cycle-con-esper-scepter	
+cycle-con-esper-scepter	cycle-con-esper-scepter	Each of these colored artifacts references a famous colorless artifact from Alpha.
 cycle-con-forward-synergy	cycle-con-forward-synergy	Way looser than the backward cycle, I'd say these don't qualify given that there isn't even a green-&gt;white card.
 cycle-con-outlander	cycle-con-outlander	
 cycle-con-r-tricolor	cycle-con-r-tricolor	
@@ -938,6 +938,9 @@ cycle-fin-r-two-color	cycle-fin-r-two-color
 cycle-fin-sidequest	cycle-fin-sidequest	
 cycle-fin-u-summon	cycle-fin-u-summon	
 cycle-force-elemental	cycle-force-elemental	
+cycle-fra-charm	cycle-fra-charm	
+cycle-fra-elder-sphinx	cycle-fra-elder-sphinx	
+cycle-fra-way-of-the	cycle-fra-way-of-the	
 cycle-frf-c-monocolor-manifest	cycle-frf-c-monocolor-manifest	
 cycle-frf-c-two-color	cycle-frf-c-two-color	
 cycle-frf-clan-enhanced	cycle-frf-clan-enhanced	
@@ -1543,7 +1546,6 @@ cycle-pcy-pitchspell	cycle-pcy-pitchspell
 cycle-pcy-rhystic-bonus	cycle-pcy-rhystic-bonus	
 cycle-pcy-spellshaper-aura	cycle-pcy-spellshaper-aura	
 cycle-pcy-wind	cycle-pcy-wind	
-cycle-phyrexian-er	cycle-phyrexian-er	
 cycle-pip-alt-commander	cycle-pip-alt-commander	
 cycle-pip-enemy-filterland	cycle-pip-enemy-filterland	
 cycle-pip-face-commander	cycle-pip-face-commander	
@@ -2417,6 +2419,7 @@ gives-landwalk	gives landwalk
 gives-lifelink	gives lifelink	
 gives-lifelink-noncreature	gives lifelink noncreature	
 gives-living-weapon	gives living weapon	
+gives-loyalty-ability	gives loyalty ability	
 gives-madness	gives madness	
 gives-mana-ability	gives mana ability	
 gives-mayhem	gives mayhem	
@@ -2624,11 +2627,10 @@ hate-noncreature	hate-noncreature
 hate-nonhand-cast	hate-nonhand-cast	
 hate-off-turn-cast	hate-off-turn-cast	
 hate-plains	hate-plains	
-hate-planeswalker	hate-planeswalker	Effects that specifically answer or are better against planeswalkers. This does not include effects that happen to trigger whether its a player or planeswalker and don't help remove the planeswalker.
+hate-planeswalker	hate-planeswalker	Effects that specifically answer or are better against planeswalkers. This does not include effects that happen to trigger whether it's a player or planeswalker and don't help remove the planeswalker.
 hate-planeswalker-bolas	hate-planeswalker-bolas	
 hate-planeswalker-chandra	hate-planeswalker-chandra	
 hate-planeswalker-jace	hate-planeswalker-jace	
-hate-plot	hate-plot	
 hate-protection	hate-protection	
 hate-ramp	hate-ramp	
 hate-reach	hate-reach	
@@ -2748,6 +2750,7 @@ hate-typal-survivor	hate-typal-survivor
 hate-typal-thrull	hate-typal-thrull	
 hate-typal-treefolk	hate-typal-treefolk	
 hate-typal-vampire	hate-typal-vampire	
+hate-typal-villain	hate-typal-villain	
 hate-typal-wall	hate-typal-wall	
 hate-typal-warlock	hate-typal-warlock	
 hate-typal-warrior	hate-typal-warrior	
@@ -3547,6 +3550,10 @@ siege-modal	siege (modal)	Named ongoing modal effect. Chosen when entering and t
 sift	sift	Draw three cards, then discard a card. Not to be confused with [compulsive research](compulsive-research) or [probe](probe).
 silence	silence	Prevent opponents from casting spells, and possibly also activate abilities.
 single-english-word-name	single english word name	Cards named with a single word in English. This may be a compound word.
+single-minded-color-hate	single-minded color hate	Cards that hate on a specific color (or colors), and do nothing else if that color isn't present.
+single-minded-graveyard-hate	single-minded graveyard hate	These cards do nothing except prevent your opponent from accessing the cards in their graveyard; you can expect them to be completely useless if they aren't playing any form of graveyard interaction.
+single-minded-hate	single-minded hate	Hate cards that do absolutely nothing at all if you're not in the right matchup.
+single-minded-typal-hate	single-minded typal hate	Cards that hate on a specific creature type (or types), and do nothing else if creatures of that type aren't present.
 single-target-instant-sorcery	single target instant/sorcery	Instant/sorcery spells that may target only one target. This is materially important for some effects that care about single targets. Not mutually exclusive with [multiple targets](/tags/card/multiple-targets).
 singleton-matters	singleton matters	
 skip-draw-step	skip draw step	
@@ -3611,6 +3618,7 @@ sunder	sunder	Remove everything attached to a permanent while possibly leaving t
 super-menace	super-menace	Because you can get more menacing than menace.
 super-pridemate	super-pridemate	Put +1/+1 counters equal to the amount of life gained.
 supercycle-legendary-land	supercycle-legendary-land	
+supercycle-mmmm-enrager	supercycle-mmmm-enrager	A supercycle of Horrors costing MMMM, each retaliating to damage in its own way.
 support	support	Put a +1/+1 counter on each of up to N target creatures.
 surge	surge	Get a benefit if you've cast another spell this turn.
 surveil	surveil	Cards that let you look at the top # cards of your library and put some into the graveyard.
@@ -3940,7 +3948,6 @@ theft-equipment	theft-equipment
 theft-land	theft-land	
 theft-mana	theft-mana	
 theft-mass	theft-mass	
-theft-noncreature	theft-noncreature	
 theft-nonland	theft-nonland	
 theft-ownership	theft-ownership	
 theft-permanent	theft-permanent	
@@ -4211,6 +4218,7 @@ typal-elemental	typal-elemental
 typal-elephant	typal-elephant	
 typal-elf	typal-elf	
 typal-employee	typal-employee	
+typal-exclusion	typal-exclusion	"Typal" cards that exclude one or more creature types rather then including a few. Usually to prevent loops, have a specific typal limitation, or to prevent changelings from joining in.
 typal-eye	typal-eye	
 typal-faerie	typal-faerie	
 typal-fish	typal-fish	
@@ -4286,6 +4294,7 @@ typal-noble	typal-noble
 typal-non-angel	typal-non-angel	
 typal-non-archon	typal-non-archon	
 typal-non-assassin	typal-non-assassin	
+typal-non-borg	typal-non-borg	
 typal-non-horse	typal-non-horse	
 typal-non-human	typal-non-human	Cards that care about every creature that does not have the Human creature type. See also the Mutate keyword.
 typal-non-kree	typal-non-kree	
