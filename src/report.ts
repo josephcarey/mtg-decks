@@ -17,6 +17,7 @@ import type {
   TagListItem,
 } from "./db/queries.ts";
 import type { Recommendation } from "./edhrec/model.ts";
+import type { EdhrecTheme } from "./edhrec/model.ts";
 
 import { PIP_COLORS, TARGET_DECK_SIZE } from "./constants.ts";
 
@@ -219,6 +220,27 @@ export function formatEdhrec(
     return `${marker}${flag} ${money(rec.priceUsd).padStart(7)}  syn ${synergy.padStart(5)}  in ${inclusion}  ${rec.name}${type}`;
   });
   return [header, "  (? = not in local corpus)", ...rows].join("\n");
+}
+
+/**
+ * Format a commander's EDHREC theme list (from its `tag_counts`).
+ * @param commander - The commander whose themes were fetched.
+ * @param themes - The parsed themes, most-played first.
+ * @returns Multi-line output, or a not-found note.
+ */
+export function formatEdhrecThemes(
+  commander: string,
+  themes: readonly EdhrecTheme[],
+): string {
+  const header = `EDHREC themes — ${commander} (use with \`edhrec ${commander} --theme <slug>\`)`;
+  if (themes.length === 0) {
+    return `${header}\n  (no themes listed)`;
+  }
+  const rows = themes.map((theme) => {
+    const count = String(theme.count).padStart(6);
+    return `  ${count}  ${theme.slug.padEnd(24)} ${theme.label}`;
+  });
+  return [header, ...rows].join("\n");
 }
 
 /**

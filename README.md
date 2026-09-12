@@ -47,7 +47,7 @@ Changers list (53 cards) — the analyzer lints against it. See
 | `analyze <decklist>`             | Report count / curve / pips / lands / price / tags + Game-Changer lint.   |
 | `discover <slug> [opts]`         | Find cards for a function tag, EDHREC-ranked (see options below).         |
 | `affinity <tag>\|--deck [opts]`  | Rank tags that co-occur with a theme (share + lift, optional depth 2).    |
-| `edhrec <commander>\|<deck>`     | EDHREC high-synergy + top picks the deck isn't running (CI-filtered).     |
+| `edhrec <commander>\|<deck>`     | EDHREC high-synergy + top picks the deck isn't running (CI-filtered). `--themes` lists themes; `--theme <slug>` scouts a sub-theme. |
 | `export <deck> [--format --out]` | Paste-ready decklist; `moxfield` keeps inline `#tags`, others strip them. |
 | `card <name>`                    | Print one card's pinned mana cost / type / oracle text.                   |
 | `cards <deck-slug>`              | List an ingested deck's cards with their resolved corpus tags.            |

@@ -24,6 +24,16 @@ export type EdhrecCardView = {
   readonly synergy: number;
 };
 
+/** A theme (a.k.a. tag) a commander is played with, from the page's `tag_counts`. */
+export type EdhrecTheme = {
+  /** Number of sampled decks on this theme. */
+  readonly count: number;
+  /** Display label, e.g. "Theft". */
+  readonly label: string;
+  /** Theme slug used for the subpage URL, e.g. "theft". */
+  readonly slug: string;
+};
+
 /** A cross-referenced recommendation, joined against the local corpus where possible. */
 export type Recommendation = {
   /** Fraction of potential decks running the card, in `[0,1]` (from EDHREC sample). */
@@ -172,6 +182,29 @@ export function parseEdhrecPage(json: unknown): EdhrecPage | null {
     });
   }
   return { cardlists };
+}
+
+/**
+ * Parse a commander page's theme list from its top-level `tag_counts`.
+ * @param json - The raw parsed JSON body from an EDHREC commander page.
+ * @returns The themes the commander is played with, in EDHREC's order (most-played first).
+ */
+export function parseThemes(json: unknown): EdhrecTheme[] {
+  if (!isRecord(json)) return [];
+  const raw = json.tag_counts;
+  if (!Array.isArray(raw)) return [];
+  const themes: EdhrecTheme[] = [];
+  for (const entry of raw) {
+    if (!isRecord(entry)) continue;
+    const slug = entry.slug;
+    if (typeof slug !== "string" || slug.length === 0) continue;
+    themes.push({
+      count: asNumber(entry.count),
+      label: typeof entry.value === "string" ? entry.value : slug,
+      slug,
+    });
+  }
+  return themes;
 }
 
 /**

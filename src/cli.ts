@@ -69,6 +69,7 @@ import { fetchCommanderPage } from "./edhrec/client.ts";
 import {
   crossReference,
   parseEdhrecPage,
+  parseThemes,
   selectCardviews,
 } from "./edhrec/model.ts";
 import { EXPORT_FORMATS, formatExport, isExportFormat } from "./export.ts";
@@ -85,6 +86,7 @@ import {
   formatDeckCards,
   formatDiscoverTable,
   formatEdhrec,
+  formatEdhrecThemes,
   formatGameChangerLint,
   formatPips,
   formatPrice,
@@ -117,6 +119,8 @@ const OPTIONS = {
   out: { type: "string" },
   set: { type: "string" },
   sort: { type: "string" },
+  theme: { type: "string" },
+  themes: { type: "boolean" },
 } as const;
 
 type OptionValues = Partial<Record<keyof typeof OPTIONS, boolean | string>>;
@@ -405,7 +409,7 @@ async function edhrecCommand(
 ): Promise<void> {
   if (target === undefined) {
     fail(
-      "usage: deck edhrec <commander-name|deck-slug> [--deck <slug|path>] [--id wubrg] [--limit N] [--include-gamechangers]",
+      "usage: deck edhrec <commander-name|deck-slug> [--theme <slug>] [--themes] [--deck <slug|path>] [--id wubrg] [--limit N] [--include-gamechangers]",
     );
     return;
   }
@@ -439,7 +443,19 @@ async function edhrecCommand(
       owned = await resolveDeckNames(db, values.deck);
     }
 
-    const pageResult = await fetchCommanderPage(commanderName);
+    const theme = typeof values.theme === "string" ? values.theme : undefined;
+
+    if (values.themes === true) {
+      const rootResult = await fetchCommanderPage(commanderName);
+      if (rootResult.isErr()) {
+        fail(rootResult.error.message);
+        return;
+      }
+      out(formatEdhrecThemes(commanderName, parseThemes(rootResult.value)));
+      return;
+    }
+
+    const pageResult = await fetchCommanderPage(commanderName, theme);
     if (pageResult.isErr()) {
       fail(pageResult.error.message);
       return;
@@ -466,7 +482,8 @@ async function edhrecCommand(
       owned,
       resolve: (nameLower) => rows.get(nameLower),
     });
-    out(formatEdhrec(commanderName, recommendations));
+    const label = theme === undefined ? commanderName : `${commanderName} · ${theme}`;
+    out(formatEdhrec(label, recommendations));
   } finally {
     db.close();
   }

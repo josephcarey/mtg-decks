@@ -8,6 +8,7 @@ import {
   crossReference,
   type EdhrecCardView,
   parseEdhrecPage,
+  parseThemes,
   selectCardviews,
 } from "./model.ts";
 
@@ -90,6 +91,31 @@ describe("parseEdhrecPage", () => {
     expect(parseEdhrecPage(null)).toBeNull();
     expect(parseEdhrecPage({})).toBeNull();
     expect(parseEdhrecPage({ container: { json_dict: {} } })).toBeNull();
+  });
+});
+
+describe("parseThemes", () => {
+  it("parses tag_counts into themes, most-played first", () => {
+    const themes = parseThemes({
+      tag_counts: [
+        { count: 584, slug: "mill", value: "Mill" },
+        { count: 210, slug: "theft", value: "Theft" },
+        { slug: "no-count" },
+        { count: 5 }, // no slug -> skipped
+        "junk", // not a record -> skipped
+      ],
+    });
+    expect(themes).toEqual([
+      { count: 584, label: "Mill", slug: "mill" },
+      { count: 210, label: "Theft", slug: "theft" },
+      { count: 0, label: "no-count", slug: "no-count" },
+    ]);
+  });
+
+  it("returns an empty list when tag_counts is missing or malformed", () => {
+    expect(parseThemes(null)).toEqual([]);
+    expect(parseThemes({})).toEqual([]);
+    expect(parseThemes({ tag_counts: "nope" })).toEqual([]);
   });
 });
 

@@ -16,6 +16,7 @@ import {
   formatDeckCards,
   formatDiscoverTable,
   formatEdhrec,
+  formatEdhrecThemes,
   formatGameChangerLint,
   formatPips,
   formatPrice,
@@ -281,6 +282,25 @@ describe("formatEdhrec", () => {
   it("notes when nothing new is found", () => {
     expect(formatEdhrec("Riku of Two Reflections", [])).toContain(
       "nothing new",
+    );
+  });
+});
+
+describe("formatEdhrecThemes", () => {
+  it("lists themes with counts and slugs", () => {
+    const out = formatEdhrecThemes("Saruman of Many Colors", [
+      { count: 584, label: "Mill", slug: "mill" },
+      { count: 210, label: "Theft", slug: "theft" },
+    ]);
+    expect(out).toContain("Saruman of Many Colors");
+    expect(out).toContain("mill");
+    expect(out).toContain("584");
+    expect(out).toContain("theft");
+  });
+
+  it("notes when no themes are listed", () => {
+    expect(formatEdhrecThemes("Riku of Two Reflections", [])).toContain(
+      "no themes listed",
     );
   });
 });

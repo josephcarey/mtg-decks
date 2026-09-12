@@ -29,9 +29,12 @@ const edhrecError = (message: string): EdhrecError => ({
   message,
 });
 
-/** Local cache path for a commander slug's page JSON. */
-const cachePath = (slug: string): string =>
-  join(EDHREC_CACHE_DIR, `${slug}.json`);
+/** Local cache path for a commander slug's page JSON (optionally a theme subpage). */
+const cachePath = (slug: string, theme?: string): string =>
+  join(
+    EDHREC_CACHE_DIR,
+    theme === undefined ? `${slug}.json` : `${slug}__${theme}.json`,
+  );
 
 const isFresh = async (path: string, ttlMs: number): Promise<boolean> => {
   const info = await stat(path).catch(() => null);
@@ -42,26 +45,33 @@ const isFresh = async (path: string, ttlMs: number): Promise<boolean> => {
 /**
  * Fetch a commander's EDHREC page JSON, using the on-disk cache when it is still fresh.
  * @param commander - Commander name (slugged internally) or an explicit EDHREC slug.
+ * @param theme - Optional theme slug (e.g. `theft`) to fetch that theme's subpage.
  * @param ttlMs - Cache lifetime in milliseconds (default {@link EDHREC_TTL_MS}).
  * @returns The parsed JSON body, or an {@link EdhrecError}.
  */
 export function fetchCommanderPage(
   commander: string,
+  theme?: string,
   ttlMs: number = EDHREC_TTL_MS,
 ): ResultAsync<unknown, EdhrecError> {
   const slug = commander.includes(" ") ? commanderSlug(commander) : commander;
   if (slug.length === 0) return errAsync(edhrecError("empty commander name"));
-  const path = cachePath(slug);
+  const path = cachePath(slug, theme);
+  const url =
+    theme === undefined
+      ? `${EDHREC_BASE}/${slug}.json`
+      : `${EDHREC_BASE}/${slug}/${theme}.json`;
 
   return ResultAsync.fromPromise(
     (async (): Promise<unknown> => {
       if (await isFresh(path, ttlMs)) {
         return (await Bun.file(path).json()) as unknown;
       }
-      const response = await fetch(`${EDHREC_BASE}/${slug}.json`);
+      const response = await fetch(url);
       if (!response.ok) {
+        const suffix = theme === undefined ? "" : ` theme "${theme}"`;
         throw new Error(
-          `EDHREC ${String(response.status)} for slug "${slug}" — check the commander name`,
+          `EDHREC ${String(response.status)} for slug "${slug}"${suffix} — check the commander name`,
         );
       }
       const body = (await response.json()) as unknown;
