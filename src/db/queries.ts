@@ -7,15 +7,28 @@ import { Database } from "bun:sqlite";
 import { err, ok, type Result } from "neverthrow";
 import { existsSync } from "node:fs";
 
+import type { AffinityRow, AffinitySort, RawTagCount } from "../affinity.ts";
 import type { DeckEntry } from "../decklist.ts";
 import type { CardRow, TagRow } from "./model.ts";
 
+import { rankAffinity } from "../affinity.ts";
 import { colorMask, isReadOnlySql } from "./model.ts";
 
 /** A structured database-layer error. */
 type DbError = { readonly kind: "db"; readonly message: string };
 
 const dbError = (message: string): DbError => ({ kind: "db", message });
+
+/** One ranked co-tag plus (optionally) its second-order drill-down. */
+export type AffinityNode = AffinityRow & { readonly children: AffinityRow[] };
+
+/** Affinity output: the resolved seed plus its ranked co-occurring tags. */
+export type AffinityResult = {
+  readonly rows: AffinityNode[];
+  readonly seedLabel: string;
+  readonly seedN: number;
+  readonly univN: number;
+};
 
 /** A discovery candidate card. */
 export type Candidate = {
@@ -27,11 +40,30 @@ export type Candidate = {
   readonly typeLine: string;
 };
 
+/** A deck seed: resolved oracle_ids plus a display label. */
+export type DeckSeed = {
+  readonly ids: readonly string[];
+  readonly label: string;
+};
+
 /** A `--list-tags` match. */
 export type TagListItem = {
   readonly description: string;
   readonly label: string;
   readonly slug: string;
+};
+
+/** Affinity inputs. Exactly one of `seedTag` / `deckSeed` must be provided. */
+type AffinityParams = {
+  readonly childLimit: number;
+  readonly deckSeed?: DeckSeed;
+  readonly depth: number;
+  readonly id: string;
+  readonly includeGameChangers: boolean;
+  readonly limit: number;
+  readonly minCount: number;
+  readonly seedTag?: string;
+  readonly sort: AffinitySort;
 };
 
 /** Discovery inputs. */
@@ -68,12 +100,127 @@ type SynergyResult = {
 type SynergyTag = { readonly description: string; readonly slug: string };
 
 /**
+ * Rank the tags that co-occur with a theme ("affinity"). The theme (seed) is either a tag or
+ * a deck's cards; the universe is every card passing the color-identity / Game-Changer filters.
+ * Universe base rates are computed once and reused for the optional depth-2 drill-down.
+ * @param db - An open database.
+ * @param params - {@link AffinityParams}.
+ * @returns The resolved seed plus ranked co-tags, or a {@link DbError}.
+ */
+export function affinity(
+  db: Database,
+  params: AffinityParams,
+): Result<AffinityResult, DbError> {
+  const reqMask = colorMask([...params.id.toUpperCase()]);
+  const univWhere = params.includeGameChangers
+    ? "(c.ci_mask & ~$reqMask) = 0"
+    : "c.game_changer = 0 AND (c.ci_mask & ~$reqMask) = 0";
+  const univBind = { $reqMask: reqMask };
+
+  const univN =
+    db
+      .query<{ n: number }, typeof univBind>(
+        `SELECT COUNT(*) n FROM cards c WHERE ${univWhere}`,
+      )
+      .get(univBind)?.n ?? 0;
+  if (univN === 0) {
+    return err(dbError(`no cards in the universe — check --id "${params.id}"`));
+  }
+
+  const univCounts = new Map<string, number>();
+  for (const row of db
+    .query<{ slug: string; uc: number }, typeof univBind>(
+      `SELECT t.slug, COUNT(DISTINCT c.oracle_id) uc FROM cards c
+       JOIN card_tags ct ON ct.oracle_id = c.oracle_id
+       JOIN tags t ON t.id = ct.tag_id
+       WHERE ${univWhere} GROUP BY t.slug`,
+    )
+    .all(univBind)) {
+    univCounts.set(row.slug, row.uc);
+  }
+
+  const exclude = new Set<string>();
+  let seedCounts: Map<string, number>;
+  let seedN: number;
+  let seedLabel: string;
+  if (params.seedTag !== undefined) {
+    const tag = getTagBySlug(db, params.seedTag);
+    if (tag === null) {
+      return err(
+        dbError(
+          `no tag with slug "${params.seedTag}" — try \`bun run deck tags ${params.seedTag}\``,
+        ),
+      );
+    }
+    seedCounts = seedCountsForTag(db, univWhere, univBind, tag.slug);
+    seedN = univCounts.get(tag.slug) ?? 0;
+    seedLabel = `otag:${tag.slug}`;
+    exclude.add(tag.slug);
+  } else if (params.deckSeed === undefined) {
+    return err(dbError("affinity needs a seed tag or a deck"));
+  } else {
+    const resolved = seedCountsForIds(
+      db,
+      univWhere,
+      univBind,
+      params.deckSeed.ids,
+    );
+    seedCounts = resolved.counts;
+    seedN = resolved.n;
+    seedLabel = params.deckSeed.label;
+  }
+  if (seedN === 0) {
+    return err(dbError("the seed is empty after the color-identity filter"));
+  }
+
+  const rankOpts = {
+    limit: params.limit,
+    minCount: params.minCount,
+    sort: params.sort,
+  };
+  const firstOrder = rankAffinity(
+    toRawCounts(seedCounts, univCounts),
+    seedN,
+    univN,
+    { ...rankOpts, exclude },
+  );
+
+  const rows: AffinityNode[] = firstOrder.map((node) => {
+    if (params.depth < 2) return { ...node, children: [] };
+    const childCounts = seedCountsForTag(db, univWhere, univBind, node.slug);
+    const children = rankAffinity(
+      toRawCounts(childCounts, univCounts),
+      univCounts.get(node.slug) ?? 0,
+      univN,
+      {
+        ...rankOpts,
+        exclude: new Set([node.slug, ...exclude]),
+        limit: params.childLimit,
+      },
+    );
+    return { ...node, children };
+  });
+
+  return ok({ rows, seedLabel, seedN, univN });
+}
+
+/**
  * All tags ordered by slug, for regenerating the committed `reference/oracle-tags.txt`.
  * @param db - An open database.
  * @returns Every {@link TagRow}, ordered by slug.
  */
 export function allTagsBySlug(db: Database): TagRow[] {
   return db.query<TagRow, []>("SELECT * FROM tags ORDER BY slug").all();
+}
+
+/** Resolve an ingested deck's non-null card oracle_ids (for use as an affinity seed). */
+export function deckOracleIds(db: Database, slug: string): string[] {
+  return db
+    .query<{ oracle_id: string }, [string]>(
+      "SELECT DISTINCT oracle_id FROM deck_cards WHERE deck_slug = ? AND oracle_id IS NOT NULL",
+    )
+    .all(slug)
+    .map((row) => row.oracle_id);
 }
 
 /**
@@ -139,6 +286,71 @@ export function discover(
   }
 
   return ok({ candidates, tag });
+}
+
+/** Co-occurrence counts for every tag among the universe cards in `ids`, plus the seed size. */
+function seedCountsForIds(
+  db: Database,
+  univWhere: string,
+  univBind: { $reqMask: number },
+  ids: readonly string[],
+): { counts: Map<string, number>; n: number } {
+  const bind = { ...univBind, $ids: JSON.stringify(ids) };
+  const n =
+    db
+      .query<{ n: number }, typeof bind>(
+        `SELECT COUNT(DISTINCT c.oracle_id) n FROM cards c
+         JOIN json_each($ids) j ON j.value = c.oracle_id
+         WHERE ${univWhere}`,
+      )
+      .get(bind)?.n ?? 0;
+  const counts = new Map<string, number>();
+  for (const row of db
+    .query<{ sc: number; slug: string }, typeof bind>(
+      `SELECT t.slug, COUNT(DISTINCT c.oracle_id) sc FROM cards c
+       JOIN json_each($ids) j ON j.value = c.oracle_id
+       JOIN card_tags ct ON ct.oracle_id = c.oracle_id
+       JOIN tags t ON t.id = ct.tag_id
+       WHERE ${univWhere} GROUP BY t.slug`,
+    )
+    .all(bind)) {
+    counts.set(row.slug, row.sc);
+  }
+  return { counts, n };
+}
+
+/** Co-occurrence counts for every tag among the universe cards carrying `slug`. */
+function seedCountsForTag(
+  db: Database,
+  univWhere: string,
+  univBind: { $reqMask: number },
+  slug: string,
+): Map<string, number> {
+  const counts = new Map<string, number>();
+  const rows = db
+    .query<{ sc: number; slug: string }, { $reqMask: number; $slug: string }>(
+      `SELECT t2.slug, COUNT(DISTINCT ct2.oracle_id) sc FROM card_tags ct1
+       JOIN cards c ON c.oracle_id = ct1.oracle_id AND ${univWhere}
+       JOIN card_tags ct2 ON ct2.oracle_id = ct1.oracle_id
+       JOIN tags t1 ON t1.id = ct1.tag_id
+       JOIN tags t2 ON t2.id = ct2.tag_id
+       WHERE t1.slug = $slug GROUP BY t2.slug`,
+    )
+    .all({ ...univBind, $slug: slug });
+  for (const row of rows) counts.set(row.slug, row.sc);
+  return counts;
+}
+
+/** Join per-tag seed counts against the universe base counts into {@link RawTagCount}s. */
+function toRawCounts(
+  seedCounts: ReadonlyMap<string, number>,
+  univCounts: ReadonlyMap<string, number>,
+): RawTagCount[] {
+  const raw: RawTagCount[] = [];
+  for (const [slug, seedCount] of seedCounts) {
+    raw.push({ seedCount, slug, univCount: univCounts.get(slug) ?? seedCount });
+  }
+  return raw;
 }
 
 /**

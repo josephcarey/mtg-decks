@@ -3,13 +3,19 @@
  * outputs. Kept side-effect free (they return strings) so the CLI is a thin I/O shell and the
  * formatting is unit-testable.
  */
+import type { AffinityRow } from "./affinity.ts";
 import type {
   BasicsAudit,
   CurveSummary,
   PipCounts,
   TagCount,
 } from "./analysis.ts";
-import type { Candidate, DeckCardRow, TagListItem } from "./db/queries.ts";
+import type {
+  AffinityResult,
+  Candidate,
+  DeckCardRow,
+  TagListItem,
+} from "./db/queries.ts";
 
 import { PIP_COLORS, TARGET_DECK_SIZE } from "./constants.ts";
 
@@ -120,6 +126,29 @@ const money = (usd: null | number): string =>
   usd === null ? "  —  " : `$${usd.toFixed(2)}`;
 
 /**
+ * Format an affinity report: the seed's ranked co-occurring tags with share + lift, and any
+ * depth-2 drill-down rendered as an indented tree under each first-order tag.
+ * @param result - The resolved affinity result.
+ * @param sort - The sort metric used (shown in the header for context).
+ * @returns Multi-line table/tree output.
+ */
+export function formatAffinity(result: AffinityResult, sort: string): string {
+  const header =
+    `${result.seedLabel} — universe ${result.univN} cards · seed ` +
+    `${result.seedN} cards · sort ${sort}`;
+  if (result.rows.length === 0) {
+    return `${header}\n  (no co-tags passed the min-count filter)`;
+  }
+  const lines = [header, `    lift   share    n   tag`];
+  for (const node of result.rows) {
+    lines.push(affinityLine(node, "  "));
+    for (const child of node.children)
+      lines.push(affinityLine(child, "      ↳ "));
+  }
+  return lines.join("\n");
+}
+
+/**
  * Format `deck cards <slug>` — each card with its resolved corpus function tags.
  * @param slug - The deck slug (for the header).
  * @param rows - The deck's cards with corpus tags.
@@ -172,6 +201,13 @@ export function formatDiscoverTable(
 export function formatTagList(items: readonly TagListItem[]): string {
   if (items.length === 0) return "(no matching tags)";
   return items.map((item) => `  ${item.slug} — ${item.description}`).join("\n");
+}
+
+function affinityLine(row: AffinityRow, prefix: string): string {
+  const lift = `${row.lift.toFixed(1)}×`.padStart(6);
+  const share = `${(row.share * 100).toFixed(1)}%`.padStart(6);
+  const count = String(row.seedCount).padStart(4);
+  return `${prefix}${lift} ${share} ${count}   ${row.slug}`;
 }
 
 function markerFor(row: DeckCardRow): string {

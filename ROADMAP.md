@@ -10,6 +10,7 @@ Concrete, sequenced build work. Speculative or unshaped ideas live in `IDEAS.md`
 - Game Changers guardrail (#5): lint via the authoritative Scryfall `game_changer` flag.
 - Card discovery via Scryfall Tagger (#7): `otag:` search + `discover` / `tags` commands.
 - Offline data layer: Scryfall bulk (`oracle_cards` + `oracle_tags`) loaded into `bun:sqlite` with FTS5; decks ingested and joinable; `deck` CLI (`build-db`, `analyze`, `discover`, `tags`, `synergy`, `cards`, `sql`).
+- **Tag-affinity sub-theme finder** (`deck affinity`): rank the tags co-occurring with a seed theme (a function tag or a deck's cards) by share + lift over a color-identity-filtered universe, with an optional depth-2 `seed → X → Y` path drill-down. Surfaces natural sub-themes (e.g. modal → flexible-removal toolbox for Riku).
 
 ## Near-term
 

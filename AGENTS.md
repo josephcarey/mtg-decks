@@ -20,6 +20,13 @@ CI gate. Use `bun run ci` before every PR.
     — function-tag card discovery, color-identity-subset filtered, EDHREC-ranked; `--deck` accepts a
     known deck **slug** (deduped against the ingested `deck_cards`) or a decklist path, and skips
     owned cards. Game Changers excluded by default.
+  - `affinity <tag>|--deck <slug|path> [--id wubrg] [--sort lift|share|count] [--min-count N]
+[--limit N] [--depth 1|2] [--include-gamechangers]` — surface a theme's **sub-themes**: rank
+    the tags co-occurring with a seed (a function tag OR a deck's cards) by **share** (fraction of
+    the seed carrying the co-tag) and **lift** (enrichment vs. the color-identity-filtered universe
+    base rate). `--depth 2` expands each first-order tag into its own top co-tags (`seed → X → Y`
+    path drill-down). Great for finding a natural sub-theme for a "main-theme" commander (e.g.
+    `affinity modal --id gur` for Riku) or reverse-engineering what defines an existing deck.
   - `tags <substr>` / `synergy <slug>` — search the tag catalog / navigate a tag's parent+child
     tags. Umbrella tags (e.g. `protection`) have no direct cards — use `synergy` to drill down.
   - `card <name>` / `search <query>` — pinned card text / FTS5 oracle-text search.

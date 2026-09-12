@@ -46,6 +46,7 @@ Changers list (53 cards) — the analyzer lints against it. See
 | `build-db`                      | Build `data/mtg.db` from the bulk exports and ingest `decks/`.          |
 | `analyze <decklist>`            | Report count / curve / pips / lands / price / tags + Game-Changer lint. |
 | `discover <slug> [opts]`        | Find cards for a function tag, EDHREC-ranked (see options below).       |
+| `affinity <tag>\|--deck [opts]` | Rank tags that co-occur with a theme (share + lift, optional depth 2).  |
 | `card <name>`                   | Print one card's pinned mana cost / type / oracle text.                 |
 | `cards <deck-slug>`             | List an ingested deck's cards with their resolved corpus tags.          |
 | `search <query>`                | Full-text (FTS5) search over card names + oracle text.                  |
@@ -59,8 +60,20 @@ Changers list (53 cards) — the analyzer lints against it. See
 already in that deck so only NEW candidates count toward the limit). Game Changers are excluded
 by default.
 
+`affinity` finds a theme's natural **sub-themes**. It takes a seed — either a function tag
+(`affinity modal`) or a deck (`--deck <slug|path>`) — treats every card passing the filters as
+the "universe", and ranks the tags that co-occur with the seed by **share** (fraction of the
+seed carrying the co-tag) and **lift** (how enriched the co-tag is vs. its universe base rate).
+Options: `--id <colors=wubrg>` (restrict the universe to a color-identity subset, e.g. `gur`),
+`--sort lift|share|count` (default `lift`), `--min-count <n=5>` (drop rare noise),
+`--limit <n=25>`, `--depth 1|2` (depth 2 expands each first-order tag into its own top co-tags,
+a `seed → X → Y` path drill-down), and `--include-gamechangers`. Lift surfaces distinctive
+pairings; a high `--min-count` keeps them meaningful.
+
 ```bash
 bun run deck discover landfall --id gu --max-price 8 --limit 10 --deck decks/wandering-minstrel/list.txt
+bun run deck affinity modal --id gur --min-count 8 --depth 2   # sub-themes for a Riku modal deck
+bun run deck affinity --deck wandering-minstrel                # what themes define an existing deck
 bun run deck synergy protection      # protection is an umbrella tag → drill into children
 bun run deck tags landfall
 ```

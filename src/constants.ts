@@ -40,6 +40,18 @@ export const DEFAULT_DISCOVER_ID = "gu";
 /** Default number of NEW candidates shown by discovery. */
 export const DEFAULT_DISCOVER_LIMIT = 25;
 
+/** Default number of first-order co-tags shown by `affinity`. */
+export const DEFAULT_AFFINITY_LIMIT = 25;
+
+/** Default number of depth-2 co-tags shown under each first-order tag. */
+export const DEFAULT_AFFINITY_CHILD_LIMIT = 5;
+
+/** Default minimum seed co-occurrence count for `affinity` (noise filter). */
+export const DEFAULT_AFFINITY_MIN_COUNT = 5;
+
+/** Default drill-down depth for `affinity` (1 = first-order only, 2 = path drill-down). */
+export const DEFAULT_AFFINITY_DEPTH = 1;
+
 /** Repo-relative path of the derived SQLite database. */
 export const DEFAULT_DB_PATH = "data/mtg.db";
 

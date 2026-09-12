@@ -7,6 +7,7 @@
  *   build-db                        build data/mtg.db from the bulk exports + ingest decks/
  *   analyze <decklist>              report card count/curve/pips/basics/price/tags + GC lint
  *   discover <slug> [opts]          find tagged cards (color/price/set filters, EDHREC-ranked)
+ *   affinity <tag>|--deck [opts]    rank co-occurring tags for a theme (share + lift, depth 2)
  *   card <name>                     print one card's pinned text from the cache
  *   cards <deck-slug>               list a deck's cards with their resolved corpus tags
  *   search <query>                  full-text (FTS5) search over card names + oracle text
@@ -21,7 +22,9 @@ import { mkdir, readdir, writeFile } from "node:fs/promises";
 import { basename, dirname, join } from "node:path";
 import { parseArgs } from "node:util";
 
+import type { AffinitySort } from "./affinity.ts";
 import type { AnalyzedCard } from "./analysis.ts";
+import type { DeckSeed } from "./db/queries.ts";
 import type { DeckEntry } from "./decklist.ts";
 import type { BulkType } from "./scryfall/bulk.ts";
 
@@ -32,16 +35,22 @@ import {
   tagDistribution,
 } from "./analysis.ts";
 import {
+  DEFAULT_AFFINITY_CHILD_LIMIT,
+  DEFAULT_AFFINITY_DEPTH,
+  DEFAULT_AFFINITY_LIMIT,
+  DEFAULT_AFFINITY_MIN_COUNT,
   DEFAULT_DB_PATH,
   DEFAULT_DISCOVER_ID,
   DEFAULT_DISCOVER_LIMIT,
 } from "./constants.ts";
 import { ftsMatchQuery } from "./db/model.ts";
 import {
+  affinity,
   allTagsBySlug,
   deckCardNames,
   deckCards,
   deckExists,
+  deckOracleIds,
   discover,
   getCard,
   getCardsByNames,
@@ -60,6 +69,7 @@ import {
   formatOracleTagsFile,
 } from "./reference.ts";
 import {
+  formatAffinity,
   formatBasics,
   formatCount,
   formatCurve,
@@ -87,14 +97,77 @@ const fail = (message: string): void => {
 
 const OPTIONS = {
   deck: { type: "string" },
+  depth: { type: "string" },
   id: { type: "string" },
   "include-gamechangers": { type: "boolean" },
   limit: { type: "string" },
   "max-price": { type: "string" },
+  "min-count": { type: "string" },
   set: { type: "string" },
+  sort: { type: "string" },
 } as const;
 
 type OptionValues = Partial<Record<keyof typeof OPTIONS, boolean | string>>;
+
+const intOption = (
+  value: boolean | string | undefined,
+  fallback: number,
+): number => {
+  if (typeof value !== "string") return fallback;
+  const parsed = Number.parseInt(value, 10);
+  return Number.isFinite(parsed) ? parsed : fallback;
+};
+
+async function affinityCommand(
+  seedArg: string | undefined,
+  values: OptionValues,
+): Promise<void> {
+  const deckArg = typeof values.deck === "string" ? values.deck : undefined;
+  if (seedArg === undefined && deckArg === undefined) {
+    fail(
+      "usage: deck affinity <seed-tag> | --deck <slug|path> " +
+        "[--id wubrg] [--sort lift|share|count] [--min-count 5] [--limit 25] [--depth 1|2]",
+    );
+    return;
+  }
+  const sort = parseSort(values.sort);
+  if (sort === null) {
+    fail(`invalid --sort "${String(values.sort)}" (use lift, share, or count)`);
+    return;
+  }
+  const dbResult = openDatabase(DEFAULT_DB_PATH);
+  if (dbResult.isErr()) {
+    fail(dbResult.error.message);
+    return;
+  }
+  const db = dbResult.value;
+  try {
+    const deckSeed =
+      seedArg === undefined ? await resolveDeckSeed(db, deckArg) : undefined;
+    if (seedArg === undefined && deckSeed === undefined) {
+      fail(`could not resolve --deck "${String(deckArg)}" to any cards`);
+      return;
+    }
+    const result = affinity(db, {
+      childLimit: DEFAULT_AFFINITY_CHILD_LIMIT,
+      deckSeed,
+      depth: intOption(values.depth, DEFAULT_AFFINITY_DEPTH),
+      id: typeof values.id === "string" ? values.id : "wubrg",
+      includeGameChangers: values["include-gamechangers"] === true,
+      limit: intOption(values.limit, DEFAULT_AFFINITY_LIMIT),
+      minCount: intOption(values["min-count"], DEFAULT_AFFINITY_MIN_COUNT),
+      seedTag: seedArg,
+      sort,
+    });
+    if (result.isErr()) {
+      fail(result.error.message);
+      return;
+    }
+    out(formatAffinity(result.value, sort));
+  } finally {
+    db.close();
+  }
+}
 
 async function analyzeCommand(decklistPath: string | undefined): Promise<void> {
   if (decklistPath === undefined) {
@@ -402,6 +475,12 @@ function parseOptions(argv: readonly string[]): {
   return { positionals, values };
 }
 
+function parseSort(value: boolean | string | undefined): AffinitySort | null {
+  if (value === undefined) return "lift";
+  if (value === "count" || value === "lift" || value === "share") return value;
+  return null;
+}
+
 /**
  * Resolve the `--deck` argument (a known deck slug OR a decklist file path) to the set of
  * lowercased card names used to dedupe discovery results.
@@ -418,11 +497,40 @@ async function resolveDeckNames(
   return deckNameSet(parseDecklist(deckText));
 }
 
+/** Resolve `--deck` (an ingested slug or a decklist path) to a {@link DeckSeed}. */
+async function resolveDeckSeed(
+  db: Database,
+  deckArg: string | undefined,
+): Promise<DeckSeed | undefined> {
+  if (deckArg === undefined) return undefined;
+  if (deckExists(db, deckArg)) {
+    const ids = deckOracleIds(db, deckArg);
+    return ids.length > 0 ? { ids, label: `deck:${deckArg}` } : undefined;
+  }
+  const text = await Bun.file(deckArg)
+    .text()
+    .catch(() => "");
+  if (text.length === 0) return undefined;
+  const entries = parseDecklist(text);
+  const resolved = getCardsByNames(
+    db,
+    entries.map((entry) => entry.name),
+  );
+  const ids = [...resolved.values()].map((row) => row.oracle_id);
+  return ids.length > 0
+    ? { ids, label: `deck:${basename(deckArg)}` }
+    : undefined;
+}
+
 async function run(argv: readonly string[]): Promise<void> {
   const [command, ...rest] = argv;
   const { positionals, values } = parseOptions(rest);
 
   switch (command) {
+    case "affinity": {
+      await affinityCommand(positionals[0], values);
+      return;
+    }
     case "analyze": {
       await analyzeCommand(positionals[0]);
       return;
@@ -471,7 +579,7 @@ async function run(argv: readonly string[]): Promise<void> {
     }
     default: {
       out(
-        "Usage: deck <fetch-bulk|build-db|analyze|discover|card|cards|search|tags|synergy|sql|gen-reference> [...]",
+        "Usage: deck <fetch-bulk|build-db|analyze|discover|affinity|card|cards|search|tags|synergy|sql|gen-reference> [...]",
       );
       if (command !== undefined && command !== "help") process.exitCode = 1;
     }
