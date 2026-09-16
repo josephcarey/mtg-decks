@@ -1,7 +1,8 @@
 // Commander: Sachi, Daughter of Seshiro ({2}{G}{G}, mono-Green)
 // Archetype: Snake/Shaman kindred-RAMP -> big green mana -> fatties & overrun
 // Cycle slot: G (mono-Green). Uses the kindred ration (repointed from Torgal's Dog/Wolf).
-// 100 cards (1 commander + 64 nonland + 35 lands)
+// 106 cards (OVERSIZED by 6 -- deliberately over 100; trim later, see CONSIDER.md)
+// (1 commander + 70 nonland + 35 lands)
 // Power: casual Bracket 3 -- theme-first, no Game Changers, no non-games, no Day/Night
 // Plan: Sachi turns EVERY Shaman into a {G}{G} rock. Green's best value creatures (Eternal
 //   Witness, Reclamation Sage, Oracle of Mul Daya, Fauna Shaman, Sakura-Tribe Elder) happen to
@@ -90,6 +91,12 @@
 1 Nissa, Who Shakes the World  #ramp #payoff
 1 Thousand-Year Elixir  #ramp #enabler
 1 Nissa, Voice of Zendikar  #payoff #tokens
+1 Minion Reflector  #payoff #tokens #enabler
+1 Bramble Sovereign  #payoff #tokens
+1 Primeval Bounty  #payoff #tokens
+1 Orochi Hatchery  #payoff #tokens #snake
+1 Elder Gargaroth  #payoff #draw
+1 Vivien, Monsters' Advocate  #payoff #tokens #draw
 
 // == Lands (35) ==
 1 Castle Garenbrig  #land

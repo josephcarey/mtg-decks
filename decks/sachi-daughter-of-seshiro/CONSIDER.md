@@ -85,3 +85,20 @@ Parked alternatives (owner-raised):
   Hornet Queen if we want a grindy token ENGINE over a one-shot burst.
 - **Wolf-Skull Shaman** ($0.93, 2 MV) — curve-preserving token-maker Shaman (slow Kinship trickle).
 - NOTE: Rampaging Baloths freed up here -> candidate for the Wandering Minstrel (landfall) deck.
+
+## Round-4 (2026-09-16) — added, now OVERSIZED to 106 (trim to 100 later)
+Added (6): Minion Reflector, Bramble Sovereign, Primeval Bounty, Orochi Hatchery,
+  Elder Gargaroth, Vivien Monsters' Advocate. Deck is intentionally 6 over 100.
+Pending trim candidates (pick ~6 when we cut back to 100):
+- End-Raze Forerunners — 4th Overrun effect @ 8 MV (finisher glut).
+- Nissa, Voice of Zendikar — Vivien fills the token-planeswalker slot better.
+- Elemental Bond — weakest of the stacked ETB-draw engines (power 3+ only).
+- Harmonize — one-shot draw; redundant with our draw engines.
+- Overrun — 3rd non-Craterhoof anthem-overrun (keep Craterhoof + Overwhelming Stampede).
+- Stonecoil Serpent — lowest-synergy beater (but a Snake).
+- **Kodama of the East Tree — CONSIDER CUTTING: Kodama tends to want to be its own
+  deck/build-around; happy to move away from it here.**
+KEEP (owner locked this pass): Centaur Omenreader (Sachi can tap it on demand to cost-reduce
+  any spell, any time), Abundance.
+Not added this round (bench): Ant Queen, Wurmcalling (more mana sinks), Thornbite Staff
+  (Shaman ping/untap engine — would be proxy #5 if added).
