@@ -1,0 +1,102 @@
+// Commander: Sachi, Daughter of Seshiro ({2}{G}{G}, mono-Green)
+// Archetype: Snake/Shaman kindred-RAMP -> big green mana -> fatties & overrun
+// Cycle slot: G (mono-Green). Uses the kindred ration (repointed from Torgal's Dog/Wolf).
+// 100 cards (1 commander + 64 nonland + 35 lands)
+// Power: casual Bracket 3 -- theme-first, no Game Changers, no non-games, no Day/Night
+// Plan: Sachi turns EVERY Shaman into a {G}{G} rock. Green's best value creatures (Eternal
+//   Witness, Reclamation Sage, Oracle of Mul Daya, Fauna Shaman, Sakura-Tribe Elder) happen to
+//   be Shamans, so the ramp package doubles as the value package. Pour that mana into big
+//   creatures + an overrun finish. Snakes are a light sub-theme spine (Sachi's +0/+1).
+// PROXY CANDIDATES ($$): Allosaurus Shepherd, Craterhoof Behemoth, Sylvan Library, Green Sun's Zenith
+// (Also mid-priced staples kept at 1 copy: Heroic Intervention.)
+//
+// == Commander ==
+1 Sachi, Daughter of Seshiro  #commander
+
+// == Mana dorks / ramp creatures (Shamans tap for GG under Sachi) ==
+1 Llanowar Elves  #ramp
+1 Elvish Mystic  #ramp
+1 Fyndhorn Elves  #ramp
+1 Arbor Elf  #ramp
+1 Sakura-Tribe Elder  #ramp #snake #shaman
+1 Sakura-Tribe Scout  #ramp #snake #shaman
+1 Whisperer of the Wilds  #ramp #shaman
+1 Fauna Shaman  #ramp #shaman #utility
+1 Beastcaller Savant  #ramp #shaman
+1 Karametra's Acolyte  #ramp
+1 Lotus Cobra  #ramp #snake #landfall
+1 Wood Elves  #ramp #fixing
+1 Allosaurus Shepherd  #ramp #shaman #protection
+
+// == Ramp spells ==
+1 Rampant Growth  #ramp
+1 Nature's Lore  #ramp
+1 Three Visits  #ramp
+1 Cultivate  #ramp
+1 Kodama's Reach  #ramp
+1 Skyshroud Claim  #ramp
+
+// == Card advantage ==
+1 Beast Whisperer  #draw
+1 Elemental Bond  #draw
+1 Garruk's Uprising  #draw #payoff
+1 Return of the Wildspeaker  #draw
+1 Harmonize  #draw
+1 Sylvan Library  #draw
+1 Oracle of Mul Daya  #draw #ramp #shaman
+1 Elvish Visionary  #draw #shaman
+1 Swiftfoot Boots  #protection #enabler
+
+// == Recursion / value Shamans ==
+1 Eternal Witness  #utility #shaman
+1 Timeless Witness  #utility #shaman
+1 Reclamation Sage  #interaction #shaman
+1 World Shaper  #ramp #shaman
+1 Silverback Elder  #draw #utility #shaman
+1 Ramunap Excavator  #utility #snake
+
+// == Interaction / removal ==
+1 Beast Within  #interaction
+1 Ulvenwald Tracker  #interaction #shaman
+1 Defiler of Vigor  #payoff #ramp
+1 Kenrith's Transformation  #interaction #ramp
+1 Song of the Dryads  #interaction
+1 Nature's Claim  #interaction
+1 Abundance  #draw #utility
+1 Heroic Intervention  #protection
+
+// == Snakes (tribal spine) ==
+1 Ohran Frostfang  #snake #payoff #draw
+1 Stonecoil Serpent  #snake #utility
+1 Wickerbough Elder  #interaction #shaman
+1 Shigeki, Jukai Visionary  #snake #ramp
+1 Patron of the Orochi  #snake #payoff
+1 Orochi Sustainer  #ramp #snake #shaman
+1 Centaur Omenreader  #ramp #shaman
+
+// == Payoffs / mana sinks / finishers ==
+1 Craterhoof Behemoth  #wincon #payoff
+1 End-Raze Forerunners  #wincon #payoff
+1 Overwhelming Stampede  #wincon #payoff
+1 Overrun  #wincon #payoff
+1 Avenger of Zendikar  #payoff #tokens #landfall
+1 Rampaging Baloths  #payoff #tokens #landfall
+1 Leyline of Abundance  #ramp #payoff
+1 Green Sun's Zenith  #utility #ramp
+1 Zendikar Resurgent  #ramp #draw
+1 Kodama of the East Tree  #payoff #ramp
+1 Voracious Hydra  #payoff #interaction
+1 Ulvenwald Oddity  #payoff #enabler #wincon
+1 Nissa, Who Shakes the World  #ramp #payoff
+1 Thousand-Year Elixir  #ramp #enabler
+1 Nissa, Voice of Zendikar  #payoff #tokens
+
+// == Lands (35) ==
+1 Castle Garenbrig  #land
+1 Path of Ancestry  #land
+1 Rogue's Passage  #land
+1 Myriad Landscape  #land #ramp
+1 Blighted Woodland  #land #ramp
+1 Mosswort Bridge  #land
+1 Ghost Quarter  #land #interaction
+28 Forest  #land
