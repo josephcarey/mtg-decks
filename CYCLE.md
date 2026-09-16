@@ -5,7 +5,7 @@ Colorless `{C}` counts as its own slot, so the cycle is **27 decks total**.
 
 **Core constraint — archetype diversity:** each theme lives in exactly ONE deck across the
 whole cycle (no duplicate landfall, only one spellslinger, etc.). Kindred/typal is a _rationed_
-theme — spent here on Namor (Merfolk) and Torgal (Dog/Wolf).
+theme — spent here on Namor (Merfolk) and Sachi (Snake/Shaman).
 
 **Owner priorities** (see `PRIORITIES.md`): no Game Changers, no non-games (infinite combo /
 stax / MLD / extra-turn chains — single telegraphed extra turns and incidental combos are OK
@@ -14,7 +14,8 @@ Bracket 3.
 
 **Status:** planning complete — all commanders chosen. Each deck gets built later in its own
 session, one `decks/<slug>/` folder at a time (`list.txt` + `notes.md` per repo conventions).
-Nothing built yet except **The Wandering Minstrel** and **Saruman of Many Colors** (WUB).
+Nothing built yet except **The Wandering Minstrel**, **Saruman of Many Colors** (WUB), and
+**Sachi, Daughter of Seshiro** (G).
 
 ## Mono-color
 
@@ -24,7 +25,7 @@ Nothing built yet except **The Wandering Minstrel** and **Saruman of Many Colors
 | U        | Namor the Sub-Mariner   | Merfolk kindred (uses the kindred ration)                                                   |
 | B        | The Raven Man           | Discard-matters → Bird tokens (keep FAIR, not stax)                                         |
 | R        | J. Jonah Jameson        | Menace + Treasure                                                                           |
-| G        | Torgal, A Fine Hound    | Human-cast + Dog/Wolf counter go-wide (uses the kindred ration; soft Dog overlap w/ Sophia) |
+| G        | Sachi, Daughter of Seshiro | Snake/Shaman kindred-ramp → big green mana → fatties & overrun (uses the kindred ration) |
 
 ## Colorless
 
