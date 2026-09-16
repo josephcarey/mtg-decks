@@ -71,3 +71,17 @@ Still parked (owner-raised, evaluated):
 - **Helix Pinnacle** ($7.63) — solitaire alt-win mana sink; durdly, off-theme for Bracket 3. Pass.
 - Interaction is now 8 pieces (down from ~10) — if it feels light, Ram Through / Return to Nature
   are the easiest re-adds.
+
+## Round-3 updates (2026-09-16)
+Whisperer of the Wilds -> Elvish Piper (its built-in mana was redundant with Sachi's granted
+  {G}{G}; Piper's cheat-a-fatty ability is what Sachi-mana should pay for). Rampaging Baloths ->
+  Hornet Queen (reassign pure-landfall engine to the Minstrel deck; Hornet Queen's evasive
+  deathtouch tokens are better Craterhoof/Overrun fodder here). Kept Avenger of Zendikar (elite
+  Craterhoof fuel, not a landfall engine).
+Parked alternatives (owner-raised):
+- **Sakiko, Mother of Summer** ($0.41, 6 MV) — Snake+Shaman; combat damage -> that much {G} that
+  persists through the turn. Spicy big-mana burst; adds to the 6-slot. Fun swap for Elvish Piper.
+- **Tendershoot Dryad** ($1.51, 5 MV) — non-landfall Saproling engine + Ascend anthem; alt to
+  Hornet Queen if we want a grindy token ENGINE over a one-shot burst.
+- **Wolf-Skull Shaman** ($0.93, 2 MV) — curve-preserving token-maker Shaman (slow Kinship trickle).
+- NOTE: Rampaging Baloths freed up here -> candidate for the Wandering Minstrel (landfall) deck.

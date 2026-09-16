@@ -20,7 +20,7 @@
 1 Arbor Elf  #ramp
 1 Sakura-Tribe Elder  #ramp #snake #shaman
 1 Sakura-Tribe Scout  #ramp #snake #shaman
-1 Whisperer of the Wilds  #ramp #shaman
+1 Elvish Piper  #utility #shaman
 1 Fauna Shaman  #ramp #shaman #utility
 1 Beastcaller Savant  #ramp #shaman
 1 Karametra's Acolyte  #ramp
@@ -80,7 +80,7 @@
 1 Overwhelming Stampede  #wincon #payoff
 1 Overrun  #wincon #payoff
 1 Avenger of Zendikar  #payoff #tokens #landfall
-1 Rampaging Baloths  #payoff #tokens #landfall
+1 Hornet Queen  #payoff #tokens
 1 Leyline of Abundance  #ramp #payoff
 1 Green Sun's Zenith  #utility #ramp
 1 Zendikar Resurgent  #ramp #draw
