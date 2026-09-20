@@ -84,6 +84,12 @@ export function formatGameChangerLint(names: readonly string[]): string {
   return `[g] Game Changers present ⚠ (${names.length}): ${names.join(", ")}`;
 }
 
+/** Format the paper-availability lint for cards without an eligible physical printing. */
+export function formatPaperLint(names: readonly string[]): string {
+  if (names.length === 0) return "[h] Paper-only: all cards available ✓";
+  return `[h] Digital-only / non-paper cards present ⚠ (${names.length}): ${names.join(", ")}`;
+}
+
 /**
  * Format the `[c]` color-pip ratio section.
  * @param pips - Total per-color pip counts.
@@ -126,6 +132,14 @@ export function formatTagDistribution(tags: readonly TagCount[]): string {
 
 const money = (usd: null | number): string =>
   usd === null ? "  —  " : `$${usd.toFixed(2)}`;
+
+/** A priced deck entry for the budget breakdown. */
+export type PricedCard = {
+  readonly count: number;
+  readonly lastReleasedAt: string;
+  readonly name: string;
+  readonly priceUsd: null | number;
+};
 
 /**
  * Format an affinity report: the seed's ranked co-occurring tags with share + lift, and any
@@ -190,7 +204,12 @@ export function formatDiscoverTable(
   const rows = candidates.map((candidate) => {
     const marker = candidate.owned ? "  =" : String(++rank).padStart(3);
     const mv = `MV ${String(Math.trunc(candidate.cmc)).padStart(2)}`;
-    return `${marker}  ${money(candidate.priceUsd).padStart(7)}  ${mv}  ${candidate.name}  — ${candidate.typeLine}`;
+    const released =
+      candidate.lastReleasedAt === ""
+        ? ""
+        : `  [${candidate.firstReleasedAt.slice(0, 4)}→${candidate.lastReleasedAt.slice(0, 4)}]`;
+    const paper = candidate.paperAvailable ? "" : "  [digital/non-paper]";
+    return `${marker}  ${money(candidate.priceUsd).padStart(7)}  ${mv}  ${candidate.name}${released}${paper}  — ${candidate.typeLine}`;
   });
   return [`otag:${slug} — ${description}`, ...rows].join("\n");
 }
@@ -216,8 +235,9 @@ export function formatEdhrec(
     const synergy = `${rec.synergy >= 0 ? "+" : ""}${(rec.synergy * 100).toFixed(0)}%`;
     const inclusion = `${(rec.inclusion * 100).toFixed(0)}%`.padStart(4);
     const flag = rec.resolved ? " " : "?";
+    const paper = rec.paperAvailable === false ? "  [digital/non-paper]" : "";
     const type = rec.typeLine === null ? "" : `  — ${rec.typeLine}`;
-    return `${marker}${flag} ${money(rec.priceUsd).padStart(7)}  syn ${synergy.padStart(5)}  in ${inclusion}  ${rec.name}${type}`;
+    return `${marker}${flag} ${money(rec.priceUsd).padStart(7)}  syn ${synergy.padStart(5)}  in ${inclusion}  ${rec.name}${paper}${type}`;
   });
   return [header, "  (? = not in local corpus)", ...rows].join("\n");
 }
@@ -241,6 +261,29 @@ export function formatEdhrecThemes(
     return `  ${count}  ${theme.slug.padEnd(24)} ${theme.label}`;
   });
   return [header, ...rows].join("\n");
+}
+
+/** Format a deck's most expensive cards using cheapest physical-print prices. */
+export function formatPriceBreakdown(
+  cards: readonly PricedCard[],
+  limit: number,
+): string {
+  const ranked = [...cards]
+    .filter((card) => card.priceUsd !== null)
+    .sort(
+      (a, b) =>
+        (b.priceUsd ?? 0) * b.count - (a.priceUsd ?? 0) * a.count ||
+        a.name.localeCompare(b.name),
+    )
+    .slice(0, Math.max(0, limit));
+  if (ranked.length === 0) return "Price view: no priced cards";
+  const rows = ranked.map((card) => {
+    const total = (card.priceUsd ?? 0) * card.count;
+    const release =
+      card.lastReleasedAt === "" ? "" : `  last print ${card.lastReleasedAt}`;
+    return `  ${money(total).padStart(7)}  ${card.count}x ${card.name}${release}`;
+  });
+  return ["Price view (cheapest physical print):", ...rows].join("\n");
 }
 
 /**

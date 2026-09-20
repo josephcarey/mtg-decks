@@ -20,23 +20,29 @@ payoff suite. A raw `otag:landfall` (no `-is:gamechanger`) includes Field of the
 
 ## Bulk-data workflow (preferred — offline & fast)
 
-1. `GET https://api.scryfall.com/bulk-data/oracle_cards` and `.../oracle_tags` return JSON
+1. `GET https://api.scryfall.com/bulk-data/default_cards`, `.../oracle_cards`, and
+   `.../oracle_tags` return JSON
    describing each export. The fields that matter:
    - `jsonl_download_uri` — dated URI to a **gzipped JSONL** file. It changes daily, so always
      resolve it fresh from the API; never hardcode it.
    - `updated_at` — the export date.
    - `compressed_size` — bytes.
-2. Download both `.jsonl.gz` files into a gitignored `data/` directory.
+2. Download all three `.jsonl.gz` files into the gitignored `data/` directory. Set
+   `MTG_DATA_DIR` to use a shared cache elsewhere.
 3. **oracle_cards** (~38,600 cards). Per-card fields used here: `name`, `oracle_id`, `cmc`,
    `color_identity` (e.g. `["G","U"]`), `type_line`, `mana_cost`, `oracle_text`, `keywords`,
-   `prices.usd`, `edhrec_rank`, and `game_changer` (boolean).
-4. **oracle_tags** (~4,524 tags). Per-tag fields: `slug`, `label`, `description`, `type`
+   `edhrec_rank`, and `game_changer` (boolean).
+4. **default_cards** (all printings). Group by `oracle_id` to derive the cheapest USD price among
+   eligible physical printings, `paper_available`, and the minimum/maximum `released_at` dates.
+   Paper eligibility requires `games` to contain `paper` and excludes `alchemy`, `funny`, `token`,
+   and `memorabilia` set types.
+5. **oracle_tags** (~4,524 tags). Per-tag fields: `slug`, `label`, `description`, `type`
    (`"oracle"`), `parent_ids`, `child_ids`, `aliases`, and `taggings` — a list of
    `{ oracle_id, weight }`. **Join cards ↔ tags on `oracle_id`.**
-5. `game_changer=true` on **exactly 53 cards** = the official Commander Game Changers list.
+6. `game_changer=true` on **exactly 53 cards** = the official Commander Game Changers list.
    Use this flag as the **authoritative guardrail** — no hand-maintained list needed.
 
-This workspace builds a `bun:sqlite` database (`data/mtg.db`) from these two exports (see
+This workspace builds a `bun:sqlite` database (`data/mtg.db`) from these three exports (see
 `src/db/schema.ts`). Reading `.jsonl.gz` directly with `node:zlib` streaming is fine.
 
 ## Environment notes
@@ -97,19 +103,32 @@ handle Command Tower / Exotic Orchard / pathways specially):
 // bun run <script>.ts  — sources per color for one deck
 import { Database } from "bun:sqlite";
 const db = new Database("data/mtg.db", { readonly: true });
-const rows = db.query(
-  `SELECT dc.count qty, c.name, c.oracle_text otext FROM deck_cards dc
+const rows = db
+  .query(
+    `SELECT dc.count qty, c.name, c.oracle_text otext FROM deck_cards dc
    JOIN cards c ON c.oracle_id = dc.oracle_id
-   WHERE dc.deck_slug = ?1 AND c.type_line LIKE '%Land%'`
-).all("<deck-slug>") as { qty: number; name: string; otext: string }[];
+   WHERE dc.deck_slug = ?1 AND c.type_line LIKE '%Land%'`,
+  )
+  .all("<deck-slug>") as { qty: number; name: string; otext: string }[];
 const src: Record<string, number> = { W: 0, U: 0, B: 0, R: 0, G: 0 };
-const basic: Record<string, string> = { Plains: "W", Island: "U", Swamp: "B", Mountain: "R", Forest: "G" };
+const basic: Record<string, string> = {
+  Plains: "W",
+  Island: "U",
+  Swamp: "B",
+  Mountain: "R",
+  Forest: "G",
+};
 for (const r of rows) {
   const colors = new Set<string>();
   if (basic[r.name]) colors.add(basic[r.name]);
-  else if (r.name.startsWith("Command Tower") || r.name.startsWith("Exotic Orchard"))
+  else if (
+    r.name.startsWith("Command Tower") ||
+    r.name.startsWith("Exotic Orchard")
+  )
     for (const c of "WUBRG") colors.add(c); // narrow to the deck's identity in practice
-  else for (const c of "WUBRG") if ((r.otext ?? "").includes(`{${c}}`)) colors.add(c);
+  else
+    for (const c of "WUBRG")
+      if ((r.otext ?? "").includes(`{${c}}`)) colors.add(c);
   // NB: pathways have empty oracle_text in bulk data — add their two faces by hand.
   for (const c of colors) src[c] += r.qty ?? 1;
 }

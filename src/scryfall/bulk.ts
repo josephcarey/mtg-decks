@@ -12,7 +12,7 @@ import { dirname, join } from "node:path";
 import { DATA_DIR } from "../constants.ts";
 
 /** The bulk export types this workspace consumes. */
-export type BulkType = "oracle_cards" | "oracle_tags";
+export type BulkType = "default_cards" | "oracle_cards" | "oracle_tags";
 
 /** Result of downloading a bulk export to disk. */
 type BulkDownload = {
@@ -79,7 +79,7 @@ export function downloadBulk(
 
 /**
  * Resolve the current download URI + metadata for a bulk export.
- * @param type - The bulk export type (`oracle_cards` or `oracle_tags`).
+ * @param type - The bulk export type.
  * @returns The resolved {@link BulkInfo}, or a {@link BulkError} on network/parse failure.
  */
 export function resolveBulkUri(

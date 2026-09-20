@@ -40,6 +40,8 @@ export type Recommendation = {
   readonly inclusion: number;
   readonly name: string;
   readonly numDecks: number;
+  /** Whether the local corpus has an eligible physical printing; null when unresolved. */
+  readonly paperAvailable: boolean | null;
   /** Corpus price in USD, when the card resolved locally. */
   readonly priceUsd: null | number;
   /** Whether the name resolved to a card in the local corpus. */
@@ -80,6 +82,8 @@ type CrossReferenceOptions = {
   readonly limit: number;
   /** Lowercased names already in the deck, which are skipped. */
   readonly owned: ReadonlySet<string>;
+  /** Exclude locally resolved cards without an eligible physical printing. */
+  readonly paperOnly: boolean;
   /** Resolve a lowercased card name to a local corpus row, if present. */
   readonly resolve: (nameLower: string) => CardRow | undefined;
 };
@@ -127,12 +131,14 @@ export function crossReference(
     if (row !== undefined) {
       if (!ciSubsetOf(row.ci_mask, options.idMask)) continue;
       if (row.game_changer === 1 && !options.includeGameChangers) continue;
+      if (row.paper_available === 0 && options.paperOnly) continue;
     }
     out.push({
       inclusion:
         view.potentialDecks > 0 ? view.numDecks / view.potentialDecks : 0,
       name: view.name,
       numDecks: view.numDecks,
+      paperAvailable: row === undefined ? null : row.paper_available === 1,
       priceUsd: row?.price_usd ?? null,
       resolved: row !== undefined,
       synergy: view.synergy,

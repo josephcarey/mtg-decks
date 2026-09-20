@@ -17,15 +17,20 @@ const card = (over: Partial<CardRow>): CardRow => ({
   cmc: 0,
   color_identity: "",
   edhrec_rank: null,
+  first_released_at: "",
   game_changer: 0,
   keywords: "",
+  last_released_at: "",
   mana_cost: "",
   name: "X",
   name_lower: "x",
   oracle_id: "id",
   oracle_text: "",
+  paper_available: 1,
   price_usd: null,
   set_code: "xxx",
+  set_name: "Test",
+  set_type: "expansion",
   type_line: "Instant",
   ...over,
 });
@@ -172,6 +177,7 @@ describe("crossReference", () => {
         includeGameChangers: false,
         limit: 25,
         owned: new Set(["sol ring"]),
+        paperOnly: true,
         resolve,
       },
     );
@@ -197,9 +203,22 @@ describe("crossReference", () => {
         includeGameChangers: true,
         limit: 2,
         owned: new Set(),
+        paperOnly: true,
         resolve,
       },
     );
     expect(recs).toHaveLength(2);
+  });
+
+  it("drops digital-only cards by default", () => {
+    const recs = crossReference([view({ name: "Digital Card" })], {
+      idMask: gu,
+      includeGameChangers: false,
+      limit: 10,
+      owned: new Set(),
+      paperOnly: true,
+      resolve: () => card({ ci_mask: gu, paper_available: 0 }),
+    });
+    expect(recs).toEqual([]);
   });
 });

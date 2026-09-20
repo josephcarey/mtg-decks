@@ -11,7 +11,9 @@ import { createReadStream } from "node:fs";
 import { createInterface } from "node:readline";
 import { createGunzip } from "node:zlib";
 
-import { buildCardRow, buildTagRow } from "./model.ts";
+import type { PrintingSummary } from "./model.ts";
+
+import { buildCardRow, buildTagRow, mergePrintingSummary } from "./model.ts";
 
 /** Record counts produced by a build. */
 type BuildCounts = {
@@ -36,10 +38,17 @@ CREATE TABLE cards (
   price_usd     REAL,
   edhrec_rank   INTEGER,
   game_changer  INTEGER NOT NULL,
-  set_code      TEXT NOT NULL
+  paper_available INTEGER NOT NULL,
+  set_code      TEXT NOT NULL,
+  set_name      TEXT NOT NULL,
+  set_type      TEXT NOT NULL,
+  first_released_at TEXT NOT NULL,
+  last_released_at TEXT NOT NULL
 );
 CREATE INDEX idx_cards_name_lower ON cards(name_lower);
 CREATE INDEX idx_cards_edhrec ON cards(edhrec_rank);
+CREATE INDEX idx_cards_paper ON cards(paper_available);
+CREATE INDEX idx_cards_last_release ON cards(last_released_at);
 
 CREATE TABLE tags (
   id          TEXT PRIMARY KEY,
@@ -87,12 +96,14 @@ CREATE INDEX idx_deck_cards_oracle ON deck_cards(oracle_id);
  * Any existing database at `dbPath` is replaced.
  * @param dbPath - Destination path for the SQLite file.
  * @param cardsPath - Path to the oracle_cards `.jsonl.gz` export.
+ * @param printingsPath - Path to the default_cards `.jsonl.gz` export.
  * @param tagsPath - Path to the oracle_tags `.jsonl.gz` export.
  * @returns Record counts for cards, tags, taggings, and decks (decks start at 0).
  */
 export async function buildDb(
   dbPath: string,
   cardsPath: string,
+  printingsPath: string,
   tagsPath: string,
 ): Promise<BuildCounts> {
   await Bun.file(dbPath)
@@ -103,7 +114,8 @@ export async function buildDb(
   try {
     db.run("PRAGMA journal_mode = WAL");
     db.run(SCHEMA);
-    const cards = await loadCards(db, cardsPath);
+    const printings = await loadPrintingSummaries(printingsPath);
+    const cards = await loadCards(db, cardsPath, printings);
     const { taggings, tags } = await loadTags(db, tagsPath);
     return { cards, cardTags: taggings, decks: 0, tags };
   } finally {
@@ -125,34 +137,50 @@ async function* jsonlRecords(
   }
 }
 
-function loadCards(db: Database, path: string): Promise<number> {
+function loadCards(
+  db: Database,
+  path: string,
+  printings: ReadonlyMap<string, PrintingSummary>,
+): Promise<number> {
   const insert = db.query(
     `INSERT OR REPLACE INTO cards
        (oracle_id, name, name_lower, cmc, type_line, mana_cost, oracle_text,
-        color_identity, ci_mask, keywords, price_usd, edhrec_rank, game_changer, set_code)
+        color_identity, ci_mask, keywords, price_usd, edhrec_rank, game_changer,
+        paper_available, set_code, set_name, set_type, first_released_at, last_released_at)
      VALUES ($oracle_id, $name, $name_lower, $cmc, $type_line, $mana_cost, $oracle_text,
-        $color_identity, $ci_mask, $keywords, $price_usd, $edhrec_rank, $game_changer, $set_code)`,
+        $color_identity, $ci_mask, $keywords, $price_usd, $edhrec_rank, $game_changer,
+        $paper_available, $set_code, $set_name, $set_type, $first_released_at, $last_released_at)`,
   );
   const insertFts = db.query(
     `INSERT INTO cards_fts (name, oracle_text, oracle_id) VALUES ($name, $oracle_text, $oracle_id)`,
   );
   return runInTransaction(db, path, (record) => {
-    const row = buildCardRow(record);
+    const oracleId =
+      typeof record.oracle_id === "string" ? record.oracle_id : undefined;
+    const row = buildCardRow(
+      record,
+      oracleId === undefined ? undefined : printings.get(oracleId),
+    );
     if (row === null) return 0;
     insert.run({
       $ci_mask: row.ci_mask,
       $cmc: row.cmc,
       $color_identity: row.color_identity,
       $edhrec_rank: row.edhrec_rank,
+      $first_released_at: row.first_released_at,
       $game_changer: row.game_changer,
       $keywords: row.keywords,
+      $last_released_at: row.last_released_at,
       $mana_cost: row.mana_cost,
       $name: row.name,
       $name_lower: row.name_lower,
       $oracle_id: row.oracle_id,
       $oracle_text: row.oracle_text,
+      $paper_available: row.paper_available,
       $price_usd: row.price_usd,
       $set_code: row.set_code,
+      $set_name: row.set_name,
+      $set_type: row.set_type,
       $type_line: row.type_line,
     });
     insertFts.run({
@@ -162,6 +190,19 @@ function loadCards(db: Database, path: string): Promise<number> {
     });
     return 1;
   });
+}
+
+async function loadPrintingSummaries(
+  path: string,
+): Promise<Map<string, PrintingSummary>> {
+  const summaries = new Map<string, PrintingSummary>();
+  for await (const record of jsonlRecords(path)) {
+    const oracleId = record.oracle_id;
+    if (typeof oracleId !== "string") continue;
+    const summary = mergePrintingSummary(summaries.get(oracleId), record);
+    summaries.set(oracleId, summary);
+  }
+  return summaries;
 }
 
 function loadTags(

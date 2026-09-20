@@ -8,18 +8,20 @@ were removed). It follows the studio code standards: strict TS, functional style
 CI gate. Use `bun run ci` before every PR.
 
 - **Data layer:** an offline **`bun:sqlite`** database (`data/mtg.db`, includes FTS5) built from
-  Scryfall's daily **bulk-data** exports (`oracle_cards` + `oracle_tags`), joined on `oracle_id`.
-  `data/` and `*.db` are gitignored. Native Bun `fetch` works here — **no curl/SSL workaround**.
+  Scryfall's daily **bulk-data** exports (`default_cards` + `oracle_cards` + `oracle_tags`), joined
+  on `oracle_id`. `default_cards` supplies cheapest physical-print pricing, paper availability,
+  and first/last release dates. `data/` and `*.db` are gitignored; `MTG_DATA_DIR` overrides the
+  cache location. Native Bun `fetch` works here — **no curl/SSL workaround**.
 - **The `game_changer` boolean** on each card (true on exactly 53 cards) is the **authoritative**
   Game Changers list. The analyzer lints against it — no hand-maintained list.
 - **CLI** (`bun run deck <subcommand>`):
   - `fetch-bulk` / `build-db` — download the bulk exports and build/ingest the DB.
-  - `analyze <decklist>` — count / curve / pips / lands / price / tag distribution + a
-    Game-Changer lint (should report none).
+  - `analyze <deck-slug|path>` — count / curve / pips / lands / cheapest-paper price breakdown /
+    tag distribution + Game-Changer and paper-availability lints.
   - `discover <slug> [--id gu] [--set] [--max-price] [--limit] [--include-gamechangers] [--deck]`
     — function-tag card discovery, color-identity-subset filtered, EDHREC-ranked; `--deck` accepts a
     known deck **slug** (deduped against the ingested `deck_cards`) or a decklist path, and skips
-    owned cards. Game Changers excluded by default.
+    owned cards. Game Changers and non-paper cards excluded by default; `--include-digital` opts out.
   - `affinity <tag>|--deck <slug|path> [--id wubrg] [--sort lift|share|count] [--min-count N]
 [--limit N] [--depth 1|2] [--include-gamechangers]` — surface a theme's **sub-themes**: rank
     the tags co-occurring with a seed (a function tag OR a deck's cards) by **share** (fraction of
