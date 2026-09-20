@@ -1,0 +1,139 @@
+// Commander: Tony Stark // The Invincible Iron Man  (Tony Stark side ONLY — never flip)
+// Archetype: UR (Izzet) artifacts / token-variety / untap-value — "for fun", not in the cycle
+// Card count: 100 (singleton)
+// Power: casual jank — rules lightened per owner; no Game Changers used, no non-games, no Day/Night
+// Budget: lightened. A few chase pieces flagged below as PROXY CANDIDATES.
+// Proxy candidates (chase cards): Freed from the Real, Pemmin's Aura, Thousand-Year Elixir,
+//   Magewright's Stone, Umbral Mantle, Rings of Brighthearth, Illusionist's Bracers, Unwinding Clock
+//
+// Plan: Tony Stark's "{1},{T}: look at top 4, take an artifact" is a repeatable impulse-dig engine.
+// UNTAP or COPY Tony to do it again and again -> bury the table in artifacts. A light "one of every
+// token type" sub-theme (Treasure / Thopter / Servo / Powerstone / Clue / Food / Blood / Myr) fuels
+// four jank closers:
+//   - Brudiclad, Telchor Engineer : turn the whole token swarm into copies of one fatty (tokens have haste).
+//   - Shao Jun                    : tap two artifacts -> ping each opponent; abused with untappers = drain.
+//   - Graaz, Unstoppable Juggernaut: whole board becomes 5/3 must-attack Juggernauts, go-wide finish.
+
+// == Commander ==
+1 Tony Stark  #commander
+
+// == Untap Tony / Shao Jun (the "do it again" core) ==
+1 Freed from the Real  #enabler #untap
+1 Pemmin's Aura  #enabler #untap
+1 Thousand-Year Elixir  #enabler #untap
+1 Magewright's Stone  #enabler #untap
+1 Umbral Mantle  #enabler #untap
+
+// == Copy the tap ability (dig twice) ==
+1 Rings of Brighthearth  #enabler #untap
+1 Illusionist's Bracers  #enabler #untap
+
+// == Mass untap / burst value ==
+1 Unwinding Clock  #enabler #untap
+1 Dramatic Reversal  #enabler #untap
+1 Intruder Alarm  #enabler #untap #tokens
+
+// == Artifact card advantage (keep the digs flowing) ==
+1 Mystic Forge  #draw
+1 The Reality Chip  #draw
+1 Thopter Spy Network  #draw #tokens
+1 Trail of Evidence  #draw #tokens
+1 Forensic Gadgeteer  #draw #tokens
+1 Padeem, Consul of Innovation  #draw #protection
+1 Brainstorm  #draw
+1 Preordain  #draw
+
+// == Cost reducers (so a dug artifact still leaves U to re-dig) ==
+1 Foundry Inspector  #enabler #ramp
+1 Etherium Sculptor  #enabler #ramp
+1 Cloud Key  #enabler #ramp
+1 Enthusiastic Mechanaut  #enabler #ramp
+1 Artificer Class  #enabler #draw
+
+// == Token-variety makers (light "one of each" theme) ==
+1 Academy Manufactor  #tokens #payoff
+1 Sai, Master Thopterist  #tokens
+1 Efficient Construction  #tokens
+1 Whirler Rogue  #tokens
+1 Saheeli, the Gifted  #tokens
+1 Retrofitter Foundry  #tokens
+1 Storm-Kiln Artist  #tokens #ramp
+1 Xorn  #tokens
+1 Voldaren Epicure  #tokens
+1 Urza, Powerstone Prodigy  #tokens #ramp
+1 The Mana Rig  #tokens #ramp
+1 Weapons Manufacturing  #tokens #payoff
+1 Chrome Host Seedshark  #tokens
+1 Stridehangar Automaton  #tokens
+1 Worldwalker Helm  #tokens
+1 Goblin Kaboomist  #tokens
+1 Ominous Seas  #tokens
+1 Donatello, the Brains  #tokens
+1 Toggo, Goblin Weaponsmith  #tokens #landfall
+
+// == Artifact payoffs / pingers ==
+1 Reckless Fireweaver  #payoff #wincon
+1 Makeshift Munitions  #payoff #wincon
+1 Panharmonicon  #payoff
+1 Kappa Cannoneer  #payoff #wincon
+1 Scrap Trawler  #utility
+1 Hellkite Tyrant  #wincon
+1 Concert Kaboomist  #wincon
+
+// == Closers ==
+1 Brudiclad, Telchor Engineer  #wincon #tokens
+1 Shao Jun  #wincon
+1 Graaz, Unstoppable Juggernaut  #wincon
+
+// == Interaction ==
+1 Counterspell  #interaction
+1 Arcane Denial  #interaction
+1 Chaos Warp  #interaction
+1 Vandalblast  #interaction
+1 Abrade  #interaction
+1 Pongify  #interaction
+
+// == Ramp / mana rocks (also artifact fuel) ==
+1 Sol Ring  #ramp
+1 Arcane Signet  #ramp #fixing
+1 Izzet Signet  #ramp #fixing
+1 Talisman of Creativity  #ramp #fixing
+1 Mind Stone  #ramp #draw
+1 Prismatic Lens  #ramp #fixing
+
+// == Lands ==
+1 Command Tower  #land #fixing
+1 Steam Vents  #land #fixing
+1 Spirebluff Canal  #land #fixing
+1 Shivan Reef  #land #fixing
+1 Sulfur Falls  #land #fixing
+1 Riverglide Pathway  #land #fixing
+1 Cascade Bluffs  #land #fixing
+1 Frostboil Snarl  #land #fixing
+1 Prismari Campus  #land #fixing
+1 Fiery Islet  #land #fixing
+1 Spire of Industry  #land #fixing
+1 Reliquary Tower  #land #utility
+1 Inventors' Fair  #land #utility
+1 Academy Ruins  #land #utility
+1 Mystic Sanctuary  #land #utility
+1 Halimar Depths  #land #utility
+1 Mishra's Factory  #land #utility
+1 Island  #land
+1 Island  #land
+1 Island  #land
+1 Island  #land
+1 Island  #land
+1 Island  #land
+1 Island  #land
+1 Island  #land
+1 Island  #land
+1 Island  #land
+1 Island  #land
+1 Island  #land
+1 Mountain  #land
+1 Mountain  #land
+1 Mountain  #land
+1 Mountain  #land
+1 Mountain  #land
+1 Mountain  #land
