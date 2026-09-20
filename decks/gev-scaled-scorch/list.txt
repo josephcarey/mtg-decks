@@ -1,0 +1,114 @@
+// Commander: Gev, Scaled Scorch
+// Archetype: BR (Rakdos) Lizard typal — "opponents lose life -> creatures enter with fat +1/+1 counters"
+// Card count: 100 (singleton)
+// Power: casual Bracket 3 — theme-first, no Game Changers, no non-games, no Day/Night
+// Budget: dirt-cheap for-fun build. Most cards < $1.
+// Proxy candidates (chase cards): Torbran, Thane of Red Fell
+//
+// Plan: Make EVERY opponent lose a little life as early/often as possible (Gev counts "each
+// opponent who lost life this turn"), then dump oversized creatures on the board. The engine is
+// group-slug pingers that hit ALL opponents at once (Impact Tremors, Spitfire Lagac, Dagger
+// Caster, Witty Roastmaster) plus aristocrat drains. Lizard-cast triggers on Gev add reach, and
+// a treasure/expend sub-package fuels the Bloomburrow Lizards that care about spent mana.
+
+// == Commander ==
+1 Gev, Scaled Scorch  #commander
+
+// == Lizards (bodies + payoffs) ==
+1 Hired Claw  #lizard #pinger
+1 Scorch Spitter  #lizard
+1 Blazing Rootwalla  #lizard
+1 Viashino Pyromancer  #lizard #payoff
+1 Agate-Blade Assassin  #lizard #drain
+1 Frilled Sparkshooter  #lizard #payoff
+1 Kindlespark Duo  #lizard #pinger
+1 Magebane Lizard  #lizard #interaction
+1 Hearthborn Battler  #lizard #payoff
+1 Hissing Iguanar  #lizard #payoff
+1 Spitfire Lagac  #lizard #groupslug #landfall
+1 Dagger Caster  #lizard #groupslug
+1 Glidedive Duo  #lizard #drain #groupslug
+1 Chandra's Pyreling  #lizard #payoff
+1 Valley Flamecaller  #lizard #payoff
+1 Reptilian Recruiter  #lizard
+1 Immolation Shaman  #lizard #interaction
+1 Overclocked Electromancer  #lizard #payoff
+1 Hellspur Posse Boss  #lizard
+1 Riveteers Requisitioner  #lizard #treasure
+1 Rakish Crew  #outlaw #tokens #pinger
+1 Mine Raider  #outlaw #treasure
+
+// == Group slug / drain engine (feeds Gev's counter trigger) ==
+1 Impact Tremors  #payoff #groupslug
+1 Witty Roastmaster  #payoff #groupslug
+1 Reckless Fireweaver  #payoff #groupslug
+1 Blood Artist  #drain
+1 Falkenrath Noble  #drain
+1 Vindictive Vampire  #drain
+1 Syr Konrad, the Grim  #payoff #groupslug
+1 Mayhem Devil  #payoff #sac
+1 Sulfuric Vortex  #groupslug
+1 Pestilence  #groupslug #interaction
+
+// == Damage / counter payoffs ==
+1 Angrath's Marauders  #payoff
+1 Torbran, Thane of Red Fell  #payoff
+
+// == Treasure / value ==
+1 Professional Face-Breaker  #treasure #draw
+1 Collective Inferno  #payoff #lizard-doubler
+1 Goblin Bombardment  #sac #enabler
+
+// == Card draw ==
+1 Night's Whisper  #draw
+1 Sign in Blood  #draw
+1 Read the Bones  #draw
+1 Faithless Looting  #draw
+1 Reckless Impulse  #draw
+1 Light Up the Stage  #draw
+
+// == Ramp / rocks ==
+1 Arcane Signet  #ramp #fixing
+1 Rakdos Signet  #ramp #fixing
+1 Mind Stone  #ramp #draw
+1 Charcoal Diamond  #ramp
+1 Fire Diamond  #ramp
+1 Wayfarer's Bauble  #ramp #fixing
+1 Seize the Spoils  #ramp #draw
+1 Big Score  #ramp #draw
+1 Unexpected Windfall  #ramp #draw
+1 Deadly Dispute  #draw #treasure
+
+// == Removal / interaction ==
+1 Terminate  #interaction
+1 Dreadbore  #interaction
+1 Go for the Throat  #interaction
+1 Bedevil  #interaction
+1 Chaos Warp  #interaction
+1 Bloodchief's Thirst  #interaction
+1 Abrade  #interaction
+1 Heartless Act  #interaction
+1 Blasphemous Act  #interaction #wrath
+1 Pyroclasm  #interaction #wrath
+
+// == Lands ==
+1 Command Tower  #land #fixing
+1 Rakdos Carnarium  #land #fixing
+1 Bloodfell Caves  #land #fixing
+1 Akoum Refuge  #land #fixing
+1 Temple of Malice  #land #fixing
+1 Smoldering Marsh  #land #fixing
+1 Foreboding Ruins  #land #fixing
+1 Canyon Slough  #land #fixing
+1 Tainted Peak  #land #fixing
+1 Cinder Barrens  #land #fixing
+1 Path of Ancestry  #land #fixing
+1 Castle Locthwain  #land #utility
+1 Den of the Bugbear  #land #utility
+1 Mudflat Village  #land #utility
+1 Rockface Village  #land #utility
+1 Spinerock Knoll  #land #utility
+1 Barren Moor  #land
+1 Forgotten Cave  #land
+10 Mountain  #land
+8 Swamp  #land
