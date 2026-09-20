@@ -8,6 +8,7 @@ import {
   colorMask,
   ftsMatchQuery,
   isReadOnlySql,
+  mergePrintingSummary,
   priceToNumber,
 } from "./model.ts";
 
@@ -59,12 +60,17 @@ describe("buildCardRow", () => {
       color_identity: ["U", "G"],
       edhrec_rank: 123,
       game_changer: false,
+      games: ["paper"],
       keywords: ["Escape"],
       mana_cost: "{1}{G}{U}",
       name: "Uro, Titan of Nature's Wrath",
       oracle_id: "abc",
       oracle_text: "When Uro...",
       prices: { usd: "5.00" },
+      released_at: "2020-01-24",
+      set: "thb",
+      set_name: "Theros Beyond Death",
+      set_type: "expansion",
       type_line: "Legendary Creature — Elder Giant",
     });
     expect(row).not.toBeNull();
@@ -73,7 +79,7 @@ describe("buildCardRow", () => {
     expect(row?.ci_mask).toBe(colorMask(["G", "U"]));
     expect(row?.price_usd).toBeCloseTo(5);
     expect(row?.game_changer).toBe(0);
-    expect(row?.set_code).toBe("");
+    expect(row?.set_code).toBe("thb");
     expect(JSON.parse(row?.keywords ?? "[]")).toEqual(["Escape"]);
   });
 
@@ -83,7 +89,81 @@ describe("buildCardRow", () => {
       name: "Cyclonic Rift",
       oracle_id: "x",
     });
+
     expect(row?.game_changer).toBe(1);
+  });
+
+  it("uses printing aggregates for paper availability, dates, and price", () => {
+    const row = buildCardRow(
+      {
+        games: ["arena"],
+        name: "Reprinted Card",
+        oracle_id: "reprint",
+        prices: { usd: "99.00" },
+        released_at: "2024-01-01",
+      },
+      {
+        firstReleasedAt: "2001-01-01",
+        lastReleasedAt: "2026-01-01",
+        paperAvailable: true,
+        priceUsd: 0.2,
+      },
+    );
+    expect(row).toMatchObject({
+      first_released_at: "2001-01-01",
+      last_released_at: "2026-01-01",
+      paper_available: 1,
+      price_usd: 0.2,
+    });
+  });
+
+  describe("mergePrintingSummary", () => {
+    it("tracks release range and the cheapest physical printing", () => {
+      const first = mergePrintingSummary(undefined, {
+        games: ["paper", "mtgo"],
+        prices: { usd: "4.50" },
+        released_at: "2020-01-01",
+        set_type: "expansion",
+      });
+      const second = mergePrintingSummary(first, {
+        games: ["paper"],
+        prices: { usd: "0.25" },
+        released_at: "2024-01-01",
+        set_type: "commander",
+      });
+      expect(second).toEqual({
+        firstReleasedAt: "2020-01-01",
+        lastReleasedAt: "2024-01-01",
+        paperAvailable: true,
+        priceUsd: 0.25,
+      });
+    });
+
+    it("ignores digital release dates and prices", () => {
+      const summary = mergePrintingSummary(undefined, {
+        games: ["arena"],
+        prices: { usd: "0.01" },
+        released_at: "2025-01-01",
+        set_type: "alchemy",
+      });
+      expect(summary).toEqual({
+        firstReleasedAt: "",
+        lastReleasedAt: "",
+        paperAvailable: false,
+        priceUsd: null,
+      });
+    });
+
+    it("excludes novelty set types even when games includes paper", () => {
+      const summary = mergePrintingSummary(undefined, {
+        games: ["paper"],
+        prices: { usd: "1.00" },
+        released_at: "2022-01-01",
+        set_type: "funny",
+      });
+      expect(summary.paperAvailable).toBe(false);
+      expect(summary.priceUsd).toBeNull();
+    });
   });
 
   it("returns null without oracle_id or name", () => {

@@ -18,8 +18,10 @@ import {
   formatEdhrec,
   formatEdhrecThemes,
   formatGameChangerLint,
+  formatPaperLint,
   formatPips,
   formatPrice,
+  formatPriceBreakdown,
   formatTagDistribution,
   formatTagList,
 } from "./report.ts";
@@ -141,6 +143,32 @@ describe("formatPrice", () => {
       "[e] Approx. deck price: $146.50 (2 without price data)",
     );
   });
+
+  describe("formatPriceBreakdown", () => {
+    it("sorts by total card cost and includes latest-print dates", () => {
+      const out = formatPriceBreakdown(
+        [
+          {
+            count: 1,
+            lastReleasedAt: "2024-01-01",
+            name: "Expensive",
+            priceUsd: 8,
+          },
+          {
+            count: 3,
+            lastReleasedAt: "2025-02-01",
+            name: "Three Copies",
+            priceUsd: 3,
+          },
+        ],
+        2,
+      );
+      expect(out.indexOf("Three Copies")).toBeLessThan(
+        out.indexOf("Expensive"),
+      );
+      expect(out).toContain("last print 2025-02-01");
+    });
+  });
   it("omits the note when complete", () => {
     expect(formatPrice(10, 0)).toBe("[e] Approx. deck price: $10.00");
   });
@@ -162,6 +190,13 @@ describe("formatGameChangerLint", () => {
   it("passes clean when empty", () => {
     expect(formatGameChangerLint([])).toContain("none ✓");
   });
+
+  describe("formatPaperLint", () => {
+    it("passes clean and lists non-paper cards", () => {
+      expect(formatPaperLint([])).toContain("all cards available ✓");
+      expect(formatPaperLint(["Digital Card"])).toContain("Digital Card");
+    });
+  });
   it("lists offenders", () => {
     expect(formatGameChangerLint(["Cyclonic Rift"])).toContain("Cyclonic Rift");
   });
@@ -171,16 +206,22 @@ describe("formatDiscoverTable", () => {
   const owned: Candidate = {
     cmc: 3,
     edhrecRank: 100,
+    firstReleasedAt: "2020-01-01",
+    lastReleasedAt: "2024-01-01",
     name: "Scute Swarm",
     owned: true,
+    paperAvailable: true,
     priceUsd: 1.5,
     typeLine: "Creature",
   };
   const fresh: Candidate = {
     cmc: 4,
     edhrecRank: 200,
+    firstReleasedAt: "2019-01-01",
+    lastReleasedAt: "2023-01-01",
     name: "Felidar Retreat",
     owned: false,
+    paperAvailable: true,
     priceUsd: 2,
     typeLine: "Enchantment",
   };
@@ -256,6 +297,7 @@ describe("formatEdhrec", () => {
         inclusion: 0.42,
         name: "Tatyova, Benthic Druid",
         numDecks: 84,
+        paperAvailable: true,
         priceUsd: 1.5,
         resolved: true,
         synergy: 0.31,
@@ -265,6 +307,7 @@ describe("formatEdhrec", () => {
         inclusion: 0.1,
         name: "Mystery Card",
         numDecks: 10,
+        paperAvailable: null,
         priceUsd: null,
         resolved: false,
         synergy: -0.05,

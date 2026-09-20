@@ -2,6 +2,7 @@
  * Shared constants for the deck tooling. Centralised so magic numbers/strings live in one
  * place and pure functions elsewhere can be tested against them.
  */
+import { join } from "node:path";
 
 /** The required Commander deck size (including the commander): singleton, exactly 100. */
 export const TARGET_DECK_SIZE = 100;
@@ -52,8 +53,8 @@ export const DEFAULT_AFFINITY_MIN_COUNT = 5;
 /** Default drill-down depth for `affinity` (1 = first-order only, 2 = path drill-down). */
 export const DEFAULT_AFFINITY_DEPTH = 1;
 
-/** Repo-relative path of the derived SQLite database. */
-export const DEFAULT_DB_PATH = "data/mtg.db";
+/** Directory holding downloaded and derived data; override for isolated/test caches. */
+export const DATA_DIR = process.env.MTG_DATA_DIR?.trim() || "data";
 
-/** Repo-relative directory holding the downloaded Scryfall bulk exports. */
-export const DATA_DIR = "data";
+/** Path of the derived SQLite database inside {@link DATA_DIR}. */
+export const DEFAULT_DB_PATH = join(DATA_DIR, "mtg.db");

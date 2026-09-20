@@ -5,7 +5,7 @@
  * Commands:
  *   fetch-bulk                      download the Scryfall bulk exports into data/
  *   build-db                        build data/mtg.db from the bulk exports + ingest decks/
- *   analyze <decklist>              report card count/curve/pips/basics/price/tags + GC lint
+ *   analyze <deck-slug|path>        report count/curve/pips/lands/prices/tags + safety lints
  *   discover <slug> [opts]          find tagged cards (color/price/set filters, EDHREC-ranked)
  *   affinity <tag>|--deck [opts]    rank co-occurring tags for a theme (share + lift, depth 2)
  *   edhrec <commander>|<deck> [opts] cross-reference EDHREC picks not already in the deck
@@ -26,8 +26,9 @@ import { parseArgs } from "node:util";
 
 import type { AffinitySort } from "./affinity.ts";
 import type { AnalyzedCard } from "./analysis.ts";
-import type { DeckSeed } from "./db/queries.ts";
+import type { DeckSeed, DiscoverSort } from "./db/queries.ts";
 import type { DeckEntry } from "./decklist.ts";
+import type { PricedCard } from "./report.ts";
 import type { BulkType } from "./scryfall/bulk.ts";
 
 import {
@@ -88,8 +89,10 @@ import {
   formatEdhrec,
   formatEdhrecThemes,
   formatGameChangerLint,
+  formatPaperLint,
   formatPips,
   formatPrice,
+  formatPriceBreakdown,
   formatTagDistribution,
   formatTagList,
 } from "./report.ts";
@@ -97,7 +100,11 @@ import { bulkPath, downloadBulk, resolveBulkUri } from "./scryfall/bulk.ts";
 
 const DECKS_DIR = "decks";
 const REFERENCE_TAGS_PATH = "reference/oracle-tags.txt";
-const BULK_TYPES: readonly BulkType[] = ["oracle_cards", "oracle_tags"];
+const BULK_TYPES: readonly BulkType[] = [
+  "default_cards",
+  "oracle_cards",
+  "oracle_tags",
+];
 
 const out = (line: string): void => {
   process.stdout.write(`${line}\n`);
@@ -112,12 +119,15 @@ const OPTIONS = {
   depth: { type: "string" },
   format: { type: "string" },
   id: { type: "string" },
+  "include-digital": { type: "boolean" },
   "include-gamechangers": { type: "boolean" },
   limit: { type: "string" },
   "max-price": { type: "string" },
   "min-count": { type: "string" },
   out: { type: "string" },
+  "paper-only": { type: "boolean" },
   set: { type: "string" },
+  since: { type: "string" },
   sort: { type: "string" },
   theme: { type: "string" },
   themes: { type: "boolean" },
@@ -142,7 +152,7 @@ async function affinityCommand(
   if (seedArg === undefined && deckArg === undefined) {
     fail(
       "usage: deck affinity <seed-tag> | --deck <slug|path> " +
-        "[--id wubrg] [--sort lift|share|count] [--min-count 5] [--limit 25] [--depth 1|2]",
+        "[--id wubrg] [--sort lift|share|count] [--min-count 5] [--limit 25] [--depth 1|2] [--include-digital]",
     );
     return;
   }
@@ -172,6 +182,7 @@ async function affinityCommand(
       includeGameChangers: values["include-gamechangers"] === true,
       limit: intOption(values.limit, DEFAULT_AFFINITY_LIMIT),
       minCount: intOption(values["min-count"], DEFAULT_AFFINITY_MIN_COUNT),
+      paperOnly: paperOnly(values),
       seedTag: seedArg,
       sort,
     });
@@ -185,21 +196,19 @@ async function affinityCommand(
   }
 }
 
-async function analyzeCommand(decklistPath: string | undefined): Promise<void> {
-  if (decklistPath === undefined) {
-    fail("usage: deck analyze <decklist.txt>");
+async function analyzeCommand(target: string | undefined): Promise<void> {
+  if (target === undefined) {
+    fail("usage: deck analyze <deck-slug|path>");
     return;
   }
-  const text = await Bun.file(decklistPath)
-    .text()
-    .catch(() => null);
+  const text = await readDeckText(target);
   if (text === null) {
-    fail(`cannot read decklist: ${decklistPath}`);
+    fail(`cannot read decklist: ${target}`);
     return;
   }
 
   const entries = parseDecklist(text);
-  out(`# Deck report — ${decklistPath}`);
+  out(`# Deck report — ${target}`);
   out(formatCount(totalCount(entries)));
 
   const dbResult = openDatabase(DEFAULT_DB_PATH);
@@ -214,16 +223,16 @@ async function analyzeCommand(decklistPath: string | undefined): Promise<void> {
   }
   const db = dbResult.value;
   try {
-    const { cards, gameChangers, missing, priceUsd } = toAnalyzedCards(
-      entries,
-      db,
-    );
+    const { cards, gameChangers, missing, nonPaper, pricedCards, priceUsd } =
+      toAnalyzedCards(entries, db);
     out(formatCurve(computeCurve(cards)));
     out(formatPips(computePips(cards)));
     out(formatBasics(fetchVsBasics(entries)));
     out(formatPrice(priceUsd, missing));
+    out(formatPriceBreakdown(pricedCards, 10));
     out(formatTagDistribution(tagDistribution(entries)));
     out(formatGameChangerLint(gameChangers));
+    out(formatPaperLint(nonPaper));
   } finally {
     db.close();
   }
@@ -248,6 +257,7 @@ async function buildDbCommand(): Promise<void> {
   const counts = await buildDb(
     DEFAULT_DB_PATH,
     bulkPath("oracle_cards"),
+    bulkPath("default_cards"),
     bulkPath("oracle_tags"),
   );
   out(
@@ -310,6 +320,14 @@ function cardCommand(name: string | undefined): void {
     const gc = row.game_changer === 1 ? " · ⚠ Game Changer" : "";
     out(`${row.name}  ${row.mana_cost}  (MV ${row.cmc})${gc}`);
     out(row.type_line);
+    const paper = row.paper_available === 1 ? "paper" : "digital-only";
+    let dates = row.first_released_at;
+    if (dates === "") dates = "none";
+    else if (row.first_released_at !== row.last_released_at)
+      dates = `${row.first_released_at} → ${row.last_released_at}`;
+    out(
+      `Oracle set: ${row.set_name} (${row.set_code.toUpperCase()}, ${row.set_type}) · ${paper} · paper releases ${dates} · ${row.price_usd === null ? "no USD price" : `$${row.price_usd.toFixed(2)} cheapest paper print`}`,
+    );
     out(row.oracle_text.length > 0 ? row.oracle_text : "(no oracle text)");
   } finally {
     db.close();
@@ -358,7 +376,7 @@ async function discoverCommand(
 ): Promise<void> {
   if (slug === undefined) {
     fail(
-      "usage: deck discover <slug> [--id gu] [--set] [--max-price] [--limit] [--deck <slug|path>]",
+      "usage: deck discover <slug> [--id gu] [--set] [--max-price] [--since YYYY] [--sort edhrec|recent|price] [--limit] [--deck <slug|path>] [--include-digital]",
     );
     return;
   }
@@ -372,6 +390,18 @@ async function discoverCommand(
     const deckNames = await resolveDeckNames(db, values.deck);
     const maxPriceRaw = values["max-price"];
     const limitRaw = values.limit;
+    const since = parseSince(values.since);
+    if (since === null) {
+      fail(`invalid --since "${String(values.since)}" (use a four-digit year)`);
+      return;
+    }
+    const sort = parseDiscoverSort(values.sort);
+    if (sort === null) {
+      fail(
+        `invalid --sort "${String(values.sort)}" (use edhrec, recent, or price)`,
+      );
+      return;
+    }
     const result = discover(db, {
       deckNames,
       id: typeof values.id === "string" ? values.id : DEFAULT_DISCOVER_ID,
@@ -384,8 +414,11 @@ async function discoverCommand(
         typeof maxPriceRaw === "string"
           ? Number.parseFloat(maxPriceRaw)
           : undefined,
+      paperOnly: paperOnly(values),
       set: typeof values.set === "string" ? values.set : undefined,
+      since,
       slug,
+      sort,
     });
     if (result.isErr()) {
       fail(result.error.message);
@@ -409,7 +442,7 @@ async function edhrecCommand(
 ): Promise<void> {
   if (target === undefined) {
     fail(
-      "usage: deck edhrec <commander-name|deck-slug> [--theme <slug>] [--themes] [--deck <slug|path>] [--id wubrg] [--limit N] [--include-gamechangers]",
+      "usage: deck edhrec <commander-name|deck-slug> [--theme <slug>] [--themes] [--deck <slug|path>] [--id wubrg] [--limit N] [--include-gamechangers] [--include-digital]",
     );
     return;
   }
@@ -480,9 +513,11 @@ async function edhrecCommand(
       includeGameChangers: values["include-gamechangers"] === true,
       limit: intOption(values.limit, DEFAULT_DISCOVER_LIMIT),
       owned,
+      paperOnly: paperOnly(values),
       resolve: (nameLower) => rows.get(nameLower),
     });
-    const label = theme === undefined ? commanderName : `${commanderName} · ${theme}`;
+    const label =
+      theme === undefined ? commanderName : `${commanderName} · ${theme}`;
     out(formatEdhrec(label, recommendations));
   } finally {
     db.close();
@@ -599,6 +634,19 @@ async function genReferenceCommand(
   }
 }
 
+function paperOnly(values: OptionValues): boolean {
+  return values["paper-only"] === true || values["include-digital"] !== true;
+}
+
+function parseDiscoverSort(
+  value: boolean | string | undefined,
+): DiscoverSort | null {
+  if (value === undefined) return "edhrec";
+  if (value === "edhrec" || value === "price" || value === "recent")
+    return value;
+  return null;
+}
+
 function parseOptions(argv: readonly string[]): {
   positionals: string[];
   values: OptionValues;
@@ -609,6 +657,15 @@ function parseOptions(argv: readonly string[]): {
     options: OPTIONS,
   });
   return { positionals, values };
+}
+
+function parseSince(
+  value: boolean | string | undefined,
+): null | number | undefined {
+  if (value === undefined) return undefined;
+  if (typeof value !== "string" || !/^\d{4}$/.test(value)) return null;
+  const year = Number.parseInt(value, 10);
+  return year >= 1993 && year <= 9999 ? year : null;
 }
 
 function parseSort(value: boolean | string | undefined): AffinitySort | null {
@@ -854,6 +911,8 @@ function toAnalyzedCards(
   cards: AnalyzedCard[];
   gameChangers: string[];
   missing: number;
+  nonPaper: string[];
+  pricedCards: PricedCard[];
   priceUsd: number;
 } {
   const resolved = getCardsByNames(
@@ -862,12 +921,14 @@ function toAnalyzedCards(
   );
   const cards: AnalyzedCard[] = [];
   const gameChangers: string[] = [];
+  const nonPaper: string[] = [];
+  const pricedCards: PricedCard[] = [];
   let priceUsd = 0;
   let missing = 0;
   for (const entry of entries) {
     const row = resolved.get(entry.name.toLowerCase());
     if (row === undefined) {
-      missing += 1;
+      missing += entry.count;
       continue;
     }
     cards.push({
@@ -878,9 +939,17 @@ function toAnalyzedCards(
       typeLine: row.type_line,
     });
     if (row.game_changer === 1) gameChangers.push(row.name);
-    if (row.price_usd !== null) priceUsd += row.price_usd * entry.count;
+    if (row.paper_available === 0) nonPaper.push(row.name);
+    if (row.price_usd === null) missing += entry.count;
+    else priceUsd += row.price_usd * entry.count;
+    pricedCards.push({
+      count: entry.count,
+      lastReleasedAt: row.last_released_at,
+      name: row.name,
+      priceUsd: row.price_usd,
+    });
   }
-  return { cards, gameChangers, missing, priceUsd };
+  return { cards, gameChangers, missing, nonPaper, pricedCards, priceUsd };
 }
 
 await run(process.argv.slice(2));

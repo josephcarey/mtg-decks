@@ -34,8 +34,11 @@ export type AffinityResult = {
 export type Candidate = {
   readonly cmc: number;
   readonly edhrecRank: null | number;
+  readonly firstReleasedAt: string;
+  readonly lastReleasedAt: string;
   readonly name: string;
   readonly owned: boolean;
+  readonly paperAvailable: boolean;
   readonly priceUsd: null | number;
   readonly typeLine: string;
 };
@@ -45,6 +48,9 @@ export type DeckSeed = {
   readonly ids: readonly string[];
   readonly label: string;
 };
+
+/** How to rank discovery candidates. */
+export type DiscoverSort = "edhrec" | "price" | "recent";
 
 /** A `--list-tags` match. */
 export type TagListItem = {
@@ -62,6 +68,7 @@ type AffinityParams = {
   readonly includeGameChangers: boolean;
   readonly limit: number;
   readonly minCount: number;
+  readonly paperOnly: boolean;
   readonly seedTag?: string;
   readonly sort: AffinitySort;
 };
@@ -73,8 +80,11 @@ type DiscoverParams = {
   readonly includeGameChangers: boolean;
   readonly limit: number;
   readonly maxPrice?: number;
+  readonly paperOnly: boolean;
   readonly set?: string;
+  readonly since?: number;
   readonly slug: string;
+  readonly sort: DiscoverSort;
 };
 
 /** Discovery output: the resolved tag plus ranked candidates. */
@@ -112,9 +122,10 @@ export function affinity(
   params: AffinityParams,
 ): Result<AffinityResult, DbError> {
   const reqMask = colorMask([...params.id.toUpperCase()]);
-  const univWhere = params.includeGameChangers
-    ? "(c.ci_mask & ~$reqMask) = 0"
-    : "c.game_changer = 0 AND (c.ci_mask & ~$reqMask) = 0";
+  const univClauses = ["(c.ci_mask & ~$reqMask) = 0"];
+  if (!params.includeGameChangers) univClauses.push("c.game_changer = 0");
+  if (params.paperOnly) univClauses.push("c.paper_available = 1");
+  const univWhere = univClauses.join(" AND ");
   const univBind = { $reqMask: reqMask };
 
   const univN =
@@ -126,7 +137,6 @@ export function affinity(
   if (univN === 0) {
     return err(dbError(`no cards in the universe — check --id "${params.id}"`));
   }
-
   const univCounts = new Map<string, number>();
   for (const row of db
     .query<{ slug: string; uc: number }, typeof univBind>(
@@ -224,8 +234,8 @@ export function deckOracleIds(db: Database, slug: string): string[] {
 }
 
 /**
- * Discover cards carrying a function tag, filtered by color identity, price, set, and
- * Game-Changer status, ranked by EDHREC popularity.
+ * Discover cards carrying a function tag, filtered by color identity, paper availability,
+ * price, set, recency, and Game-Changer status.
  * @param db - An open database.
  * @param params - {@link DiscoverParams}.
  * @returns The resolved tag + ranked candidates, or a {@link DbError} if the slug is unknown.
@@ -250,6 +260,7 @@ export function discover(
     $tagId: tag.id,
   };
   if (!params.includeGameChangers) clauses.push("c.game_changer = 0");
+  if (params.paperOnly) clauses.push("c.paper_available = 1");
   if (params.maxPrice !== undefined) {
     clauses.push("c.price_usd IS NOT NULL AND c.price_usd <= $maxPrice");
     bindings.$maxPrice = params.maxPrice;
@@ -258,13 +269,24 @@ export function discover(
     clauses.push("c.set_code = $setCode");
     bindings.$setCode = params.set.toLowerCase();
   }
+  if (params.since !== undefined) {
+    clauses.push("c.last_released_at >= $since");
+    bindings.$since = `${String(params.since)}-01-01`;
+  }
+
+  const orderBy =
+    params.sort === "recent"
+      ? "c.last_released_at DESC, c.edhrec_rank IS NULL, c.edhrec_rank ASC, c.name ASC"
+      : (params.sort === "price"
+        ? "c.price_usd IS NULL, c.price_usd ASC, c.edhrec_rank IS NULL, c.edhrec_rank ASC, c.name ASC"
+        : "c.edhrec_rank IS NULL, c.edhrec_rank ASC, c.name ASC");
 
   const rows = db
     .query<CardRow, typeof bindings>(
       `SELECT c.* FROM cards c
        JOIN card_tags ct ON ct.oracle_id = c.oracle_id
        WHERE ${clauses.join(" AND ")}
-       ORDER BY c.edhrec_rank IS NULL, c.edhrec_rank ASC, c.name ASC`,
+       ORDER BY ${orderBy}`,
     )
     .all(bindings);
 
@@ -274,8 +296,11 @@ export function discover(
     candidates.push({
       cmc: row.cmc,
       edhrecRank: row.edhrec_rank,
+      firstReleasedAt: row.first_released_at,
+      lastReleasedAt: row.last_released_at,
       name: row.name,
       owned,
+      paperAvailable: row.paper_available === 1,
       priceUsd: row.price_usd,
       typeLine: row.type_line,
     });

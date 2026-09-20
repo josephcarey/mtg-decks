@@ -27,40 +27,44 @@ The tooling is **offline-first**: it builds a local SQLite database from Scryfal
 hitting the API per card.
 
 ```bash
-bun run deck fetch-bulk   # download oracle_cards + oracle_tags (.jsonl.gz) into data/
+bun run deck fetch-bulk   # download default_cards + oracle_cards + oracle_tags into data/
 bun run deck build-db     # build data/mtg.db from the bulk cache + ingest decks/
 ```
 
 `build-db` auto-runs `fetch-bulk` if the cache is missing. Both `data/` and `*.db` are
-gitignored. The `game_changer` boolean on each card is the **authoritative** Commander Game
-Changers list (53 cards) — the analyzer lints against it. See
+gitignored. Set `MTG_DATA_DIR` to share or relocate the bulk cache and database. Prices are the
+cheapest USD price among eligible physical printings; the database also stores first/last release
+dates and paper availability. The `game_changer` boolean on each card is the **authoritative**
+Commander Game Changers list (53 cards) — the analyzer lints against it. See
 [`reference/cookbook.md`](reference/cookbook.md) for the full data recipes.
 
 ## CLI
 
 `bun run deck <subcommand>` (alias for `bun src/cli.ts`):
 
-| Subcommand                       | What it does                                                              |
-| -------------------------------- | ------------------------------------------------------------------------- |
-| `fetch-bulk`                     | Download the Scryfall bulk exports into `data/`.                          |
-| `build-db`                       | Build `data/mtg.db` from the bulk exports and ingest `decks/`.            |
-| `analyze <decklist>`             | Report count / curve / pips / lands / price / tags + Game-Changer lint.   |
-| `discover <slug> [opts]`         | Find cards for a function tag, EDHREC-ranked (see options below).         |
-| `affinity <tag>\|--deck [opts]`  | Rank tags that co-occur with a theme (share + lift, optional depth 2).    |
+| Subcommand                       | What it does                                                                                                                        |
+| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `fetch-bulk`                     | Download the Scryfall bulk exports into `data/`.                                                                                    |
+| `build-db`                       | Build `data/mtg.db` from the bulk exports and ingest `decks/`.                                                                      |
+| `analyze <deck-slug\|path>`      | Report count / curve / pips / lands / cheapest-paper prices / tags + lints.                                                         |
+| `discover <slug> [opts]`         | Find cards for a function tag, EDHREC-ranked (see options below).                                                                   |
+| `affinity <tag>\|--deck [opts]`  | Rank tags that co-occur with a theme (share + lift, optional depth 2).                                                              |
 | `edhrec <commander>\|<deck>`     | EDHREC high-synergy + top picks the deck isn't running (CI-filtered). `--themes` lists themes; `--theme <slug>` scouts a sub-theme. |
-| `export <deck> [--format --out]` | Paste-ready decklist; `moxfield` keeps inline `#tags`, others strip them. |
-| `card <name>`                    | Print one card's pinned mana cost / type / oracle text.                   |
-| `cards <deck-slug>`              | List an ingested deck's cards with their resolved corpus tags.            |
-| `search <query>`                 | Full-text (FTS5) search over card names + oracle text.                    |
-| `tags <substr>`                  | Search the tag catalog by slug / label / alias.                           |
-| `synergy <slug>`                 | Show a tag's parent and child tags (navigate the taxonomy).               |
-| `sql <query>`                    | Run a single **read-only** `SELECT` against the cache.                    |
-| `gen-reference [--deck <path>]`  | Regenerate `reference/oracle-tags.txt` + the per-deck card cache.         |
+| `export <deck> [--format --out]` | Paste-ready decklist; `moxfield` keeps inline `#tags`, others strip them.                                                           |
+| `card <name>`                    | Print one card's pinned mana cost / type / oracle text.                                                                             |
+| `cards <deck-slug>`              | List an ingested deck's cards with their resolved corpus tags.                                                                      |
+| `search <query>`                 | Full-text (FTS5) search over card names + oracle text.                                                                              |
+| `tags <substr>`                  | Search the tag catalog by slug / label / alias.                                                                                     |
+| `synergy <slug>`                 | Show a tag's parent and child tags (navigate the taxonomy).                                                                         |
+| `sql <query>`                    | Run a single **read-only** `SELECT` against the cache.                                                                              |
+| `gen-reference [--deck <path>]`  | Regenerate `reference/oracle-tags.txt` + the per-deck card cache.                                                                   |
 
 `discover` options: `--id <colors=gu>` (color-identity subset), `--set <code>`,
-`--max-price <usd>`, `--limit <n=25>`, `--include-gamechangers`, `--deck <slug|path>` (skip cards
-already in that deck so only NEW candidates count toward the limit). Game Changers are excluded
-by default.
+`--max-price <usd>`, `--since <year>` (latest physical printing), `--sort edhrec|recent|price`,
+`--limit <n=25>`, `--include-gamechangers`, `--include-digital`, and `--deck <slug|path>` (skip
+cards already in that deck so only NEW candidates count toward the limit). Game Changers and cards
+without eligible paper printings are excluded by default. `--paper-only` may be supplied
+explicitly; `--include-digital` is the opt-out.
 
 `affinity` finds a theme's natural **sub-themes**. It takes a seed — either a function tag
 (`affinity modal`) or a deck (`--deck <slug|path>`) — treats every card passing the filters as
@@ -69,7 +73,7 @@ seed carrying the co-tag) and **lift** (how enriched the co-tag is vs. its unive
 Options: `--id <colors=wubrg>` (restrict the universe to a color-identity subset, e.g. `gur`),
 `--sort lift|share|count` (default `lift`), `--min-count <n=5>` (drop rare noise),
 `--limit <n=25>`, `--depth 1|2` (depth 2 expands each first-order tag into its own top co-tags,
-a `seed → X → Y` path drill-down), and `--include-gamechangers`. Lift surfaces distinctive
+a `seed → X → Y` path drill-down), `--include-gamechangers`, and `--include-digital`. Lift surfaces distinctive
 pairings; a high `--min-count` keeps them meaningful.
 
 ```bash

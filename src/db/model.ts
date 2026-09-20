@@ -11,20 +11,33 @@ export type CardRow = {
   readonly cmc: number;
   readonly color_identity: string;
   readonly edhrec_rank: null | number;
+  readonly first_released_at: string;
   readonly game_changer: number;
   readonly keywords: string;
+  readonly last_released_at: string;
   readonly mana_cost: string;
   readonly name: string;
   readonly name_lower: string;
   readonly oracle_id: string;
   readonly oracle_text: string;
+  readonly paper_available: number;
   readonly price_usd: null | number;
   /**
    * Best-effort set code from the oracle bulk (a single representative printing), so `--set`
    * has something to filter on. NOT authoritative for reprints — see the cookbook caveat.
    */
   readonly set_code: string;
+  readonly set_name: string;
+  readonly set_type: string;
   readonly type_line: string;
+};
+
+/** Printing-level fields aggregated from Scryfall's `default_cards` export. */
+export type PrintingSummary = {
+  readonly firstReleasedAt: string;
+  readonly lastReleasedAt: string;
+  readonly paperAvailable: boolean;
+  readonly priceUsd: null | number;
 };
 
 /** A row in the `tags` table (taggings are stored separately in `card_tags`). */
@@ -46,15 +59,34 @@ type RawCard = {
   color_identity?: unknown;
   edhrec_rank?: unknown;
   game_changer?: unknown;
+  games?: unknown;
   keywords?: unknown;
   mana_cost?: unknown;
   name?: unknown;
   oracle_id?: unknown;
   oracle_text?: unknown;
   prices?: { usd?: unknown };
+  released_at?: unknown;
   set?: unknown;
+  set_name?: unknown;
+  set_type?: unknown;
   type_line?: unknown;
 };
+
+type RawPrinting = {
+  games?: unknown;
+  oracle_id?: unknown;
+  prices?: { usd?: unknown };
+  released_at?: unknown;
+  set_type?: unknown;
+};
+
+const DIGITAL_ONLY_SET_TYPES = new Set([
+  "alchemy",
+  "funny",
+  "memorabilia",
+  "token",
+]);
 
 /**
  * Whether a card's identity mask is a subset of a requested identity mask.
@@ -94,6 +126,40 @@ export function colorMask(colors: readonly string[]): number {
 }
 
 /**
+ * Fold one printing into an oracle-level price, availability, and release-date summary.
+ * Digital-only and novelty printings do not affect any of the paper-facing fields.
+ */
+export function mergePrintingSummary(
+  current: PrintingSummary | undefined,
+  record: RawPrinting,
+): PrintingSummary {
+  const paperPrinting = isPaperPrinting(record);
+  const releasedAt = paperPrinting ? asString(record.released_at) : "";
+  const priceUsd = paperPrinting ? priceToNumber(record.prices?.usd) : null;
+  let firstReleasedAt = current?.firstReleasedAt ?? "";
+  if (
+    firstReleasedAt === "" ||
+    (releasedAt !== "" && releasedAt < firstReleasedAt)
+  ) {
+    firstReleasedAt = releasedAt;
+  }
+  let cheapestPrice = current?.priceUsd ?? null;
+  if (priceUsd !== null) {
+    cheapestPrice =
+      cheapestPrice === null ? priceUsd : Math.min(priceUsd, cheapestPrice);
+  }
+  return {
+    firstReleasedAt,
+    lastReleasedAt:
+      current === undefined || releasedAt > current.lastReleasedAt
+        ? releasedAt
+        : current.lastReleasedAt,
+    paperAvailable: (current?.paperAvailable ?? false) || paperPrinting,
+    priceUsd: cheapestPrice,
+  };
+}
+
+/**
  * Parse a Scryfall USD price (string or null) into a number.
  * @param usd - The `prices.usd` field.
  * @returns The numeric price, or `null` if unavailable/unparseable.
@@ -102,6 +168,13 @@ export function priceToNumber(usd: unknown): null | number {
   if (typeof usd !== "string") return null;
   const value = Number.parseFloat(usd);
   return Number.isFinite(value) ? value : null;
+}
+
+/** Whether a printing is a physical, non-novelty card usable by paper deck builders. */
+function isPaperPrinting(record: RawPrinting): boolean {
+  const games = asStringArray(record.games);
+  const setType = asString(record.set_type).toLowerCase();
+  return games.includes("paper") && !DIGITAL_ONLY_SET_TYPES.has(setType);
 }
 
 const asString = (value: unknown): string =>
@@ -127,27 +200,44 @@ type RawTag = {
  * @param record - A parsed JSON object from the oracle_cards bulk export.
  * @returns A normalised {@link CardRow}, or `null` if the record is unusable.
  */
-export function buildCardRow(record: RawCard): CardRow | null {
+export function buildCardRow(
+  record: RawCard,
+  printing?: PrintingSummary,
+): CardRow | null {
   const oracleId = asString(record.oracle_id);
   const name = asString(record.name);
   if (oracleId === "" || name === "") return null;
 
   const colors = asStringArray(record.color_identity);
+  const fallbackPaper = isPaperPrinting(record);
   return {
     ci_mask: colorMask(colors),
     cmc: typeof record.cmc === "number" ? record.cmc : 0,
     color_identity: colorIdentityString(colors),
     edhrec_rank:
       typeof record.edhrec_rank === "number" ? record.edhrec_rank : null,
+    first_released_at:
+      printing?.firstReleasedAt ?? asString(record.released_at),
     game_changer: record.game_changer === true ? 1 : 0,
     keywords: JSON.stringify(asStringArray(record.keywords)),
+    last_released_at: printing?.lastReleasedAt ?? asString(record.released_at),
     mana_cost: asString(record.mana_cost),
     name,
     name_lower: name.toLowerCase(),
     oracle_id: oracleId,
     oracle_text: asString(record.oracle_text),
-    price_usd: priceToNumber(record.prices?.usd),
+    paper_available:
+      printing?.paperAvailable === true ||
+      (printing === undefined && fallbackPaper)
+        ? 1
+        : 0,
+    price_usd:
+      printing === undefined && fallbackPaper
+        ? priceToNumber(record.prices?.usd)
+        : (printing?.priceUsd ?? null),
     set_code: asString(record.set),
+    set_name: asString(record.set_name),
+    set_type: asString(record.set_type),
     type_line: asString(record.type_line),
   };
 }
