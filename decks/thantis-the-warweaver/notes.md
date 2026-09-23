@@ -50,8 +50,19 @@ substitutes are logged in `CONSIDER.md`. Nothing about the archetype requires ex
 engine (goad, punisher enchantments, fogs, spiders) is almost entirely commons/uncommons.
 
 ## Curve / count
-100/100. Avg MV 3.58 over 64 nonland, 19 at MV 5+ — a touch top-heavy, but 10 ramp sources + a 6-MV
-commander justify it. If it plays clunky, the first trims are a couple of the MV5 enchantments.
+100/100. Avg MV 3.53 over 64 nonland, 18 at MV 5+. Smoothed from the first pass by leaning into
+**deathtouch mana dorks** (see below): cut Rampant Growth / Nature's Lore / Wood Elves / Overwhelming
+Stampede, added Frog Butler / Poison Dart Frog / Noxious Newt / Deathbloom Gardener. Still a touch
+top-heavy, but 11 ramp sources + a 6-MV commander justify it; further trims would come from the MV5
+enchantment payoffs if it plays clunky.
+
+## Deathtouch mana dorks (ramp that also walls)
+All ~$0.20-0.30, recent-set forward. In a forced-combat deck these are higher-value than plain ramp
+spells: they fix mana AND stand back as deathtouch walls that trade up against the attacks Thantis
+forces, chump to survive, and feed Thantis counters. Frog Butler (any color, gains reach) and Poison
+Dart Frog (reach, gains deathtouch) even help against fliers. Noxious Newt replaces itself into board
+wipes. Deathbloom Gardener is a rock-solid any-color body. More options logged in CONSIDER.md
+(Leyline Prowler, Deathcap Cultivator).
 
 ## Owner-priority checklist
 - **Game Changers:** none (analyzer `[g]` clean). ✓

@@ -2,7 +2,7 @@
 // Archetype: BRG (Jund) Forced-Combat / Group-Slug — "everyone must attack; make it hurt them, not me"
 // Card count: 100 (singleton)
 // Power: casual Bracket 3 — theme-first, no Game Changers, no non-games, no Day/Night
-// Budget: budget-friendly. 76 of 100 cards are < $1; only 5 cards are > $5. Full build ~$116,
+// Budget: budget-friendly. 78 of 100 cards are < $1; only 5 cards are > $5. Full build ~$113,
 //   but those 5 are optional chase cards worth ~$45 combined — swap in the cheap subs noted in
 //   CONSIDER.md and the deck is a fully functional ~$55–60 build.
 // Proxy candidates (optional chase upgrades, NOT required): Karazikar the Eye Tyrant (~$13),
@@ -18,14 +18,15 @@
 // == Commander ==
 1 Thantis, the Warweaver  #commander #forcedcombat
 
-// == Ramp (get to a 6-MV commander, fix Jund) ==
+// == Ramp (get to a 6-MV commander, fix Jund; 4 deathtouch dorks double as walls) ==
 1 Sakura-Tribe Elder  #ramp #fixing
-1 Rampant Growth  #ramp #fixing
 1 Farseek  #ramp #fixing
-1 Nature's Lore  #ramp #fixing
 1 Cultivate  #ramp #fixing
 1 Kodama's Reach  #ramp #fixing
-1 Wood Elves  #ramp #fixing
+1 Frog Butler  #ramp #fixing #deathtouch
+1 Poison Dart Frog  #ramp #fixing #deathtouch
+1 Noxious Newt  #ramp #fixing #deathtouch #draw
+1 Deathbloom Gardener  #ramp #fixing #deathtouch
 1 Arcane Signet  #ramp #fixing
 1 Rakdos Signet  #ramp #fixing
 1 Golgari Signet  #ramp #fixing
@@ -91,7 +92,6 @@
 1 Vigor  #payoff #protection #wincon
 1 Warstorm Surge  #payoff #groupslug
 1 Where Ancients Tread  #payoff #groupslug
-1 Overwhelming Stampede  #wincon
 1 Overrun  #wincon
 1 Wrecking Ogre  #payoff #wincon
 1 Tectonic Giant  #payoff #groupslug
