@@ -34,10 +34,11 @@
 // == Forced-combat / goad enablers (steer the mandatory attacks) ==
 1 Kazuul, Tyrant of the Cliffs  #enabler #forcedcombat #payoff
 1 Grismold, the Dreadsower  #enabler #forcedcombat #tokens
+1 Ares, God of War  #enabler #forcedcombat #groupslug
 1 Kardur, Doomscourge  #enabler #goad #groupslug
 1 Disrupt Decorum  #enabler #goad
 1 Agitator Ant  #enabler #goad
-1 Fumiko the Lowblood  #enabler #forcedcombat
+1 Puppet Master, String Puller  #enabler #goad
 1 Bloodthirsty Blade  #enabler #goad
 
 // == Group-slug / punisher (make every forced attack cost life) ==
@@ -65,9 +66,9 @@
 1 Glissa Sunslayer  #deathtouch #interaction
 1 Obelisk Spider  #spider #deathtouch #groupslug
 1 Arasta of the Endless Web  #spider #deathtouch #protection
+1 Attercop  #spider #deathtouch #landfall
 1 Hornet Nest  #wall #deathtouch #tokens #payoff
 1 Ishkanah, Grafwidow  #spider #tokens
-1 Sentinel Spider  #spider #deathtouch
 1 Silklash Spider  #spider #interaction
 1 Spidersilk Armor  #spider #protection
 
@@ -93,7 +94,6 @@
 // == Payoffs / finishers ==
 1 Vigor  #payoff #protection #wincon
 1 Warstorm Surge  #payoff #groupslug
-1 Where Ancients Tread  #payoff #groupslug
 1 Overrun  #wincon
 1 The Walls of Ba Sing Se  #wall #protection #wincon
 1 Rampart Architect  #ramp #wall #tokens #enabler

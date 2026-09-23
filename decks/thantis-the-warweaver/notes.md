@@ -71,6 +71,18 @@ outs keep it in our favor, and the build leans on all three:
 - **Sequencing:** cast Thantis in the **second main phase** — it's summoning-sick anyway, and casting
   post-combat keeps mana up for a Fog/removal instead of tapping out pre-combat.
 
+## Recent-set additions (Hobbit / Marvel)
+- **Attercop** ({1}{G}, The Hobbit) — Spider with reach + deathtouch + a landfall pump; cheap ideal
+  wall that bites forced attackers, blocks fliers, and grows off our ramp-heavy landfall.
+- **Puppet Master, String Puller** ({2}{R}, Marvel) — "whenever you attack, goad a creature." Thantis
+  forces us to attack every combat, so this is a repeatable per-turn goad engine that steers an
+  opponent's creature elsewhere each combat.
+- **Ares, God of War** ({1}{B}{R}, Marvel) — attacks each combat and returns our attacking creatures
+  to hand when they die; a cheap forced-attacker with built-in recursion for the bodies we're forced
+  to send in.
+Cut to make room (curve trim): Sentinel Spider (vanilla wall), Fumiko the Lowblood (weakest enabler
+once goad went deep), Where Ancients Tread (redundant with Warstorm Surge). MV5+ 17 → 16.
+
 ## Curve / count
 100/100. Avg MV 3.52 over 64 nonland, 17 at MV 5+. Smoothed across two passes by leaning into
 **deathtouch mana dorks** and **defender ramp-walls**: cut Rampant Growth / Nature's Lore / Wood Elves
