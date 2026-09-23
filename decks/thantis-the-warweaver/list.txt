@@ -1,0 +1,136 @@
+// Commander: Thantis, the Warweaver ({3}{B}{R}{G}, Jund)
+// Archetype: BRG (Jund) Forced-Combat / Group-Slug — "everyone must attack; make it hurt them, not me"
+// Card count: 100 (singleton)
+// Power: casual Bracket 3 — theme-first, no Game Changers, no non-games, no Day/Night
+// Budget: budget-friendly. 76 of 100 cards are < $1; only 5 cards are > $5. Full build ~$116,
+//   but those 5 are optional chase cards worth ~$45 combined — swap in the cheap subs noted in
+//   CONSIDER.md and the deck is a fully functional ~$55–60 build.
+// Proxy candidates (optional chase upgrades, NOT required): Karazikar the Eye Tyrant (~$13),
+//   No Mercy (~$10), Arachnogenesis (~$8), Ohran Frostfang (~$7), Toski (~$6).
+//
+// Plan: Thantis forces ALL creatures — yours AND opponents' — to attack every combat, and grows
+// a +1/+1 counter every time a creature attacks you. So the whole table is shoved into combat
+// whether they like it or not. We (1) point that mandatory violence sideways with goad/redirect,
+// (2) tax every attack with group-slug + punisher pieces so forced swings bleed life totals,
+// (3) hold a Fog package to survive the chaos we created, and (4) sit behind deathtouch + reach
+// spiders so attacking INTO us is suicide while Thantis balloons.
+
+// == Commander ==
+1 Thantis, the Warweaver  #commander #forcedcombat
+
+// == Ramp (get to a 6-MV commander, fix Jund) ==
+1 Sakura-Tribe Elder  #ramp #fixing
+1 Rampant Growth  #ramp #fixing
+1 Farseek  #ramp #fixing
+1 Nature's Lore  #ramp #fixing
+1 Cultivate  #ramp #fixing
+1 Kodama's Reach  #ramp #fixing
+1 Wood Elves  #ramp #fixing
+1 Arcane Signet  #ramp #fixing
+1 Rakdos Signet  #ramp #fixing
+1 Golgari Signet  #ramp #fixing
+
+// == Forced-combat / goad enablers (steer the mandatory attacks) ==
+1 Kazuul, Tyrant of the Cliffs  #enabler #forcedcombat #payoff
+1 Grismold, the Dreadsower  #enabler #forcedcombat #tokens
+1 Kardur, Doomscourge  #enabler #goad #groupslug
+1 Disrupt Decorum  #enabler #goad
+1 Agitator Ant  #enabler #goad
+1 Fumiko the Lowblood  #enabler #forcedcombat
+1 Bloodthirsty Blade  #enabler #goad
+
+// == Group-slug / punisher (make every forced attack cost life) ==
+1 Marchesa's Decree  #groupslug #punisher #payoff
+1 Curse of Opulence  #groupslug #payoff
+1 Revenge of Ravens  #punisher #protection
+1 Dictate of the Twin Gods  #groupslug #payoff
+1 Manabarbs  #groupslug #punisher
+1 Court of Ire  #groupslug #payoff
+1 Rite of the Raging Storm  #enabler #groupslug #tokens
+1 Karazikar, the Eye Tyrant  #enabler #goad #groupslug #payoff
+1 No Mercy  #punisher #protection #interaction
+
+// == Fog insurance (survive the combat we forced) ==
+1 Fog  #protection #fog
+1 Winds of Qal Sisma  #protection #fog
+1 Spore Frog  #protection #fog
+1 Obscuring Haze  #protection #fog
+1 Arachnogenesis  #protection #fog #spider
+
+// == Deathtouch / reach / spider walls (attacking into us is suicide) ==
+1 Ohran Frostfang  #payoff #deathtouch #draw
+1 Ohran Viper  #deathtouch #draw
+1 Glissa Sunslayer  #deathtouch #interaction
+1 Obelisk Spider  #spider #deathtouch #groupslug
+1 Arasta of the Endless Web  #spider #deathtouch #protection
+1 Ishkanah, Grafwidow  #spider #tokens
+1 Sentinel Spider  #spider #deathtouch
+1 Silklash Spider  #spider #interaction
+1 Spidersilk Armor  #spider #protection
+
+// == Card advantage (grind the forced attrition) ==
+1 Deathreap Ritual  #draw
+1 Grim Haruspex  #draw
+1 Midnight Reaper  #draw
+1 Return of the Wildspeaker  #draw #payoff
+1 Night's Whisper  #draw
+1 Toski, Bearer of Secrets  #draw #payoff
+
+// == Removal / interaction ==
+1 Beast Within  #interaction
+1 Chaos Warp  #interaction
+1 Terminate  #interaction
+1 Putrefy  #interaction
+1 Bedevil  #interaction
+1 Abrade  #interaction
+1 Feed the Swarm  #interaction
+1 Bituminous Blast  #interaction
+1 Blasphemous Act  #interaction #wincon
+
+// == Payoffs / finishers ==
+1 Vigor  #payoff #protection #wincon
+1 Warstorm Surge  #payoff #groupslug
+1 Where Ancients Tread  #payoff #groupslug
+1 Overwhelming Stampede  #wincon
+1 Overrun  #wincon
+1 Wrecking Ogre  #payoff #wincon
+1 Tectonic Giant  #payoff #groupslug
+1 Fervor  #enabler
+
+// == Lands (36) ==
+1 Command Tower  #land #fixing
+1 Exotic Orchard  #land #fixing
+1 Savage Lands  #land #fixing
+1 Swarmyard  #land #utility #spider
+1 Rogue's Passage  #land #utility #wincon
+1 Jund Panorama  #land #fixing
+1 Evolving Wilds  #land #fixing
+1 Terramorphic Expanse  #land #fixing
+1 Fabled Passage  #land #fixing
+1 Cinder Glade  #land #fixing
+1 Foreboding Ruins  #land #fixing
+1 Game Trail  #land #fixing
+1 Woodland Cemetery  #land #fixing
+1 Dragonskull Summit  #land #fixing
+1 Rootbound Crag  #land #fixing
+1 Sulfurous Springs  #land #fixing
+1 Karplusan Forest  #land #fixing
+1 Llanowar Wastes  #land #fixing
+1 Rakdos Carnarium  #land #fixing
+1 Gruul Turf  #land #fixing
+1 Golgari Rot Farm  #land #fixing
+1 Jungle Hollow  #land #fixing
+1 Forest  #land
+1 Forest  #land
+1 Forest  #land
+1 Forest  #land
+1 Forest  #land
+1 Forest  #land
+1 Forest  #land
+1 Swamp  #land
+1 Swamp  #land
+1 Swamp  #land
+1 Mountain  #land
+1 Mountain  #land
+1 Mountain  #land
+1 Mountain  #land
