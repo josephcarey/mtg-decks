@@ -24,8 +24,7 @@
 1 Cultivate  #ramp #fixing
 1 Kodama's Reach  #ramp #fixing
 1 Frog Butler  #ramp #fixing #deathtouch
-1 Poison Dart Frog  #ramp #fixing #deathtouch
-1 Noxious Newt  #ramp #fixing #deathtouch #draw
+1 Sylvan Caryatid  #ramp #fixing #wall
 1 Deathbloom Gardener  #ramp #fixing #deathtouch
 1 Arcane Signet  #ramp #fixing
 1 Rakdos Signet  #ramp #fixing
@@ -46,6 +45,7 @@
 1 Revenge of Ravens  #punisher #protection
 1 Dictate of the Twin Gods  #groupslug #payoff
 1 Manabarbs  #groupslug #punisher
+1 Brimstone Trebuchet  #groupslug #wall #payoff
 1 Court of Ire  #groupslug #payoff
 1 Rite of the Raging Storm  #enabler #groupslug #tokens
 1 Karazikar, the Eye Tyrant  #enabler #goad #groupslug #payoff
@@ -58,12 +58,13 @@
 1 Obscuring Haze  #protection #fog
 1 Arachnogenesis  #protection #fog #spider
 
-// == Deathtouch / reach / spider walls (attacking into us is suicide) ==
+// == Deathtouch / reach / defender walls (attacking into us is suicide) ==
 1 Ohran Frostfang  #payoff #deathtouch #draw
 1 Ohran Viper  #deathtouch #draw
 1 Glissa Sunslayer  #deathtouch #interaction
 1 Obelisk Spider  #spider #deathtouch #groupslug
 1 Arasta of the Endless Web  #spider #deathtouch #protection
+1 Hornet Nest  #wall #deathtouch #tokens #payoff
 1 Ishkanah, Grafwidow  #spider #tokens
 1 Sentinel Spider  #spider #deathtouch
 1 Silklash Spider  #spider #interaction
@@ -93,7 +94,6 @@
 1 Warstorm Surge  #payoff #groupslug
 1 Where Ancients Tread  #payoff #groupslug
 1 Overrun  #wincon
-1 Wrecking Ogre  #payoff #wincon
 1 Tectonic Giant  #payoff #groupslug
 1 Fervor  #enabler
 

@@ -49,12 +49,28 @@ Arachnogenesis, Ohran Frostfang, Toski) and it's a fully functional **~$55-60** 
 substitutes are logged in `CONSIDER.md`. Nothing about the archetype requires expensive cards — the
 engine (goad, punisher enchantments, fogs, spiders) is almost entirely commons/uncommons.
 
+## The "I'm forced to attack too" tension (and the fix)
+Thantis's forced-attack clause is symmetric — our own creatures must attack each combat *if able*.
+That undercuts deathtouch, which is most valuable on defense (a tapped attacker can't block). Three
+outs keep it in our favor, and the build leans on all three:
+- **Defender walls are exempt** — a creature with defender isn't "able" to attack, so it's never
+  forced in. These are the best blockers here *and* several ramp: **Sylvan Caryatid** (any-color,
+  hexproof, untappable mana wall), **Hornet Nest** (can't attack, and spawns 1/1 flying **deathtouch**
+  Insects whenever it's dealt damage — it literally punishes the attacks we force onto it), and
+  **Brimstone Trebuchet** (defender + reach that taps to ping each opponent — a group-slug pinger that
+  never leaves home).
+- **Vigilance** attackers swing without tapping and still block — Thantis itself and Sentinel Spider.
+- A forced deathtouch attacker still deters blocks (whatever stops it dies), so the tap-dorks that
+  do swing (Frog Butler, Deathbloom Gardener) aren't dead weight; the Fog package covers the
+  open-board turns where we needed the blocker back.
+- **Sequencing:** cast Thantis in the **second main phase** — it's summoning-sick anyway, and casting
+  post-combat keeps mana up for a Fog/removal instead of tapping out pre-combat.
+
 ## Curve / count
-100/100. Avg MV 3.53 over 64 nonland, 18 at MV 5+. Smoothed from the first pass by leaning into
-**deathtouch mana dorks** (see below): cut Rampant Growth / Nature's Lore / Wood Elves / Overwhelming
-Stampede, added Frog Butler / Poison Dart Frog / Noxious Newt / Deathbloom Gardener. Still a touch
-top-heavy, but 11 ramp sources + a 6-MV commander justify it; further trims would come from the MV5
-enchantment payoffs if it plays clunky.
+100/100. Avg MV 3.52 over 64 nonland, 17 at MV 5+. Smoothed across two passes by leaning into
+**deathtouch mana dorks** and **defender ramp-walls**: cut Rampant Growth / Nature's Lore / Wood Elves
+/ Overwhelming Stampede / Poison Dart Frog / Noxious Newt / Wrecking Ogre; added Frog Butler /
+Deathbloom Gardener / Sylvan Caryatid (ramp) + Hornet Nest / Brimstone Trebuchet (defender walls).
 
 ## Deathtouch mana dorks (ramp that also walls)
 All ~$0.20-0.30, recent-set forward. In a forced-combat deck these are higher-value than plain ramp
