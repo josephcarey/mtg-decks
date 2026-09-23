@@ -71,6 +71,15 @@ outs keep it in our favor, and the build leans on all three:
 - **Sequencing:** cast Thantis in the **second main phase** — it's summoning-sick anyway, and casting
   post-combat keeps mana up for a Fog/removal instead of tapping out pre-combat.
 
+## More recent-set fits (Hobbit / Duskmourn)
+- **Rendmaw, Creaking Nest** ({3}{B}{G}, $1.23) — reach + menace; ETB and on each 2+-card-type play,
+  every player makes a tapped, **goaded** 2/2 flying Bird. Those birds must attack someone *other than
+  us* — so it force-feeds the table attackers pointed at each other. Reach doubles as flier defense.
+- **Head of the Hunt** ({2}{B}{B}, $0.38) — flash; when an opponent's creature would die it's exiled
+  instead and we make a 2/2 Wolf. Forced combat kills opponents' creatures constantly (into our
+  deathtouchers), so this rakes in Wolf bodies for Overrun/Vigor while denying graveyard recursion.
+Cut: Bloodthirsty Blade (redundant single-target goad), Spidersilk Armor (weakest wall-support).
+
 ## Recent-set additions (Hobbit / Marvel)
 - **Attercop** ({1}{G}, The Hobbit) — Spider with reach + deathtouch + a landfall pump; cheap ideal
   wall that bites forced attackers, blocks fliers, and grows off our ramp-heavy landfall.

@@ -39,7 +39,7 @@
 1 Disrupt Decorum  #enabler #goad
 1 Agitator Ant  #enabler #goad
 1 Puppet Master, String Puller  #enabler #goad
-1 Bloodthirsty Blade  #enabler #goad
+1 Rendmaw, Creaking Nest  #enabler #goad #tokens #wall
 
 // == Group-slug / punisher (make every forced attack cost life) ==
 1 Marchesa's Decree  #groupslug #punisher #payoff
@@ -70,7 +70,7 @@
 1 Hornet Nest  #wall #deathtouch #tokens #payoff
 1 Ishkanah, Grafwidow  #spider #tokens
 1 Silklash Spider  #spider #interaction
-1 Spidersilk Armor  #spider #protection
+1 Head of the Hunt  #interaction #tokens #payoff
 
 // == Card advantage (grind the forced attrition) ==
 1 Deathreap Ritual  #draw
