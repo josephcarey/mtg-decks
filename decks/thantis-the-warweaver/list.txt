@@ -5,8 +5,9 @@
 // Budget: budget-friendly. 78 of 100 cards are < $1; only 5 cards are > $5. Full build ~$113,
 //   but those 5 are optional chase cards worth ~$45 combined — swap in the cheap subs noted in
 //   CONSIDER.md and the deck is a fully functional ~$55–60 build.
-// Proxy candidates (optional chase upgrades, NOT required): Karazikar the Eye Tyrant (~$13),
-//   No Mercy (~$10), Arachnogenesis (~$8), Ohran Frostfang (~$7), Toski (~$6).
+// Proxy candidates (optional chase upgrades, NOT required): The Walls of Ba Sing Se (~$24),
+//   Karazikar the Eye Tyrant (~$13), No Mercy (~$10), Arachnogenesis (~$8), Ohran Frostfang (~$7),
+//   Toski (~$6).
 //
 // Plan: Thantis forces ALL creatures — yours AND opponents' — to attack every combat, and grows
 // a +1/+1 counter every time a creature attacks you. So the whole table is shoved into combat
@@ -94,8 +95,8 @@
 1 Warstorm Surge  #payoff #groupslug
 1 Where Ancients Tread  #payoff #groupslug
 1 Overrun  #wincon
-1 Tectonic Giant  #payoff #groupslug
-1 Fervor  #enabler
+1 The Walls of Ba Sing Se  #wall #protection #wincon
+1 Rampart Architect  #ramp #wall #tokens #enabler
 
 // == Lands (36) ==
 1 Command Tower  #land #fixing

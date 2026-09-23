@@ -62,7 +62,12 @@ outs keep it in our favor, and the build leans on all three:
 - **Vigilance** attackers swing without tapping and still block — Thantis itself and Sentinel Spider.
 - A forced deathtouch attacker still deters blocks (whatever stops it dies), so the tap-dorks that
   do swing (Frog Butler, Deathbloom Gardener) aren't dead weight; the Fog package covers the
-  open-board turns where we needed the blocker back.
+  open-board turns where we needed the blocker back. **Rampart Architect** flips the clause fully
+  into an upside: it's forced to attack, but its attack trigger spits out a 1/3 Wall token every
+  combat, and when our walls chump-die we ramp a basic — closing the wall→ramp loop.
+- **The Walls of Ba Sing Se** (proxy, {8} colorless defender) gives the whole board indestructible:
+  our deathtouchers still destroy attackers, our creatures can't be killed back, and Blasphemous
+  Act becomes a one-sided wrath.
 - **Sequencing:** cast Thantis in the **second main phase** — it's summoning-sick anyway, and casting
   post-combat keeps mana up for a Fog/removal instead of tapping out pre-combat.
 
