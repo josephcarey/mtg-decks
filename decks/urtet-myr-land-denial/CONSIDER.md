@@ -23,6 +23,31 @@ Running shortlist to weigh on the next pass. Nothing here is committed to `list.
 - **Secret of Bloodbending** (UUUU, waterbend {10}) — mana-sink Mindslaver: steal an opponent's
   whole next turn. Blue-heavy but hilarious in a no-holds-barred pod with our doubled mana.
 
+## Keep spare mana (mana doesn't empty — pairs with our doubled Myr mana + X finishers)
+Our engine over-produces mana (Urtet double-tap, Kinnan, CapAm); parking the overflow feeds
+Walking Ballista / firebreathing / Secret of Bloodbending and survives our own Armageddon.
+- **Electro, Assaulting Battery** ({1}{R}{R}) — don't lose unspent red; +{R} on every instant/sorcery;
+  flying body + an X-damage bolt on death. Best fit: cheap, red, doubles as a burn payoff.
+- **Ozai, the Phoenix King** ({2}{B}{B}{R}{R}) — unspent mana becomes red instead of emptying; big
+  firebending-4 haste trampler that's indestructible w/ 6+ floating. Beefy but color-heavy.
+- **Omnath, Locus of the Void** ({7}, Reality Fracture) — unspent mana becomes colorless; grows per
+  floating mana; landfall {C}{C}. Pricey to cast and we run few lands, so weakest fit here.
+- **Kruphix, God of Horizons / Horizon Stone** — colorless-bank versions (no max hand size on
+  Kruphix). Cleanest colorless mana-battery if we just want the storage, not a payoff body.
+- **Leyline Tyrant** — red-bank flier that dumps all stored {R} as damage on death; simpler Electro.
+
+## Recast our spells (rebound / copy / cast-from-yard — reuse the MLD + tutors)
+- **Iroh, Grand Lotus** ({3}{G}{U}{R}, $0.40) — during your turn every instant/sorcery in the yard has
+  flashback at its mana cost. Recast Armageddon/Ravages/tutors for full value. Top pick — cheap, on-color.
+- **Cast Through Time** ({4}{U}{U}{U}) — the rebound-granter: every instant/sorcery you cast rebounds
+  (recast free next upkeep). Blue-heavy but back-to-back Armageddons is brutal.
+- **Thousand-Year Storm** ({4}{U}{R}) — the "storm" copy engine; each instant/sorcery copies for each
+  earlier one this turn. Fewer spells than a spellslinger deck, so payoff is smaller here.
+- **Storm-Kiln Artist** ({3}{R}) — Treasure on every instant/sorcery cast + artifact-count beater;
+  ramps the recasts and feeds Cranial Plating / affinity. Low cost, easy include.
+- **Swarm Intelligence** ({6}{U}) / **Increasing Vengeance** ({R}{R}) — copy-your-wipe options; Vengeance
+  is a cheap one-shot double-Armageddon, Swarm is a repeatable but 7-mana engine.
+
 ## High-priority swaps to test
 - **Aerid Konstrari** ({1}{R}{G}{G}) — cut in v5 for Weftstalker Ardent, parked here so we don't
   lose it. Makes a Heartwood (R/G mana artifact) on ETB/death + a `{6}` artifact-count firebreathing
