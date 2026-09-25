@@ -24,6 +24,9 @@ Running shortlist to weigh on the next pass. Nothing here is committed to `list.
   whole next turn. Blue-heavy but hilarious in a no-holds-barred pod with our doubled mana.
 
 ## High-priority swaps to test
+- **Aerid Konstrari** ({1}{R}{G}{G}) — cut in v5 for Weftstalker Ardent, parked here so we don't
+  lose it. Makes a Heartwood (R/G mana artifact) on ETB/death + a `{6}` artifact-count firebreathing
+  finisher. Bring back if we want more Heartwood mana or a bigger flier.
 - **Pia, Determined Rebuilder** — extra Thopter + an artifact-count firebreathing pump finisher.
 - **Myr Reservoir** — `{T}: {C}{C}` for Myr + recurs a Myr from the yard (also an infinite piece
   with Kinnan + Voltaic Construct).
