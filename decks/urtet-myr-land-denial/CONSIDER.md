@@ -47,6 +47,15 @@ Walking Ballista / firebreathing / Secret of Bloodbending and survives our own A
   ramps the recasts and feeds Cranial Plating / affinity. Low cost, easy include.
 - **Swarm Intelligence** ({6}{U}) / **Increasing Vengeance** ({R}{R}) — copy-your-wipe options; Vengeance
   is a cheap one-shot double-Armageddon, Swarm is a repeatable but 7-mana engine.
+- **Arcane Bombardment** ({4}{R}{R}) — first instant/sorcery each turn exiles a random one from your
+  yard and copies *every* card it's exiled, cast free. Snowballs into re-firing Armageddon for free
+  every turn — one-sided and on-color. Strong; pairs with Iroh to refill the yard.
+- **Eye of the Storm** ({5}{U}{U}) — symmetric copy-vault, but the owner's read is right: our marquee
+  spells are **targetless land destruction**, so it doesn't matter who recasts the copies — every
+  spell anyone casts re-wipes all lands, and our mana (artifacts/Myr) survives. Get one Armageddon
+  under it and the table can never keep lands. Caveats: opponents' own spells also get vaulted and
+  copied (their removal/draw comes back too), and it exiles your spells rather than banking them for
+  Iroh/Bombardment — a chaotic build-around, but hilarious for a dedicated lock deck.
 
 ## High-priority swaps to test
 - **Aerid Konstrari** ({1}{R}{G}{G}) — cut in v5 for Weftstalker Ardent, parked here so we don't
