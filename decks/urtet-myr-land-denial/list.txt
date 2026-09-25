@@ -1,0 +1,138 @@
+// Commander: Urtet, Remnant of Memnarch  (5-color WUBRG identity via the activated ability)
+// Archetype: Myr artifact-ramp + mass land denial / "moon" stax — go-wide Myr beatdown finish
+// Card count: 100 (singleton)
+// Power: HIGH / no-holds-barred ("no holds barred" pod night). This is the ONE dedicated
+//   land-destruction / stax deck (sanctioned per PRIORITIES.md — must never leak into other decks).
+// OVERRIDES (explicitly greenlit by owner for THIS deck only):
+//   - Mass land destruction + resource-denial stax IS the whole point (the sanctioned MLD exception).
+//   - Game Changers are ALLOWED here. GC cards used, all in service of assembling/protecting the
+//     land-lock, not generic goodstuff: Grim Monolith, Ancient Tomb, Enlightened Tutor,
+//     Demonic Tutor, Vampiric Tutor, Cyclonic Rift, The One Ring.
+// Budget: proxy freely, no cost cap. Genuine chase cards (proxy candidates): Ravages of War,
+//   Mana Crypt, Mox Opal, Grim Monolith, The One Ring, Cyclonic Rift, Ancient Tomb, Winter Orb,
+//   Unwinding Clock, Blood Moon, Aerid Konstrari.
+//
+// PLAN: Our mana lives on ARTIFACTS, not lands. The five metal Myr give perfect WUBRG fixing and
+// Urtet untaps EVERY Myr at combat, so we tap for mana in main 1, swing, and tap again in main 2 —
+// a land-independent economy. Ramp hard on rocks + Myr + token-mana makers (Roxanne Meteorites,
+// Svella Icy Manaliths, Aerid Heartwoods) that all SURVIVE our own wipes. Then pull the lever:
+// land-only mass destruction (Armageddon / Ravages / Ruination) + "moon" & orb stax (Blood Moon,
+// Magus, Zhao, Winter Orb) that is one-sided because our mana isn't on lands. Winter Orb is a clean
+// one-sided lock: it only stops LANDS from untapping — our Myr untap normally (twice, with Urtet).
+// Close with a wide Myr army pumped by Urtet's {W}{U}{B}{R}{G},{T}: +3/+3 on each Myr, or Cranial
+// Plating / Battlesphere. Enlightened/Demonic/Vampiric Tutor fetch the exact lock piece needed.
+
+// == Commander ==
+1 Urtet, Remnant of Memnarch  #commander
+
+// == Mana Myr — the creature-mana engine (untapped twice via Urtet) ==
+1 Silver Myr  #ramp #fixing #myr
+1 Iron Myr  #ramp #fixing #myr
+1 Copper Myr  #ramp #fixing #myr
+1 Gold Myr  #ramp #fixing #myr
+1 Leaden Myr  #ramp #fixing #myr
+1 Palladium Myr  #ramp #myr
+1 Alloy Myr  #ramp #fixing #myr
+1 Myr Convert  #ramp #fixing #myr
+
+// == Artifact ramp / rocks — survive our own land wipes ==
+1 Sol Ring  #ramp
+1 Mana Crypt  #ramp
+1 Mana Vault  #ramp
+1 Grim Monolith  #ramp
+1 Basalt Monolith  #ramp
+1 Thran Dynamo  #ramp
+1 Gilded Lotus  #ramp #fixing
+1 Coalition Relic  #ramp #fixing
+1 Chromatic Lantern  #ramp #fixing
+1 Fellwar Stone  #ramp #fixing
+1 Arcane Signet  #ramp #fixing
+1 Mox Opal  #ramp
+
+// == Myr / artifact payoffs, lords & token-mana makers ==
+1 Myr Galvanizer  #payoff #enabler #myr
+1 Myr Turbine  #payoff #myr
+1 Myr Battlesphere  #payoff #wincon #myr
+1 Myr Matrix  #payoff #myr
+1 Myr Superion  #payoff #myr
+1 Steel Overseer  #payoff
+1 Master of Etherium  #payoff
+1 Kinnan, Bonder Prodigy  #ramp #payoff
+1 Raggadragga, Goreguts Boss  #payoff #wincon
+1 Memnarch, the Warden  #payoff #draw
+1 Roxanne, Starfall Savant  #ramp #payoff
+1 Vraska, Soul of Stone  #payoff #tokens #ramp
+1 Tenured Tethermage  #ramp #enabler
+1 Saheeli, Jewel of Avishkar  #payoff #tokens
+1 Witherbloom, the Balancer  #payoff #enabler
+
+// == Land-death payoff (turn our own Armageddons into a win) ==
+1 Dingus Egg  #payoff #landdenial #wincon
+
+// == Go-wide burn — every token/artifact/creature ETB pings the table ==
+1 Reckless Fireweaver  #payoff #wincon
+1 Weftstalker Ardent  #payoff #wincon
+
+// == Wincon / equipment ==
+1 Cranial Plating  #wincon
+1 Etched Champion  #wincon
+1 Walking Ballista  #wincon #interaction
+
+// == Mass land destruction (land-only — keeps our artifacts) ==
+1 Armageddon  #wincon #landdenial
+1 Ravages of War  #wincon #landdenial
+1 Ruination  #landdenial
+1 Catastrophe  #landdenial
+1 Fall of the Thran  #landdenial
+1 Keldon Firebombers  #landdenial
+1 Decree of Annihilation  #landdenial
+
+// == "Moon" & orb stax — one-sided vs. a nonbasic-heavy pod ==
+1 Winter Orb  #stax #landdenial
+1 Blood Moon  #stax #landdenial
+1 Magus of the Moon  #stax #landdenial
+1 Zhao, the Moon Slayer  #stax #landdenial
+1 Back to Basics  #stax #landdenial
+1 Smokestack  #stax
+1 Unwinding Clock  #enabler
+
+// == Card advantage ==
+1 Skullclamp  #draw
+1 The One Ring  #draw #protection
+1 Reckoner Bankbuster  #draw
+
+// == Untap / mana-multiplier enablers ==
+1 Captain America, Living Legend  #enabler #untap
+1 Voltaic Construct  #enabler #untap
+
+// == Interaction / removal ==
+1 Swords to Plowshares  #interaction
+1 Cyclonic Rift  #interaction
+1 Beast Within  #interaction
+1 Generous Gift  #interaction
+1 Vindicate  #interaction
+1 Anguished Unmaking  #interaction
+1 Assassin's Trophy  #interaction
+
+// == Counters / protection ==
+1 Mana Drain  #interaction #ramp
+1 Swan Song  #interaction
+
+// == Tutors — fetch the exact lock piece ==
+1 Enlightened Tutor  #tutor
+1 Demonic Tutor  #tutor
+1 Vampiric Tutor  #tutor
+1 Whir of Invention  #tutor
+
+// == Lands (26 — mostly basics; few nonbasics since our own moons/Ruination hit them) ==
+1 Command Tower  #land
+1 Spire of Industry  #land #fixing
+1 Inventors' Fair  #land #tutor
+1 Buried Ruin  #land #utility
+1 Reliquary Tower  #land #utility
+1 Ancient Tomb  #land #ramp
+7 Mountain  #land
+5 Forest  #land
+3 Plains  #land
+3 Island  #land
+2 Swamp  #land
