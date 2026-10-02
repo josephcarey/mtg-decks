@@ -11,6 +11,14 @@ Cards weighed but not (yet) in the list. Nothing here is committed.
 
 ## Other candidates
 
+- **More statue/petrification flavor** (didn't make the 65-35 cut):
+  Sanguine Statuette, Jade Statue, God-Pharaoh's Statue (6 MV stax, very
+  Vraska-villain), Ancestral Statue, Gorgon Flail, Desculpting Blast.
+- **Cut in style pass, worth remembering**: Abrade, Wear // Tear,
+  Tormod's Crypt (meta call vs graveyard decks), Urza's Bauble,
+  Boros/Azorius Signets, Everflowing Chalice, Quicksmith Genius.
+- **EDHREC also suggested**: Path to Exile, An Offer You Can't Refuse,
+  Counterspell, Brainstorm.
 - **Thopter Spy Network** — steady token + draw engine.
 - **Mirrodin Besieged** — token payoff with an alt-wincon mode.
 - **Jhoira's Toolbox / Welding Jar** — cheap protection for key artifacts.

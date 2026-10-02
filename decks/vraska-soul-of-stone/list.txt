@@ -16,9 +16,9 @@
 
 // 0-MANA CHEERIOS (4)
 1 Mishra's Bauble  #enabler #draw
-1 Urza's Bauble  #enabler #draw
-1 Tormod's Crypt  #enabler #utility
-1 Everflowing Chalice  #enabler #ramp
+1 Gorgon's Head  #enabler #statue
+1 Levitating Statue  #payoff #statue
+1 Skullclamp  #draw
 
 // 2-MANA ROCKS & FIXING (12)
 1 Arcane Signet  #ramp
@@ -30,8 +30,8 @@
 1 Talisman of Conviction  #ramp #fixing
 1 Talisman of Creativity  #ramp #fixing
 1 Izzet Signet  #ramp #fixing
-1 Boros Signet  #ramp #fixing
-1 Azorius Signet  #ramp #fixing
+1 Prized Statue  #ramp #statue
+1 Jeskai Monument  #fixing #statue
 1 The Regalia  #ramp #fixing
 
 // RECURSION / ENGINE PIECES (5)
@@ -47,7 +47,7 @@
 1 Vedalken Archmage  #draw #payoff
 1 Riddlesmith  #draw #enabler
 1 Whirlwind of Thought  #draw #payoff
-1 Quicksmith Genius  #draw #enabler
+1 Harmonic Prodigy  #enabler #payoff
 1 Rent Is Due  #draw
 1 Sai, Master Thopterist  #payoff #draw
 1 Padeem, Consul of Innovation  #protection #draw
@@ -72,10 +72,10 @@
 1 Swords to Plowshares  #interaction
 1 Dispatch  #interaction
 1 Galvanic Blast  #interaction
-1 Abrade  #interaction
+1 Petrify  #interaction #statue
 1 Negate  #interaction
 1 Stoic Rebuttal  #interaction
-1 Wear // Tear  #interaction
+1 Topple the Statue  #interaction #statue #draw
 1 Saheeli, Sublime Artificer  #payoff #tokens
 
 // WIN CONDITIONS (10)

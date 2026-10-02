@@ -39,6 +39,22 @@ Sources counting every dual/any-color land for each color it makes:
 2 Plains). W is all single pips → 11 ≥ Karsten's ~9–10 floor; U covers the
 UU/UUU cards (Whir, Hullbreaker, Stoic Rebuttal) at 20.
 
+## Style pass (2026-10-02) — medusa/statue flavor, 65-35 cool-vs-effective
+
+Vraska-character cards are all BG (off-identity), so the flavor angle is
+petrification/statues. Swaps (EDHREC upgrades included):
+
+| Out | In | Note |
+|---|---|---|
+| Tormod's Crypt | Levitating Statue | Statue that grows per Vraska trigger — near-zero power loss |
+| Wear // Tear | Topple the Statue | Cantrip artifact removal; loses enchantment hit |
+| Abrade | Petrify | Medusa removal; weaker vs activated-ability-less threats, pure flavor win |
+| Urza's Bauble | Gorgon's Head | Flavor slot; deathtouch + commander vigilance = stone-gaze wall |
+| Boros Signet | Prized Statue | Any-color treasure on enter AND death |
+| Azorius Signet | Jeskai Monument | Fetches any basic + late bird-token sink |
+| Everflowing Chalice | Skullclamp | EDHREC +55% syn — clamps Sculptures/servos into cards |
+| Quicksmith Genius | Harmonic Prodigy | EDHREC +51% — doubles Vraska, Sai, Emry, Jhoira, Saheeli triggers |
+
 ## Price walkthrough (top cards, cheapest print)
 
 | Card | $ | Verdict |
