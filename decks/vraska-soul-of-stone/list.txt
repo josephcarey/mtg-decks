@@ -25,7 +25,7 @@
 1 Fellwar Stone  #ramp
 1 Mind Stone  #ramp
 1 Thought Vessel  #ramp
-1 Prismatic Lens  #ramp #fixing
+1 The Eternity Elevator  #ramp #station
 1 Talisman of Progress  #ramp #fixing
 1 Talisman of Conviction  #ramp #fixing
 1 Talisman of Creativity  #ramp #fixing
@@ -48,7 +48,7 @@
 1 Thought Monitor  #draw #payoff
 1 Whirlwind of Thought  #draw #payoff
 1 Harmonic Prodigy  #enabler #payoff
-1 Rent Is Due  #draw
+1 First Day of Class  #enabler #utility
 1 Sai, Master Thopterist  #payoff #draw
 1 Padeem, Consul of Innovation  #protection #draw
 
@@ -64,7 +64,7 @@
 
 // BOUNCE & RE-STORM (4)
 1 Paradoxical Outcome  #enabler #draw
-1 Rebuild  #enabler #protection
+1 Inspirit, Flagship Vessel  #protection #station #payoff
 1 Hurkyl's Recall  #enabler #protection
 1 Mizzix's Mastery  #utility
 

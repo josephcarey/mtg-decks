@@ -76,6 +76,22 @@ see CONSIDER.md.)
 Note the paper curve rose to 2.81 avg MV, but Walls/Kappa/Thought Monitor all
 cast for far less than printed via reducers/improvise/affinity.
 
+## Haste & station follow-up (2026-10-02)
+
+- **First Day of Class back in** (Rent Is Due out): fresh Sculptures can't
+  tap-sac for mana the turn they enter (the sac ability costs {T}), so haste
+  is a storm-turn ritual — every new statue immediately sacs for colored
+  mana. The rest of the bypass package (Ashnod's sac, Springleaf/Moonsnare/
+  Clock/Statuary tap-as-cost) works through sickness but doesn't scale per
+  statue the same way.
+- **Station = sickness bypass too**: stationing taps your creatures as a
+  cost, so sick statues station immediately. Added:
+  - **The Eternity Elevator** (for Prismatic Lens) — {T}: {C}{C}{C} even at
+    0 charge; 20+ tier taps for X of any color.
+  - **Inspirit, Flagship Vessel** (for Rebuild) — 8+ charge: other artifacts
+    gain hexproof + indestructible; pairs with Walls of Ba Sing Se (each
+    protects the other). Master of Etherium halves the statues needed.
+
 ## Price walkthrough (top cards, cheapest print)
 
 | Card | $ | Verdict |

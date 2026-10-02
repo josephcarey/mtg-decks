@@ -20,7 +20,11 @@ Cards weighed but not (yet) in the list. Nothing here is committed.
 - **Memnite / Ornithopter / Frogmite** — free casts = free statues + storm count.
 - **Shimmer Dragon** — hexproof; taps two statues to draw.
 - **Cut this pass**: Depthshaker Titan (melee anthem wincon), Negate, Retract,
-  Riddlesmith, First Day of Class.
+  Riddlesmith.
+- **Cut in station pass**: Rent Is Due, Prismatic Lens, Rebuild (one-shot
+  wipe protection; superseded by Inspirit + Walls).
+- **The Seriema** ($0.96) — W station ship; tutors a legendary creature,
+  7+ gives tapped legends indestructible. Mostly off-plan (few legends).
 
 ## Other candidates
 
