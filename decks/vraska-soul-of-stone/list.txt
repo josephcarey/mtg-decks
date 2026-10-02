@@ -23,7 +23,7 @@
 // 2-MANA ROCKS & FIXING (12)
 1 Arcane Signet  #ramp
 1 Fellwar Stone  #ramp
-1 Mind Stone  #ramp
+1 Wizard's Staff  #enabler #payoff
 1 Thought Vessel  #ramp
 1 The Eternity Elevator  #ramp #station
 1 Talisman of Progress  #ramp #fixing
@@ -66,7 +66,7 @@
 1 Paradoxical Outcome  #enabler #draw
 1 Inspirit, Flagship Vessel  #protection #station #payoff
 1 Hurkyl's Recall  #enabler #protection
-1 Mizzix's Mastery  #utility
+1 Panharmonicon  #payoff
 
 // INTERACTION (8)
 1 Swords to Plowshares  #interaction

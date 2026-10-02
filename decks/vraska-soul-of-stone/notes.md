@@ -92,6 +92,15 @@ cast for far less than printed via reducers/improvise/affinity.
     gain hexproof + indestructible; pairs with Walls of Ba Sing Se (each
     protects the other). Master of Etherium halves the statues needed.
 
+## Trigger-doubler pass (2026-10-02)
+
+- **Wizard's Staff** in (Mind Stone out) — Equip Wizard {1}; Vraska is a
+  Wizard → two statues per noncreature spell. Stacks with Harmonic Prodigy
+  for three. Also doubles Sai/Emry/Archmage if Vraska's down.
+- **Panharmonicon** in (Mizzix's Mastery out) — doubles Fireweaver,
+  Artillerist, Impact Tremors, Kappa, Thought Monitor, Prized Statue.
+- Parked in CONSIDER: Strionic Resonator, Veyran, Elesh Norn.
+
 ## Price walkthrough (top cards, cheapest print)
 
 | Card | $ | Verdict |

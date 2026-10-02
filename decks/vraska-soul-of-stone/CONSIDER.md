@@ -26,6 +26,14 @@ Cards weighed but not (yet) in the list. Nothing here is committed.
 - **The Seriema** ($0.96) — W station ship; tutors a legendary creature,
   7+ gives tapped legends indestructible. Mostly off-plan (few legends).
 
+## Trigger doublers not (yet) in
+
+- **Strionic Resonator** ($6.54) — copies any trigger incl. Vraska's;
+  statues pay the activation. First-in candidate if a slot opens.
+- **Veyran, Voice of Duality** ($1.48) — only ~12 instants/sorceries here.
+- **Elesh Norn, Mother of Machines** ($23.08) — doubles our ETBs, silences
+  opponents'; chase price, would be a third proxy candidate.
+
 ## Other candidates
 
 - **More statue/petrification flavor** (didn't make the 65-35 cut):
