@@ -1,0 +1,113 @@
+// Commander: Vraska, Soul of Stone
+// Archetype: Jeskai artifact storm / artifactfall (cheap artifacts + cost reducers + token payoffs)
+// Cards: 100
+// Proxy candidates: Aetherflux Reservoir, The Walls of Ba Sing Se
+//
+// COMMANDER (1)
+1 Vraska, Soul of Stone  #commander #artifacts
+
+// THE ENGINE & REDUCERS (6)
+1 Foundry Inspector  #enabler #artifacts
+1 Etherium Sculptor  #enabler #artifacts
+1 Enthusiastic Mechanaut  #enabler #artifacts
+1 Jhoira's Familiar  #enabler #artifacts
+1 Cloud Key  #enabler #artifacts
+1 Semblance Anvil  #enabler #artifacts
+
+// 0-MANA CHEERIOS (4)
+1 Mishra's Bauble  #enabler #draw
+1 Gorgon's Head  #enabler #statue
+1 Levitating Statue  #payoff #statue
+1 Skullclamp  #draw
+
+// 2-MANA ROCKS & FIXING (12)
+1 Arcane Signet  #ramp
+1 Fellwar Stone  #ramp
+1 Wizard's Staff  #enabler #payoff
+1 Thought Vessel  #ramp
+1 The Eternity Elevator  #ramp #station
+1 Talisman of Progress  #ramp #fixing
+1 Talisman of Conviction  #ramp #fixing
+1 Talisman of Creativity  #ramp #fixing
+1 Izzet Signet  #ramp #fixing
+1 Prized Statue  #ramp #statue
+1 Jeskai Monument  #fixing #statue
+1 The Regalia  #ramp #fixing
+
+// RECURSION / ENGINE PIECES (5)
+1 Myr Retriever  #enabler #recursion
+1 Workshop Assistant  #enabler #recursion
+1 Scrap Trawler  #enabler #recursion
+1 Emry, Lurker of the Loch  #enabler #recursion
+1 Hullbreaker Horror  #payoff #protection
+
+// DRAW ENGINES & ARTIFACTFALL (9)
+1 Fateful Discovery  #draw
+1 Jhoira, Weatherlight Captain  #draw #payoff
+1 Vedalken Archmage  #draw #payoff
+1 Thought Monitor  #draw #payoff
+1 Whirlwind of Thought  #draw #payoff
+1 Harmonic Prodigy  #enabler #payoff
+1 First Day of Class  #enabler #utility
+1 Sai, Master Thopterist  #payoff #draw
+1 Padeem, Consul of Innovation  #protection #draw
+
+// SICKNESS BYPASS & UTILITY (8)
+1 Springleaf Drum  #enabler #fixing
+1 Moonsnare Prototype  #enabler #fixing
+1 Inspiring Statuary  #enabler #ramp
+1 Clock of Omens  #enabler #utility
+1 Mystic Forge  #enabler #draw
+1 Ashnod's Altar  #enabler #ramp
+1 Whir of Invention  #utility
+1 Fabricate  #utility
+
+// BOUNCE & RE-STORM (4)
+1 Paradoxical Outcome  #enabler #draw
+1 Inspirit, Flagship Vessel  #protection #station #payoff
+1 Hurkyl's Recall  #enabler #protection
+1 Panharmonicon  #payoff
+
+// INTERACTION (8)
+1 Swords to Plowshares  #interaction
+1 Dispatch  #interaction
+1 Galvanic Blast  #interaction
+1 Petrify  #interaction #statue
+1 Kappa Cannoneer  #wincon #payoff
+1 Stoic Rebuttal  #interaction
+1 Topple the Statue  #interaction #statue #draw
+1 Saheeli, Sublime Artificer  #payoff #tokens
+
+// WIN CONDITIONS (10)
+1 Reckless Fireweaver  #wincon #payoff
+1 Ingenious Artillerist  #wincon #payoff
+1 Impact Tremors  #wincon #payoff
+1 Grapeshot  #wincon
+1 Brain Freeze  #wincon
+1 Rise and Shine  #wincon
+1 Master of Etherium  #wincon #payoff
+1 Shared Animosity  #wincon
+1 The Walls of Ba Sing Se  #protection
+1 Aetherflux Reservoir  #wincon
+
+// LANDS (33)
+1 Command Tower  #land #fixing
+1 Exotic Orchard  #land #fixing
+1 Spire of Industry  #land #fixing
+1 Ancient Den  #land #artifacts
+1 Seat of the Synod  #land #artifacts
+1 Great Furnace  #land #artifacts
+1 Darksteel Citadel  #land #artifacts
+1 Treasure Vault  #land #artifacts
+1 Academy Ruins  #land #recursion
+1 Glacial Fortress  #land #fixing
+1 Sulfur Falls  #land #fixing
+1 Clifftop Retreat  #land #fixing
+1 Temple of Epiphany  #land #fixing
+1 Mystic Monastery  #land #fixing
+1 Shivan Reef  #land #fixing
+1 Adarkar Wastes  #land #fixing
+1 Battlefield Forge  #land #fixing
+9 Island  #land
+5 Mountain  #land
+2 Plains  #land
