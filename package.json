@@ -30,8 +30,7 @@
     "vitest": "^5.0.0"
   },
   "overrides": {
-    "vite": "^7.1.12",
-    "esbuild": "^0.25.10"
+    "brace-expansion": "^5.0.12"
   },
   "dependencies": {
     "neverthrow": "^8.2.0"
