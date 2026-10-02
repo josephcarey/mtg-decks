@@ -9,6 +9,19 @@ Cards weighed but not (yet) in the list. Nothing here is committed.
 - **Inventors' Fair** ($16.6) — tutor land + lifegain for Aetherflux.
 - **Raugrin Triome** ($14.4) — would replace Mystic Monastery.
 
+## Side-payoff pass leftovers (2026-10-02)
+
+- **Chalice of the Void** ($16.7, NOT a Game Changer) — the "counter everything,
+  we still get statues" plan works on cast-triggers, but X=0/1 counters our own
+  baubles mid-storm and countered artifacts never *enter* (no Fireweaver/
+  Artillerist pings). Judged anti-synergy; revisit only for a counterspell meta.
+- **Lodestone Golem** ($0.30) — heavily asymmetric tax (~45 artifacts on our
+  side), but taxes Vraska recasts and our ~17 nonartifact spells.
+- **Memnite / Ornithopter / Frogmite** — free casts = free statues + storm count.
+- **Shimmer Dragon** — hexproof; taps two statues to draw.
+- **Cut this pass**: Depthshaker Titan (melee anthem wincon), Negate, Retract,
+  Riddlesmith, First Day of Class.
+
 ## Other candidates
 
 - **More statue/petrification flavor** (didn't make the 65-35 cut):

@@ -55,6 +55,27 @@ petrification/statues. Swaps (EDHREC upgrades included):
 | Everflowing Chalice | Skullclamp | EDHREC +55% syn — clamps Sculptures/servos into cards |
 | Quicksmith Genius | Harmonic Prodigy | EDHREC +51% — doubles Vraska, Sai, Emry, Jhoira, Saheeli triggers |
 
+## Side-payoff pass (2026-10-02) — "everything is cheap" dividends
+
+Cost reducers + cast-triggers unlock cards that look expensive but aren't:
+
+| Out | In | Why |
+|---|---|---|
+| First Day of Class | Mystic Forge | Cast artifacts off the top; most of the deck is 0–2 MV after reducers |
+| Riddlesmith | Thought Monitor | Affinity → usually a 1–2 mana draw-two artifact |
+| Retract | Paradoxical Outcome | Bounce cheerios + draw that many, then recast — strict upgrade (and $5 cheaper) |
+| Negate | Kappa Cannoneer | Improvise-cast, ward 4, unblockable grower — alt wincon |
+| Depthshaker Titan | The Walls of Ba Sing Se | Reducers → ~5-6 mana for "everything else indestructible"; **proxy candidate** ($24.5) |
+
+Key ruling that shapes the deck: **Vraska triggers on cast, not resolve** —
+countered spells (ours or theirs) still make Sculptures, and the Sculpture
+*entering* still triggers Fireweaver/Artillerist/Tremors. Counterspell wars
+feed us. (Chalice of the Void exploits this but was judged anti-synergy —
+see CONSIDER.md.)
+
+Note the paper curve rose to 2.81 avg MV, but Walls/Kappa/Thought Monitor all
+cast for far less than printed via reducers/improvise/affinity.
+
 ## Price walkthrough (top cards, cheapest print)
 
 | Card | $ | Verdict |

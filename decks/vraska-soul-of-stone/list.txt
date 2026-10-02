@@ -1,7 +1,7 @@
 // Commander: Vraska, Soul of Stone
 // Archetype: Jeskai artifact storm / artifactfall (cheap artifacts + cost reducers + token payoffs)
 // Cards: 100
-// Proxy candidates: Aetherflux Reservoir
+// Proxy candidates: Aetherflux Reservoir, The Walls of Ba Sing Se
 //
 // COMMANDER (1)
 1 Vraska, Soul of Stone  #commander #artifacts
@@ -45,7 +45,7 @@
 1 Fateful Discovery  #draw
 1 Jhoira, Weatherlight Captain  #draw #payoff
 1 Vedalken Archmage  #draw #payoff
-1 Riddlesmith  #draw #enabler
+1 Thought Monitor  #draw #payoff
 1 Whirlwind of Thought  #draw #payoff
 1 Harmonic Prodigy  #enabler #payoff
 1 Rent Is Due  #draw
@@ -57,13 +57,13 @@
 1 Moonsnare Prototype  #enabler #fixing
 1 Inspiring Statuary  #enabler #ramp
 1 Clock of Omens  #enabler #utility
-1 First Day of Class  #enabler #utility
+1 Mystic Forge  #enabler #draw
 1 Ashnod's Altar  #enabler #ramp
 1 Whir of Invention  #utility
 1 Fabricate  #utility
 
 // BOUNCE & RE-STORM (4)
-1 Retract  #enabler #utility
+1 Paradoxical Outcome  #enabler #draw
 1 Rebuild  #enabler #protection
 1 Hurkyl's Recall  #enabler #protection
 1 Mizzix's Mastery  #utility
@@ -73,7 +73,7 @@
 1 Dispatch  #interaction
 1 Galvanic Blast  #interaction
 1 Petrify  #interaction #statue
-1 Negate  #interaction
+1 Kappa Cannoneer  #wincon #payoff
 1 Stoic Rebuttal  #interaction
 1 Topple the Statue  #interaction #statue #draw
 1 Saheeli, Sublime Artificer  #payoff #tokens
@@ -87,7 +87,7 @@
 1 Rise and Shine  #wincon
 1 Master of Etherium  #wincon #payoff
 1 Shared Animosity  #wincon
-1 Depthshaker Titan  #wincon #payoff
+1 The Walls of Ba Sing Se  #protection
 1 Aetherflux Reservoir  #wincon
 
 // LANDS (33)
